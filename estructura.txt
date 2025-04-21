@@ -1,0 +1,64 @@
+MARIA/
+│
+├── apps/                       # Carpeta de aplicaciones
+│   ├── app1/                   # Primera aplicación (docentes)
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── templates/
+│   │   └── docentes
+│   │   ├── views.py
+│   │   ├── urls.py
+│   │   └── migrations/
+│   ├── app2/                   # Segunda aplicación (estudiantes)
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── templates/
+│   │   └── estudiantes
+│   │   ├── views.py
+│   │   ├── urls.py
+│   │   └── migrations/
+│   ├── app3/                   # Tercera aplicación (pirncipal)
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── modelos
+│   │   ├── middleware
+│   │   ├── foto_usuarios
+│   │   ├── inicio_sesion
+│   │   ├── views.py
+│   │   ├── views
+│   │   ├── urls.py
+│   │   └── migrations/
+│
+├── maria/                      # Carpeta principal del proyecto
+│   ├── __init__.py
+│   ├── settings.py             # Archivo de configuración principal
+│   ├── urls.py                 # Enrutamiento principal
+│   ├── admin.py
+│   ├── asgi.py
+│   └── wsgi.py
+│
+├── static/                     # Archivos estáticos (CSS, JS, imágenes)
+│   ├── css/
+│   ├── data/
+│   ├── fonts/
+│   ├── images/
+│   ├── img/
+│   ├── js/
+│   └── source/
+│
+├── templates/                  # Plantillas HTML
+│   ├── auth                    # Otras plantillas
+│   ├── index                   # Otras plantillas
+│   ├── modulos                 # Otras plantillas
+│   └── partials                # Otras plantillas
+│
+├── venv/                       # Entorno virtual
+│
+├── manage.py                   # Script de gestión del proyecto
+├── requirements.txt            # Dependencias del proyecto
+└── estructura.txt              # Archivo de la estructura (actual)
