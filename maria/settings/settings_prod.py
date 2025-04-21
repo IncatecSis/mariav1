@@ -6,5 +6,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+ROOT_URLCONF = 'maria.urls'
+
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
