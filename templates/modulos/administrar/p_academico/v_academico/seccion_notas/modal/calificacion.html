@@ -1,0 +1,60 @@
+<style>
+/* Clase personalizada para el borde inferior debajo del texto */
+.card-header.custom-border {
+    border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+    padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -10px; /* Elimina márgenes del título */
+    padding: 5px;
+}
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white ">
+        <h2 class="text-center text-purple">Sistema de Calificación</h2>
+    </div>
+</div>
+<body>
+    <div class="container my-3">
+        <!-- Formulario principal -->
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="descripcion" class="form-label">Descripción</label>
+                    <input type="text" class="form-control" id="descripcion" value="">
+                </div>
+                <div class="col-md-3">
+                    <label for="codigo" class="form-label">Código</label>
+                    <input type="text" class="form-control" id="codigo" value="">
+                </div>
+                <div class="col-md-3">
+                    <label for="orden" class="form-label">Orden</label>
+                    <input type="number" class="form-control" id="orden" value="">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="porcentaje" class="form-label">Porcentaje</label>
+                    <input type="text" class="form-control" id="porcentaje" value="">
+                </div>
+                <div class="col-md-6">
+                    <label for="tipoCalificacion" class="form-label">Tipo de Calificación</label>
+                    <select class="form-select" id="tipoCalificacion">
+                        <option value="------">------</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Definitiva">Definitiva</option>
+                        <option value="Recuperacion">Recuperación</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Botón para agregar -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-soft-purple">Agregar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

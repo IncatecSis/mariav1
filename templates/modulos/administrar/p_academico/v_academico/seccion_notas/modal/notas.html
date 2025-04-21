@@ -1,0 +1,58 @@
+<style>
+/* Clase personalizada para el borde inferior debajo del texto */
+.card-header.custom-border {
+    border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+    padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -10px; /* Elimina márgenes del título */
+    padding: 5px;
+}
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-purple">Notas</h2>
+    </div>
+</div>
+<div class="container my-3">
+    <form>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="notaMinima" class="form-label">Nota Mínima</label>
+                <input type="number" step="0.01" class="form-control" id="notaMinima" value="0.00">
+            </div>
+            <div class="col-md-6">
+                <label for="notaMax" class="form-label">Nota Máx</label>
+                <input type="number" step="0.01" class="form-control" id="notaMax" value="5.00">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="notaNoAprobada" class="form-label">Nota No Aprobada</label>
+                <input type="number" step="0.01" class="form-control" id="notaNoAprobada" value="2.99">
+            </div>
+            <div class="col-md-6">
+                <label for="notaAprobada" class="form-label">Nota Aprobada</label>
+                <input type="number" step="0.01" class="form-control" id="notaAprobada" value="3.00">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="notaCompetente" class="form-label">Nota Competente</label>
+                <input type="number" step="0.01" class="form-control" id="notaCompetente" value="3.00">
+            </div>
+            <div class="col-md-6">
+                <label for="diasMax" class="form-label">Días máximo a digitar las notas</label>
+                <input type="number" class="form-control" id="diasMax" value="5">
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-soft-purple">Guardar</button>
+        </div>
+    </form>
+</div>

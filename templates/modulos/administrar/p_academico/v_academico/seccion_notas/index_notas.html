@@ -1,0 +1,485 @@
+{% load static %}
+<!-- =============main.html======================== -->
+<!DOCTYPE html>
+<html lang="es">
+<!-- ============================================================== -->
+
+<head>
+    <title>{{ titulo_pagina }}</title>
+	{% include 'partials/title_meta.html' %}
+
+	{% include 'partials/head-css.html' %}
+
+    <!-- pop-up css -->
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_nota/pop-up_calificacion.css' %}">
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_nota/pop-up_recuperacion.css' %}">
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_nota/pop-up_valoracion.css' %}">
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_nota/pop-up_notas.css' %}">
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_nota/pop-up_tipo_nota.css' %}">
+	<!-- end pop-up css -->
+    
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div class="wrapper">
+
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+                <div class="container-fluid">
+
+                    {% include 'partials/page-title.html' %}
+					
+				</div> <!-- container -->
+
+				<!-- consultar estudiante -->
+				<div class="row">
+					<div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+								<div class="input-group">
+									<input type="text" id="example-input1-group2" name="example-input1-group2" class="form-control" placeholder="Consulta por numero de documento">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-purple rounded-start-0">
+												<i class="ri-search-line fs-16"></i>
+											</button>
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Bloque de botones -->
+                    <div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="d-flex justify-content-around gap-0">
+											<button type="button" class="btn btn-soft-purple" data-popup="calificacion_Popup">
+												<i class="mdi mdi-calendar-edit"></i>Calificación
+											</button>
+											<button type="button" class="btn btn-soft-purple" data-popup="recuperacion_Popup">
+                                                <i class="ri-settings-2-line"></i>Recuperación
+                                            </button>
+											<button type="button" class="btn btn-soft-purple" data-popup="valoracion_Popup">
+                                                <i class="ri-settings-2-line"></i>Valoración
+                                            </button>
+											<button type="button" class="btn btn-soft-purple" data-popup="notas_Popup">
+                                                <i class="ri-settings-2-line"></i>Notas
+                                            </button>
+											<button type="button" class="btn btn-soft-purple" data-popup="tipo_nota_Popup">
+                                                <i class="ri-settings-2-line"></i>Tipos de Notas
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+							</div>
+						</div>
+					</div>
+				</div>	
+				
+				<!-- Tablas tecnicos, diplomados y cursos -->
+                <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                    <div class="table-responsive">
+										<div class="profile-content">
+                                            <ul class="nav nav-underline nav-justified gap-0">
+                                                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                        data-bs-target="#aboutme1" type="button" role="tab"
+                                                        aria-controls="home" aria-selected="true" href="#aboutme1">Sistema de calificación</a>
+                                                </li>
+                                                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                        data-bs-target="#aboutme2" type="button" role="tab"
+                                                        aria-controls="home" aria-selected="true"
+                                                        href="#aboutme2">Tipo de recuperación</a>
+                                                </li>
+                                                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                        data-bs-target="#aboutme3" type="button" role="tab"
+                                                        aria-controls="home" aria-selected="true"
+                                                        href="#aboutme3">Valoración</a>
+                                                </li>
+                                            </ul>
+										<div class="tab-content m-0 p-3">
+                                            <div class="tab-pane" id="aboutme1" role="tabpanel"
+                                                aria-labelledby="home-tab" tabindex="0">												
+                                                <!-- Matricula - Programas -->
+                                                <div class="table-responsive-sm">
+                                                    <table class="table table-striped table-centered mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-purple">Descripción</th>
+                                                                <th class="text-purple">Código</th>
+                                                                <th class="text-purple">Orden</th>
+                                                                <th class="text-purple">%</th>
+                                                                <th class="text-purple">Tipo</th>
+                                                                <th class="text-purple">Editar</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <input class="form-control form-control-sm" type="text">
+                                                                </td>
+                                                                <td>
+                                                                    <input class="form-control form-control-sm" type="text">
+                                                                </td>
+                                                                <td>
+                                                                    <input class="form-control form-control-sm" type="number">
+                                                                </td>
+                                                                <td>
+                                                                    <input class="form-control form-control-sm" type="text">
+                                                                </td>
+                                                                <td>
+                                                                    <select class="form-select form-select-sm">
+                                                                        <option value="Normal">Normal</option>
+                                                                        <option value="Definitiva">Definitiva</option>
+                                                                        <option value="Recuperación">Recuperación</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-soft-info btn-sm">
+                                                                        <i class="bi bi-pencil-square"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                                        <!-- about-me -->
+
+                                            <div class="tab-pane fade" id="aboutme2" role="tabpanel" aria-labelledby="home-tab" tabindex="0">													
+                                                        <div class="row">
+                                                            <!-- Lista de Matricula - Programas -->
+                                                                <div class="table-responsive-sm">
+                                                                    <table class="table table-striped table-centered mb-0">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-purple">Nombre</th>
+                                                                                <th class="text-purple">Sigla</th>
+                                                                                <th class="text-purple">Habilitado</th>
+                                                                                <th class="text-purple">Editar</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Curso Nivelatorio</td>
+                                                                                <td>C.N</td>
+                                                                                <td>
+                                                                                    <input class="form-check-input" type="checkbox">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-sm btn-soft-info">
+                                                                                        <i class="bi bi-pencil-square"></i>
+                                                                                        </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Curso Vacacional</td>
+                                                                                <td>C.V</td>
+                                                                                <td>
+                                                                                    <input class="form-check-input" type="checkbox" >
+                                                                                </td>
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-sm btn-soft-info">
+                                                                                        <i class="bi bi-pencil-square"></i>
+                                                                                        </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Habilitación</td>
+                                                                                <td>H.B</td>
+                                                                                <td>
+                                                                                    <input class="form-check-input" type="checkbox">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-sm btn-soft-info">
+                                                                                        <i class="bi bi-pencil-square"></i>
+                                                                                        </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Nivelación</td>
+                                                                                <td>Niv</td>
+                                                                                <td>
+                                                                                    <input class="form-check-input" type="checkbox">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-sm btn-soft-info">
+                                                                                        <i class="bi bi-pencil-square"></i>
+                                                                                        </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Recuperación</td>
+                                                                                <td>RE</td>
+                                                                                <td>
+                                                                                    <input class="form-check-input" type="checkbox">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-sm btn-soft-info">
+                                                                                        <i class="bi bi-pencil-square"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div> 
+                                                            <!-- end table-responsive-->
+                                                        </div> <!-- end profile-desk -->
+                                            </div>
+
+                                            <div class="tab-pane fade" id="aboutme3" role="tabpanel"
+                                                        aria-labelledby="home-tab" tabindex="0">													
+                                                        <div class="row">
+                                                            <!-- Lista de Matricula - Programas -->
+                                                                <div class="table-responsive-sm">
+                                                                    <table class="table table-striped table-centered mb-0">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-purple">Nombre Valoración</th>
+                                                                                <th class="text-purple">Escala Desde</th>
+                                                                                <th class="text-purple">Escala Hasta</th>
+                                                                                <th class="text-purple">Eliminar</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td><input type="text" class="form-control form-control-sm" value="Deficiente"></td>
+                                                                                <td><input type="number" class="form-control form-control-sm" value="0.000"></td>
+                                                                                <td><input type="number" class="form-control form-control-sm" value="2.590"></td>
+                                                                                <td>
+                                                                                    <button class="btn btn-sm btn-soft-danger">
+                                                                                        <i class="bi bi-x-circle"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><input type="text" class="form-control form-control-sm" value="Aceptable"></td>
+                                                                                <td><input type="number" class="form-control form-control-sm" value="2.600"></td>
+                                                                                <td><input type="number" class="form-control form-control-sm" value="3.590"></td>
+                                                                                <td>
+                                                                                    <button class="btn btn-sm btn-soft-danger">
+                                                                                        <i class="bi bi-x-circle"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><input type="text" class="form-control form-control-sm" value="Bueno"></td>
+                                                                                <td><input type="number" class="form-control form-control-sm" value="3.500"></td>
+                                                                                <td><input type="number" class="form-control form-control-sm" value="4.590"></td>
+                                                                                <td>
+                                                                                    <button class="btn btn-sm btn-soft-danger">
+                                                                                        <i class="bi bi-x-circle"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><input type="text" class="form-control form-control-sm" value="Excelente"></td>
+                                                                                <td><input type="number" class="form-control form-control-sm" value="4.600"></td>
+                                                                                <td><input type="number" class="form-control form-control-sm" value="5.000"></td>
+                                                                                <td>
+                                                                                    <button class="btn btn-sm btn-soft-danger">
+                                                                                        <i class="bi bi-x-circle"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div> 
+                                                            <!-- end table-responsive-->
+                                                        </div> <!-- end profile-desk -->
+                                            </div>
+										</div>
+									</div>
+                                        <table class="table table-centered mb-0 table-nowrap" id="inline-editable">
+                                        </table>
+                                </div>
+                                    <!-- end .table-responsive-->
+                                <!-- end card-body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                        <!-- end col -->
+                </div>
+                <!-- end row -->
+					
+                <!-- Pop-up crear programa -->
+                <div id="crear_p_c_Popup" class="popup_c_p" style="display:none;">
+                    <div class="popup-content_c_p">
+                        <span data-close="crear_p_c_Popup" class="close">&times;</span>
+                        {% include 'modulos/administrar/p_academico/v_academico/crear_programa.html' %}
+                    </div>
+                </div>
+                <!-- end crear programa-->
+				
+				<!-- Administrar-->
+
+                <div id="AdministrarSedesPeriodosPopup" class="popup" style="display:none;">
+					<div class="popup-content">
+						<span data-close="AdministrarSedesPeriodosPopup" class="close">&times;</span>
+						<h2>Administrar sedes y periodos</h2><br>
+						<div class="mb-3 d-flex align-items-center justify-content-between">
+							<label class="form-label mb-0 me-2" style="width: 50%;">Usuario</label>
+							<input type="text" class="form-control text-end" id="fechaPago" style="width: 50%;" placeholder="Nombre del user" readonly>
+						</div>
+						<div class="mb-3 d-flex align-items-center justify-content-between">
+							<label class="form-label mb-0 me-2" style="width: 50%;">Sedes</label>
+							<select class="form-select text-center" id="formaPago" style="width: 50%; height: calc(1.5em + 0.75rem + 2px);">
+								<option value="sel"></option>
+								<option value="cheque">Sede 1</option>
+								<option value="consignacion">Sede 2</option>
+								<option value="efectivo">Sede 3</option>
+							</select>
+						</div>
+                        <div>
+                            <label class="form-label mb-0 me-2" style="width: 50%;">Periodos</label>
+                            <td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""> 2024 - A</td>
+                            <td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""> 2024 - B</td>
+                        </div><br>
+						<button type="button" class="btn btn-soft-primary openPopupBtn form-control text-center">
+						<i class="mdi mdi-cash-multiple align-text-bottom fs-16 lh-1"></i>
+							Aplicar
+						</button>
+					</div>
+				</div>
+                <!-- end Administrar -->
+
+                <!-- Relacionar-->
+                <div id="RelecionarPopup" class="popup" style="display:none;">
+					<div class="popup-content">
+						<span id="RelecionarPopup" class="close">&times;</span>
+						<h2>Relacionar Usuario</h2><br>
+						<div class="mb-3 d-flex align-items-center justify-content-between">
+							<label class="form-label mb-0 me-2" style="width: 50%;">Usuario</label>
+							<input type="text" class="form-control text-end" id="fechaPago" style="width: 50%;" placeholder="Nombre del user" readonly>
+						</div>   
+						<div class="mb-3 d-flex align-items-center justify-content-between">
+							<label class="form-label mb-0 me-2" style="width: 50%;">Usuario a Relacionar</label>
+							<select class="form-select text-center" id="formaPago" style="width: 50%; height: calc(1.5em + 0.75rem + 2px);">
+								<option value="sel"></option>
+								<option value="cheque">Anthony</option>
+								<option value="consignacion">Maria Antonia</option>
+								<option value="efectivo">Docente</option>
+							</select>
+						</div>
+						<button type="button" class="btn btn-soft-primary openPopupBtn form-control text-center">
+						<i class="mdi mdi-cash-multiple align-text-bottom fs-16 lh-1"></i>
+							Aplicar
+						</button>
+					</div>
+				</div>
+
+                <!-- end Relacionar -->
+
+                <!-- Pop-up de Permisos -->
+                <div id="permisosPopup" class="popup" style="display:none;">
+                    <div class="popup-content">
+                        <span data-close="permisosPopup" class="close">&times;</span>
+                        <h2 class="text-center">Permisos</h2><br>
+                        <div class="mb-3 d-flex align-items-center justify-content-between">
+							<label class="form-label mb-0 me-2" style="width: 50%;">Usuario</label>
+							<input type="text" class="form-control text-end" id="fechaPago" style="width: 50%;" placeholder="Nombre del user" readonly>
+						</div>   
+						<div class="mb-3 d-flex align-items-center justify-content-between">
+							<label class="form-label mb-0 me-2" style="width: 50%;">Usuario a Relacionar</label>
+							<select class="form-select text-center" id="formaPago" style="width: 50%; height: calc(1.5em + 0.75rem + 2px);">
+								<option value="sel"></option>
+								<option value="cheque">Anthony</option>
+								<option value="consignacion">Maria Antonia</option>
+								<option value="efectivo">Docente</option>
+							</select>
+						</div>
+                        {% include 'modulos/administrar/gestionar_permisos.html' %}
+                    </div>
+                </div>
+            </div>
+            <!--Pop-up  calificacion-->
+            <div id="calificacion_Popup" class="popup_c" style="display:none;">
+                <div class="popup-content_c">
+                    <span data-close="calificacion_Popup" class="close">&times;</span>
+                    {% include 'modulos/administrar/p_academico/v_academico/seccion_notas/modal/calificacion.html' %}
+                </div>
+            </div>
+            <!-- end calificacion -->
+
+            <!--Pop-up recuperacion -->
+            <div id="recuperacion_Popup" class="popup_r" style="display:none;">
+                <div class="popup-content_r">
+                    <span data-close="recuperacion_Popup" class="close">&times;</span>
+                    {% include 'modulos/administrar/p_academico/v_academico/seccion_notas/modal/recuperacion.html' %}
+                </div>
+            </div>
+            <!-- end recuperacion -->
+            
+            <!--Pop-up valoracion -->
+            <div id="valoracion_Popup" class="popup_v" style="display:none;">
+                <div class="popup-content_v">
+                    <span data-close="valoracion_Popup" class="close">&times;</span>
+                    {% include 'modulos/administrar/p_academico/v_academico/seccion_notas/modal/valoracion.html' %}
+                </div>
+            </div>
+            <!-- end valoracion -->
+            
+            <!--Pop-up notas -->
+            <div id="notas_Popup" class="popup_n" style="display:none;">
+                <div class="popup-content_n">
+                    <span data-close="notas_Popup" class="close">&times;</span>
+                    {% include 'modulos/administrar/p_academico/v_academico/seccion_notas/modal/notas.html' %}
+                </div>
+            </div>
+            <!-- end notas -->
+            
+            <!--Pop-up tipo notas -->
+            <div id="tipo_nota_Popup" class="popup_nt" style="display:none;">
+                <div class="popup-content_nt">
+                    <span data-close="tipo_nota_Popup" class="close">&times;</span>
+                    {% include 'modulos/administrar/p_academico/v_academico/seccion_notas/modal/tipo_notas.html' %}
+                </div>
+            </div>
+            <!--end tipo notas -->
+
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+
+            {% include 'partials/footer.html' %}
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    <!-- END wrapper -->
+
+    {% include 'partials/right-sidebar.html' %}
+
+    {% include 'partials/footer-scripts.html' %}
+
+    <!-- Table Editable plugin-->
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <!-- Table editable init-->
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <!-- Bootstrap Datepicker Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+    
+    <!-- Po-put -->
+    <script src="{% static 'js/pop-pup.js' %}"></script>
+</body>
+
+</html>

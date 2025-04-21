@@ -1,0 +1,167 @@
+
+<style>
+    /* Clase personalizada para el borde inferior debajo del texto */
+.card-header.custom-border {
+    border-bottom: 3px solid #3bc0c3; /* Color del borde y grosor */
+    padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin: 0; /* Elimina márgenes del título */
+    padding: 5px;
+}
+</style>
+        <div class="container mt-2">
+            <div class="card">
+                <div class="card-header custom-border bg-white">
+                    <h2 class="text-center text-primary">Conceptos de Costos</h2>
+                </div>
+            </div>
+            <form>
+                <div class="form-container mb-5">
+                    <table class="table table-striped table-centered mb-0">
+                        <thead>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Valor</th>
+                                <th>Centro de Costo</th>
+                                <th>Habilitado</th>
+                                <th>Mostrar en Línea</th>
+                                <th>Aplica Interés Mora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control"></td>
+                                <td><input type="text" class="form-control"></td>
+                                <td>
+                                    <select class="form-select">
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                </td>
+                                <td><input type="checkbox" class="form-check-input" checked></td>
+                                <td><input type="checkbox" class="form-check-input"></td>
+                                <td><input type="checkbox" class="form-check-input"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-3">
+                        <button class="btn btn-soft-primary">Aceptar</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="table-container">
+                <table class="table table-striped table-centered mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-primary">Concepto</th>
+                            <th class="text-primary">Valor</th>
+                            <th class="text-primary">Habilitado</th>
+                            <th class="text-primary">En Línea</th>
+                            <th class="text-primary">Int. Mora</th>
+                            <th class="text-primary">Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Alquiler de Salón</td>
+                            <td>$100,000</td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <button class="btn btn-soft-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Arriendo de Cafetería</td>
+                            <td>$300,000</td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <button class="btn btn-soft-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cambio de Jornada</td>
+                            <td>$15,800</td>
+                            <td><input type="checkbox" class="form-check-input" checked></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <button class="btn btn-soft-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cambio de Programa</td>
+                            <td>$15,800</td>
+                            <td><input type="checkbox" class="form-check-input" checked></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <button class="btn btn-soft-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cartilla y Norma Icontec</td>
+                            <td>$20,000</td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <button class="btn btn-soft-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Certificado de Buena Conducta</td>
+                            <td>$14,200</td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <button class="btn btn-soft-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Certificado de Notas</td>
+                            <td>$14,200</td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <button class="btn btn-soft-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Certificado de Prácticas</td>
+                            <td>$14,200</td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <button class="btn btn-soft-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>

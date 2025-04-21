@@ -1,0 +1,49 @@
+<style>
+/* Clase personalizada para el borde inferior debajo del texto */
+.card-header.custom-border {
+    border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+    padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -15px; /* Elimina márgenes del título */
+    padding: 5px;
+}
+</style>
+<div class="card mt-2">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-purple">Asignar Semestres a Programas</h2>
+    </div>
+</div>
+        
+<!-- Formulario de selección de Programa y Semestre -->
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="programa" class="form-label">Programa</label>
+                    <select class="form-select" id="programa">
+                        <option value="Seleecione"></option>
+                        <option value="Seleecione">Programa</option>
+                        <option value="Seleecione">Programa</option>
+                        <option value="Seleecione">Programa</option>
+                        <option value="Seleecione">Programa</option>
+                        <!-- Agrega más opciones de programas según sea necesario -->
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="semestre" class="form-label">Semestre</label>
+                    <select class="form-select" id="semestre">
+                        <option value="Seleecione"></option>
+                        <option value="1">1er Semestre</option>
+                        <option value="2">2do Semestre</option>
+                        <option value="3">3er Semestre</option>
+                        <option value="4">4to Semestre</option>
+                        <!-- Agrega más opciones de semestres según sea necesario -->
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-soft-purple">Agregar</button>
+                </div>
+            </div>
+        </form>

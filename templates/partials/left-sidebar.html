@@ -1,0 +1,199 @@
+{% load static %}
+<!-- ========== Left Sidebar Start ========== -->
+<div class="leftside-menu">
+
+    <!-- Brand Logo Light -->
+    <a href="{% url 'Incatec:index' %}" class="logo logo-light">
+        <span class="logo-lg">
+            <img src="{% static 'images/logo.png' %}" style="width: 90px; height: auto;" alt="logo">
+        </span>
+        <span class="logo-sm">
+            <img src="{% static 'images/maria-iso.png' %}" alt="small logo">
+        </span>
+    </a>
+
+    <!-- Sidebar -left -->
+    <div class="h-100" id="leftside-menu-container" data-simplebar>
+		
+		<!-- Incatec -->
+		<ul class="side-nav">
+
+            <li class="side-nav-item">
+                <a href="{% url 'Incatec:index' %}" class="side-nav-link">
+                    <i class="ri-home-3-line"></i>
+                    <span class="badge bg-success float-end">9+</span>
+                    <span> Inicio </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebaracademica" aria-expanded="false" aria-controls="sidebaracademica" class="side-nav-link">
+                    <i class="ri-graduation-cap-line"></i>
+                    <span> Academica </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebaracademica">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{% url 'Incatec:matricula' %}">Registro y Matricula</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'Incatec:grupos_academicos' %}">Grupos Académicos</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarfinanciera" aria-expanded="false" aria-controls="sidebarfinanciera" class="side-nav-link">
+                    <i class="ri-money-dollar-circle-line"></i>
+                    <span> Financiera </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarfinanciera">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{% url 'Incatec:finanzas' %}">Financiación</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'Incatec:pagos' %}">Pagos</a>
+                        </li>
+						<li>
+                            <a href="{% url 'Incatec:notas' %}">Notas D y C</a>
+                        </li>
+						<li>
+                            <a href="{% url 'Incatec:informes' %}">Informes Pagos</a>
+                        </li>
+						<li>
+                            <a href="#">Permisos de Cartera</a>
+                        </li>
+						<li>
+                            <a href="#">Seguimiento de Cartera</a>
+                        </li>
+						<li>
+                            <a href="#">Auditoria Financiera</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarcontrol" aria-expanded="false" aria-controls="sidebarcontrol" class="side-nav-link">
+                    <i class="ri-door-open-line"></i>
+                    <span> Control de Ingreso </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarcontrol">
+                    <ul class="side-nav-second-level">
+                        <li>
+							<a href="{% url 'Incatec:control_ingreso' %}">Control Administrativo</a>
+                        </li>
+                        <li>
+							<a href="{% url 'Incatec:control_docente' %}">Control Docente</a>
+                        </li>
+                        <li>
+							<a href="{% url 'Incatec:control_estudiante' %}">Control Estudiante</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+		
+			<li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebartalentoh" aria-expanded="false" aria-controls="sidebartalentoh" class="side-nav-link">
+                    <i class="ri-team-line"></i>
+                    <span> Talento Humano </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebartalentoh">
+                    <ul class="side-nav-second-level">
+                        <li>
+							<a href="{% url 'Incatec:talento_humano' %}">Parametros</a>
+                        </li>
+                        <li>
+							<a href="{% url 'Incatec:administrativos' %}">Administrativos</a>
+                        </li>
+                        <li>
+							<a href="#">Nomina</a>
+                        </li>
+                        <li>
+							<a href="#">Parametros Nomina</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+			
+			<li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarsgc" aria-expanded="false" aria-controls="sidebarsgc" class="side-nav-link">
+                    <i class="ri-medal-2-line"></i>
+                    <span> SGC </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarsgc">
+                    <ul class="side-nav-second-level">
+                        <li>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+			
+			<li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarutilidades" aria-expanded="false" aria-controls="sidebarutilidades" class="side-nav-link">
+                    <i class="ri-tools-fill"></i>
+                    <span> Utilidades </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarutilidades">
+                    <ul class="side-nav-second-level">
+                        <li>
+							<a href="#">Financiaciones Masivas</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+			<li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebaradministrar" aria-expanded="false" aria-controls="sidebaradministrar" class="side-nav-link">
+                    <i class="ri-settings-4-line"></i>
+                    <span> Administrar </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebaradministrar">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{% url 'Incatec:usuarios' %}">Usuarios</a>                                       
+                        </li>
+                        <li>
+                            <a href="{% url 'Incatec:parametros_financieros' %}">Parametros Financieros</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'Incatec:parametros_academicos' %}">Parametros Academicos</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'Incatec:parametros_externos' %}">Otros Parametros</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+			<li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarDirectivo" aria-expanded="false" aria-controls="sidebarDirectivo" class="side-nav-link">
+                    <i class="bi bi-person-lock"></i>
+                    <span> Directivos </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarDirectivo">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="{% url 'Incatec:directivos' %}">Usuario Directivo</a>                                       
+                        </li>
+                        <li>
+                            <a href="#">Usuario Academico</a>                                       
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+        <div class="text-center py-3 mt-5">
+            <img src="{% static 'images/logo-color1.png' %}" style="width: 50%;">
+        </div>
+    </div>
+</div>

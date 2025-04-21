@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'images/maria.ico' %}">
+
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #858796;
+            --success-color: #1cc88a;
+            --dark-color: #5a5c69;
+            --accent-color: #2653d4;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8f9fc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .error-page {
+            padding: 40px 0;
+        }
+        
+        .error-page h1 {
+            font-size: 8rem;
+            letter-spacing: -8px;
+            line-height: 1;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary-color), #6e8fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0;
+        }
+        
+        .error-page h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .error-page p {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .error-image-container {
+            position: relative;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .error-image {
+            width: 100%;
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
+            transition: transform 0.3s ease;
+            border-radius: 50%;
+        }
+        
+        .error-image:hover {
+            transform: translateY(-5px);
+        }
+        
+        .error-decorations {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+        
+        .error-decoration {
+            position: absolute;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .error-decoration:nth-child(1) {
+            top: 10%;
+            left: -5%;
+            animation-delay: 0s;
+        }
+        
+        .error-decoration:nth-child(2) {
+            top: 5%;
+            right: -3%;
+            animation-delay: 1s;
+        }
+        
+        .error-decoration:nth-child(3) {
+            bottom: 5%;
+            left: 10%;
+            animation-delay: 2s;
+        }
+        
+        .error-decoration:nth-child(4) {
+            bottom: 15%;
+            right: 5%;
+            animation-delay: 3s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(78, 115, 223, 0.4);
+        }
+        
+        .btn-outline-secondary {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-secondary:hover {
+            color: #fff;
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(133, 135, 150, 0.4);
+        }
+        
+        .search-form {
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+        
+        .search-form .form-control {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            border: 1px solid #e3e6f0;
+            box-shadow: none;
+        }
+        
+        .search-form .input-group-text {
+            border-radius: 0 50px 50px 0;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-form .input-group-text:hover {
+            background-color: var(--accent-color);
+        }
+        
+        @media (max-width: 767.98px) {
+            .error-page h1 {
+                font-size: 5rem;
+                letter-spacing: -4px;
+            }
+            
+            .error-page h2 {
+                font-size: 1.5rem;
+            }
+            
+            .error-page p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row error-page justify-content-center align-items-center">
+            <div class="col-lg-6 order-lg-2">
+                <div class="error-image-container">
+                    <img src="{% static 'images/PENSATIVO.jpg' %}" alt="Error 404 Illustration" class="error-image">
+                    <div class="error-decorations">
+                        <i class="fas fa-question error-decoration fa-2x text-primary"></i>
+                        <i class="fas fa-search error-decoration fa-2x text-success"></i>
+                        <i class="fas fa-link-slash error-decoration fa-2x text-danger"></i>
+                        <i class="fas fa-map-signs error-decoration fa-2x text-warning"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="text-center text-lg-start">
+                    <h1 class="display-1">404</h1>
+                    <h2>¡Página no encontrada!</h2>
+                    <p>Lo sentimos, la página que estás buscando no existe, ha sido eliminada o está temporalmente no disponible.</p>
+                </div>
+            </div>
+        </div>
+        <div class="d-grid gap-2 d-sm-block">
+            <a href="{% url 'Incatec:index' %}" class="btn btn-primary me-sm-2">
+                <i class="bi bi-chevron-left"></i> Volver
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded' , function (){
+        const image = document.querySelector('.error-image');
+        let angle = 0;
+        function animate() {
+            angle += 0.05;
+            const x = Math.sin(angle) * 10
+            const y = Math.cos(angle) * 10
+            image.style.transform = `translate(${x}px, ${y}px)`
+            requestAnimationFrame(animate)
+        }
+
+        animate();
+    });
+</script>

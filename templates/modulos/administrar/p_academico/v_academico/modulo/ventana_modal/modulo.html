@@ -1,0 +1,76 @@
+<style>
+/* Clase personalizada para el borde inferior debajo del texto */
+.card-header.custom-border {
+        border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+        padding-bottom: 10px; /* Espacio entre el texto y el borde */
+        position: relative;
+    }
+    
+.card-header.custom-border h2 {
+        margin-top: -15px; /* Elimina márgenes del título */
+        padding: 5px;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-purple">Asignar Módulos a Programa</h2>
+    </div>
+</div>
+        <!-- Formulario para asignar módulos -->
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="programa" class="form-label">Programa</label>
+                    <select class="form-select" id="programa">
+                        <option selected>--------</option>
+                        <option selected>--------</option>
+                        <option selected>--------</option>
+                        <option selected>--------</option>
+                        <option selected>--------</option>
+                        <option selected>--------</option>
+                        <!-- Agrega más opciones si es necesario -->
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="area" class="form-label">Área</label>
+                    <select class="form-select" id="area">
+                        <option selected>No Aplica</option>
+                        <!-- Agrega más opciones si es necesario -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sección Seleccionar Módulo -->
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="modulo" class="form-label">Seleccionar Módulo</label>
+                    <input type="text" class="form-control" id="modulo">
+                </div>
+            </div>
+
+            <!-- Grupo de Calificación y Orden -->
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <label for="grupo_calificacion" class="form-label">Grupo % de Calificación del Programa</label>
+                    <select class="form-select" id="grupo_calificacion">
+                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
+                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
+                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
+                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
+                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
+                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
+                        <!-- Agrega más opciones si es necesario -->
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="orden" class="form-label">Orden Alfabetico</label>
+                    <input type="number" class="form-control" id="orden" value="0">
+                </div>
+
+            </div>
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-soft-purple">Agregar</button>
+            </div>
+        </form>

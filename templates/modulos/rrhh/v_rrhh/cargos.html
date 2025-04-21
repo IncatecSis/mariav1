@@ -1,0 +1,93 @@
+<style>
+    .card-header.custom-border {
+        border-bottom: 3px solid #2263b8; 
+        padding-bottom: 10px; 
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin-top: -10px;
+        padding: 5px;
+        color: #2263b8;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center">Cargos Laborales</h2>
+    </div>
+</div>
+<button class="btn btn-soft-success toggleBtn" data-target="cargos">
+    <i class="bi bi-plus"></i> Crear
+</button>
+<div class="card" id="cargos" style="display: none;">
+    <div class="container my-3">
+        <form class="row g-3" method="POST">
+            {% csrf_token %}
+            <input type="hidden" value="cargo" name="tipo">
+            <input type="hidden" id="idCargo" name="id_cargo">
+            <div class="col-md-6">
+                <label for="inputCargo" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="NombreCargo" name="nombre" style="text-transform: uppercase;">
+            </div>
+            <div class="col-md-6">
+                <label for="inputCargo" class="form-label"><span class="badge bg-success">Área Laboral</span></label>
+                <select name="departamento_laboral" id="idArea" class="form-select">
+                    {% for dpto in departamento_laboral %}
+                        <option value="{{ dpto.id_departamento }}">{{ dpto.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-soft-success">
+                    Agregar
+                </button>
+            </div>
+        </form>
+        <br>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-centered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Área</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cargos in cargo %}
+            <tr>
+                <td>{{ cargos.nombre }}</td>
+                <td>{{ cargos.id_departamento.nombre }}</td>
+                <td>
+                    <button class="btn btn-soft-info btn-sm btnCargo"
+                        data-id="{{ cargos.id_cargo}}"
+                        data-nombre="{{ cargos.nombre }}"
+                        data-area="{{ cargos.id_departamento.id_departamento }}">
+                        <i class="bi bi-pencil-square"></i> 
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function (){
+        document.querySelectorAll('.btnCargo').forEach(btn => {
+            btn.addEventListener('click', function () {
+                let idCargo = this.getAttribute('data-id');
+                let nombre = this.getAttribute('data-nombre');
+                let area = this.getAttribute('data-area');
+
+                document.getElementById('idCargo').value = idCargo;
+                document.getElementById('NombreCargo').value = nombre;
+                document.getElementById('idArea').value = area;
+
+                document.getElementById('cargos').style.display = 'block';
+            })
+        })
+    })
+</script>

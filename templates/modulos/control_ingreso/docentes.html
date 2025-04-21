@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ titulo_pagina }}</title>
+    {% include 'partials/title_meta.html' %}
+    {% include 'partials/head-css.html' %}
+    <link rel="stylesheet" href="{% static 'css/vendor/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/jquery-jvectormap-1.2.2.css' %}">
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+        <div class="content-page">
+            <div class="container">
+                {% include 'partials/page-title.html' %}
+                <h4 class="text-primary text-center mb-1">Control Docentes</h4>
+
+                <div class="row mb-3">
+                    <label class="form-label">Búsqueda Control Docentes</label>
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" id="busqueda"
+                            placeholder="Escanear o digitar número de documento" autofocus>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Documento</label>
+                        <input type="text" class="form-control" id="documento" readonly>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <img id="foto_perfil" src="https://cdn.pixabay.com/photo/2016/04/15/18/05/computer-1331579_1280.png" alt="Foto Estudiante"
+                            class="img-thumbnail" style="max-height: 120px;">
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Nombres</label>
+                        <input type="text" class="form-control" id="nombre_completo" readonly>
+                    </div>
+                </div>
+
+                <div class="table-responsive mb-4">
+                    <table class="table table-striped table-centered mb-0">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>E-S</th>
+                                <th>Programas</th>
+                                <th>Módulo Formación</th>
+                                <th>Jornada</th>
+                                <th>Hora</th>
+                                <th>Fecha Inicio/Final</th>
+                                <th>Detalles</th>
+                                <th>Fusión</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_modulos">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% include 'partials/footer.html' %}
+    </div>
+    {% include 'partials/right-sidebar.html' %}
+
+    {% include 'partials/footer-scripts.html' %}
+    <script>
+        document.getElementById("busqueda").addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                buscarUsuario();
+            }
+        });
+    
+        function buscarUsuario(codigo = null) {
+            const doc = codigo || document.getElementById("busqueda").value;
+    
+            const docente = {
+                documento: doc,
+                nombre: "PUENTE PAEZ JULIA MERCEDES",
+                foto: "https://i.pinimg.com/736x/ee/0c/5e/ee0c5e2218436d7154d73e6a47e8cb43.jpg",
+                modulos: [
+                    {
+                        id: "11564",
+                        programa: "AUXILIAR EN ENFERMERIA",
+                        semestre: "1er Semestre",
+                        modulo: "Controlar infecciones de acuerdo con protocolos",
+                        jornada: "Sábados Mañana y Tarde",
+                        hora: "07:00 am - 12:00 pm",
+                        fechas: "08 de Febrero - 12 de Abril",
+                        dias: "Sábado",
+                        fusion: true
+                    },
+                    {
+                        id: "11788",
+                        programa: "AUXILIAR EN ENFERMERIA",
+                        semestre: "1er Semestre",
+                        modulo: "Admitir personas al servicio según normativa",
+                        jornada: "Lunes a Viernes Mañana",
+                        hora: "08:00 am - 11:00 am",
+                        fechas: "04 de Abril - 13 de Junio",
+                        dias: "Martes, Jueves, Viernes",
+                        fusion: true
+                    }
+                ]
+            };
+    
+            // Cargar datos básicos
+            document.getElementById("documento").value = docente.documento;
+            document.getElementById("nombre_completo").value = docente.nombre;
+            document.getElementById("foto_perfil").src = docente.foto;
+    
+            // Generar tabla dinámica
+            const tabla = document.getElementById("tabla_modulos");
+            tabla.innerHTML = "";
+            docente.modulos.forEach(mod => {
+                const fila = `
+                <tr class="table-${mod.fusion ? 'ligth' : 'light'}">
+                    <td>${mod.id}</td>
+                    <td><i class="bi bi-person-lines-fill"></i></td>
+                    <td>${mod.programa}<br><small>${mod.semestre}</small></td>
+                    <td>${mod.modulo}</td>
+                    <td>${mod.jornada}</td>
+                    <td>${mod.hora}</td>
+                    <td>${mod.fechas}</td>
+                    <td>${mod.dias}</td>
+                    <td><input type="checkbox" class="form-check-input" ${mod.fusion ? "checked" : ""}></td>
+                </tr>`;
+                tabla.innerHTML += fila;
+            });
+    
+            // Reiniciar input
+            document.getElementById("busqueda").value = "";
+            document.getElementById("busqueda").focus();
+        }
+    </script>
+    <script src="{% static 'js/vendor/moment.min.js' %}"></script>
+    <script src="{% static 'js/vendor/daterangepicker.js' %}"></script>
+
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <script src="{% static 'js/vendor/apexcharts.min.js' %}"></script>
+
+    <script src="{% static 'js/vendor/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <script src="{% static 'js/pages/dashboard.js' %}"></script>
+
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+    <script src="{% static 'js/pop-pup.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,683 @@
+{% load static %}
+{% load humanize %}
+<style>
+.card-header.custom-border {
+        border-bottom: 3px solid #2263b8; 
+        padding-bottom: 10px; 
+        position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -10px;
+    padding: 5px;
+    color: #2263b8;
+}
+.accordion-button.custom-bg {
+        background-color:white;
+        transition: background-color 0.3s ease;
+    }
+.accordion-button.custom-bg:not(.collapsed) {
+        background-color: #2263b8;
+        color: white;
+    }
+.accordion-button.custom-bg.collapsed {
+    background-color: white;
+}
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center" id="titulo-principal">
+                Contratación
+        </h2>        
+    </div>
+</div>
+<body class="bg-light">
+    <div class="container mt-2">
+        <div class="accordion" id="formAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#datosBasicos">
+                        Datos basicos
+                    </button>
+                </h2>
+                <div id="datosBasicos" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="tipo" value="actualizacion_usuario">
+                            <input type="hidden" name="usuario_id" value="{{ contrato.id_usuario.id_usuario }}">
+
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mt-2">
+                                    <label class="form-label">Nombres</label>
+                                    <input type="text" name="nombres" class="form-control" maxlength="30"
+                                        value="{{ contrato.id_usuario.nombres }}">
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label class="form-label">Apellidos</label>
+                                    <input type="text" name="apellidos" class="form-control" maxlength="30"
+                                        value="{{ contrato.id_usuario.apellidos }}">
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label class="form-label">Fecha de Nacimiento</label>
+                                    <input type="date" name="fecha_nacimiento" class="form-control"
+                                        value="{{ contrato.id_usuario.fecha_nacimiento|date:'Y-m-d' }}">
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label class="form-label">Lugar de Nacimiento</label>
+                                    <select name="pais" class="form-select" required>
+                                        {% for pais in paises %}
+                                            <option value="{{ pais.id_pais }}"
+                                                {% if contrato.id_usuario.id_pais and pais.id_pais == contrato.id_usuario.id_pais.id_pais %}
+                                                    selected
+                                                {% endif %}>
+                                                {{ pais.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>
+                                    <select class="form-select" name="tipo_identificacion">
+                                        {% for tipo in tipos_identificacion %}
+                                            <option value="{{ tipo.id_tipo_identificacion }}"
+                                                {% if contrato.id_usuario.id_tipo_identificacion and tipo.id_tipo_identificacion == contrato.id_usuario.id_tipo_identificacion.id_tipo_identificacion %}
+                                                    selected
+                                                {% endif %}>
+                                                {{ tipo.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="smlv" class="form-label">Nº Documento</label>
+                                    <input type="text" name="numero_documento" class="form-control" maxlength="10"
+                                        value="{{ contrato.id_usuario.numero_documento }}">
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="departamentos_expedicion" class="form-label">Departamento de Expedición</label>
+                                    <select class="form-select" name="id_departamento_expedicion">
+                                        {% for dep in departamentos %}
+                                            <option value="{{ dep.id_departamento }}"
+                                                {% if contrato.id_usuario.id_departamento_expedicion and dep.id_departamento == contrato.id_usuario.id_departamento_expedicion.id_departamento %}
+                                                    selected
+                                                {% endif %}
+                                                >
+                                                {{ dep.departamento }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="municipios_expedicion" class="form-label">Municipio de Expedición</label>
+                                    <select class="form-select" name="id_municipio_expedicion">
+                                        {% if contrato.id_usuario.id_departamento_expedicion %}
+                                            {% for mun in contrato.id_usuario.id_departamento_expedicion.municipios.all %}
+                                                <option value="{{ mun.id_municipio }}"
+                                                    {% if contrato.id_usuario.id_municipio_expedicion and mun.id_municipio == contrato.id_usuario.id_municipio_expedicion.id_municipio %}
+                                                        selected
+                                                    {% endif %}>
+                                                    {{ mun.municipio }}
+                                                </option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>                                
+                                <div class="col-md-6 mt-2">
+                                    <label for="departamento_nacimiento" class="form-label">Departamento de Nacimiento</label>
+                                    <select class="form-select" name="id_departamento_nacimiento">
+                                        {% for dep in departamentos %}
+                                            <option value="{{ dep.id_departamento }}"
+                                                {% if contrato.id_usuario.id_departamento_nacimiento and dep.id_departamento == contrato.id_usuario.id_departamento_nacimiento.id_departamento %}
+                                                    selected
+                                                {% endif %}
+                                                >
+                                                {{ dep.departamento }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="municipio_nacimiento" class="form-label">Municipio de Nacimiento</label>
+                                    <select class="form-select" name="id_municipio_nacimiento" >
+                                        {% if contrato.id_usuario.id_departamento_nacimiento %}
+                                            {% for mun in contrato.id_usuario.id_departamento_nacimiento.municipios.all %}
+                                                <option value="{{ mun.id_municipio }}"
+                                                    {% if contrato.id_usuario.id_municipio_nacimiento and mun.id_municipio == contrato.id_usuario.id_municipio_nacimiento.id_municipio %}
+                                                        selected
+                                                    {% endif %}
+                                                    >
+                                                    {{ mun.municipio }}
+                                                </option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label for="sexo" class="form-label">Sexo</label>
+                                    <select class="form-select" name="sexo" >
+                                        {% for sexo in sexos %}
+                                            <option value="{{ sexo.id_sexo }}"
+                                                {% if contrato.id_usuario.id_sexo and sexo.id_sexo == contrato.id_usuario.id_sexo.id_sexo %}
+                                                    selected
+                                                {% endif %}
+                                                >{{ sexo.sexo }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <label for="tipo_sangre" class="form-label">Tipo de Sangre</label>
+                                    <select class="form-select" name="tipo_sangre" >
+                                        {% for sangre in tipos_sangre %}
+                                            <option value="{{ sangre.id_tipo_sangre }}"
+                                                {% if contrato.id_usuario.id_tipo_sangre and sangre.id_tipo_sangre == contrato.id_usuario.id_tipo_sangre.id_tipo_sangre %}
+                                                    selected
+                                                {% endif %}
+                                                >{{ sangre.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-5 mt-2">
+                                    <label for="estado_civil" class="form-label">Estado Civil</label>
+                                    <select class="form-select" name="estado_civil" >
+                                        {% for estado in estados_civiles %}
+                                            <option value="{{ estado.id_estado_civil }}"
+                                            {% if contrato.id_usuario.id_estado_civil and estado.id_estado_civil == contrato.id_usuario.id_estado_civil.id_estado_civil %}
+                                                selected
+                                            {% endif %}>{{ estado.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="departamento_residencia" class="form-label">Departamento de Residencia</label>
+                                    <select class="form-select" name="id_departamento_residencia" >
+                                        {% for dep in departamentos %}
+                                            <option value="{{ dep.id_departamento }}"
+                                                {% if contrato.id_usuario.id_departamento_residencia and dep.id_departamento == contrato.id_usuario.id_departamento_residencia.id_departamento %}
+                                                    selected
+                                                {% endif %}>
+                                                {{ dep.departamento }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="municipio_residencia" class="form-label">Municipio de Residencia</label>
+                                    <select class="form-select" name="id_municipio_residencia" >
+                                        {% if contrato.id_usuario.id_departamento_residencia %}
+                                            {% for mun in contrato.id_usuario.id_departamento_residencia.municipios.all %}
+                                                <option value="{{ mun.id_municipio }}"
+                                                    {% if contrato.id_usuario.id_municipio_residencia and mun.id_municipio == contrato.id_usuario.id_municipio_residencia.id_municipio %} 
+                                                        selected
+                                                    {% endif %}
+                                                    >{{ mun.municipio }}
+                                                </option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="smlv" class="form-label">Dirección de Residencia</label>
+                                    <input type="text" name="direccion_residencia" class="form-control" maxlength="50"
+                                        value="{{ contrato.id_usuario.direccion_residencia }}" style="text-transform: uppercase;">
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="smlv" class="form-label">Barrio</label>
+                                    <input type="text" name="barrio" class="form-control" maxlength="50"
+                                        value="{{ contrato.id_usuario.barrio }}" style="text-transform: uppercase;">
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="departamento_expulsor" class="form-label">Departamento Expulsor</label>
+                                    <select class="form-select" name="id_departamento_expulsor" >
+                                        {% for dep in departamentos %}
+                                            <option value="{{ dep.id_departamento }}"
+                                                {% if contrato.id_usuario.id_departamento_expulsor and dep.id_departamento == contrato.id_usuario.id_departamento_expulsor.id_departamento %}
+                                                    selected
+                                                {% endif %}
+                                                >{{ dep.departamento }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="municipio_expulsor" class="form-label">Municipio Expulsor</label>
+                                    <select name="id_municipio_expulsor" class="form-select" >
+                                        {% if contrato.id_usuario.id_departamento_expulsor %}
+                                            {% for mun in contrato.id_usuario.id_departamento_expulsor.municipios.all %}
+                                                <option value="{{ mun.id_municipio }}"
+                                                    {% if contrato.id_usuario.id_departamento_expulsor and mun.id_municipio == contrato.id_usuario.id_municipio_residencia.id_municipio %}
+                                                        selected
+                                                    {% endif %}>{{ mun.municipio }}
+                                                </option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <label class="form-label">Celular</label>
+                                    <input type="text" name="celular" class="form-control" maxlength="10" placeholder="+57"
+                                        value="{{ contrato.id_usuario.celular }}">
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <label class="form-label">Teléfono</label>
+                                    <input type="text" name="telefono" class="form-control" maxlength="10" placeholder="(601)"
+                                        value="{{ contrato.id_usuario.telefono }}">
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="smlv" class="form-label">Correo Electrónico</label>
+                                    <input type="email" name="correo_electronico" class="form-control" placeholder="example@gmail.com"
+                                        value="{{ contrato.id_usuario.correo_electronico }}" style="text-transform: uppercase;">
+                                </div>
+                                <div class="col-md-5 mt-2">
+                                    <label for="etnia" class="form-label">Etnia</label>
+                                    <select class="form-select" name="etnia">
+                                        {% for etnia in etnias %}
+                                            <option value="{{ etnia.id_etnia }}"
+                                                {% if contrato.id_usuario.id_etnia and etnia.id_etnia == contrato.id_usuario.id_etnia.id_etnia %}
+                                                    selected
+                                                {% endif %}>
+                                                {{ etnia.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>                                    
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <label for="estrato" class="form-label">Estrato</label>
+                                    <select class="form-select" name="estrato">
+                                        {% for estrato in estratos %}
+                                            <option value="{{ estrato.id_estrato }}"
+                                                {% if contrato.id_usuario.id_estrato and estrato.id_estrato == contrato.id_usuario.id_estrato.id_estrato %}
+                                                    selected
+                                                {% endif %}
+                                                >{{ estrato.estrato }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label for="zona_residencial" class="form-label">Zona Residencial</label>
+                                    <select class="form-select" name="zona_residencial">
+                                        {% for zona in zonas_residenciales %}
+                                            <option value="{{ zona.id_zona_residencial }}"
+                                            {% if contrato.id_usuario.id_zona_residencial and zona.id_zona_residencial == contrato.id_usuario.id_zona_residencial.id_zona_residencial %}
+                                                selected
+                                            {% endif %}>{{ zona.zona_residencial }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label for="eps" class="form-label">EPS</label>
+                                    <select class="form-select" name="eps">
+                                        <option value="">SELECCIONE</option>
+                                        {% for eps in epss %}
+                                            <option value="{{ eps.id_eps }}" 
+                                                {% if contrato.id_usuario.id_eps and eps.id_eps == contrato.id_usuario.id_eps.id_eps %}
+                                                    selected
+                                                {% endif %}>
+                                                {{ eps.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label for="sisben" class="form-label">Sisben</label>
+                                    <select class="form-select" name="sisben">
+                                        {% for sisben in sisbenes %}
+                                            <option value="{{ sisben.id_sisben }}"
+                                            {% if contrato.id_usuario.id_sisben and sisben.id_sisben == contrato.id_usuario.id_sisben.id_sisben %}
+                                                selected
+                                            {% endif %}>{{ sisben.sisben }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    <label for="tipo_discapacidad" class="form-label">Tipo de Discapacidad</label>
+                                    <select class="form-select" name="tipo_discapacidad">
+                                        {% for discapacidad in tipos_discapacidad %}
+                                            <option value="{{ discapacidad.id_tipo_discapacidad }}"
+                                                {% if contrato.id_usuario.id_tipo_discapacidad and discapacidad.id_tipo_discapacidad == contrato.id_usuario.id_tipo_discapacidad.id_tipo_discapacidad %}
+                                                    selected
+                                                {% endif %}>
+                                                {{ discapacidad.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label class="form-label">Sede Asociada</label>
+                                    <select class="form-select" name="sedes">
+                                        {% for sede in sedes %}
+                                            <option value="{{ sede.id_sede }}"
+                                            {% if contrato.id_usuario.id_sede and sede.id_sede == contrato.id_usuario.id_sede.id_sede %}
+                                                selected
+                                            {% endif %}>{{ sede.nombre_sede }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label class="form-label">Foto del Usuario</label>
+                                    <input type="file" name="foto_perfil" class="form-control" accept="image/*">
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button class="btn btn-soft-success">
+                                        <i class="bi bi-person-plus-fill"></i>
+                                            Actualizar 
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#datosAdicionales">
+                        Contratación
+                    </button>
+                </h2>
+                <div id="datosAdicionales" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <h5>Nombre de Usuario: 
+                                <span class="badge bg-success">
+                                    {{ contrato.id_usuario.nombres }} {{ contrato.id_usuario.apellidos }}
+                                </span>
+                            </h5>
+                            <form class="row mt-2" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="tipo" value="registro_contratacion">
+                                <input type="hidden" name="usuario_id" value="{{ contrato.id_usuario.id_usuario }}">
+                                <input type="hidden" name="contrato_id" value="{{ contrato.id_contratacion }}">
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha de inicio</label>
+                                        <input type="date" name="fecha_inicio" class="form-control"
+                                            value="{{ contrato.fecha_inicio|date:'Y-m-d' }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha fin</label>
+                                        <input type="date" name="fecha_fin" class="form-control"
+                                            value="{{ contrato.fecha_fin|date:'Y-m-d' }}">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Área</label>
+                                        <select name="departamento_laboral" class="form-select">
+                                            {% for dpto in departamento_laboral %}
+                                            <option value="{{ dpto.id_departamento }}"
+                                                {% if contrato.id_departamento.id_departamento == dpto.id_departamento %}
+                                                    selected
+                                                {% endif %}>
+                                                {{ dpto.nombre }}
+                                            </option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Cargo</label>
+                                        <select class="form-select" name="cargo">
+                                            {% for cargos in cargo %}
+                                            <option value="{{ cargos.id_cargo }}"
+                                                {% if contrato.id_cargo.id_cargo == cargos.id_cargo %}
+                                                    selected    
+                                                {% endif %}>
+                                                {{ cargos.nombre }}
+                                            </option>
+                                        {% endfor %}    
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">ARL</label>
+                                        <select name="arl" class="form-select">
+                                            {% for arls in arl %}
+                                                <option value="{{ arls.id_arl }}"
+                                                {% if contrato.id_arl.id_arl == arls.id_arl %}
+                                                    selected    
+                                                {% endif %}>
+                                                {{ arls.nombre_arl }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Riesgo Laboral</label>
+                                        <select name="riesgo" class="form-select">
+                                            {% for riesgo in riesgos %}
+                                                <option value="{{ riesgo.id_riesgo_laboral }}"
+                                                {% if contrato.id_riesgo_laboral.id_riesgo_laboral == riesgo.id_riesgo_laboral %}
+                                                    selected    
+                                                {% endif %}>
+                                                {{ riesgo.nivel_riesgo }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Caja de compensación</label>
+                                        <select name="caja_compensacion" class="form-select">
+                                            {% for cjp in caja_compensacion %}
+                                                <option value="{{ cjp.id_caja_compensacion }}"
+                                                {% if contrato.id_caja_compensacion.id_caja_compensacion == cjp.id_caja_compensacion %}
+                                                    selected    
+                                                {% endif %}>
+                                                {{ cjp.nombre_caja }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Salario</label>
+                                        <input type="text" name="salario" class="form-control"
+                                            value="{{ contrato.salario|floatformat:0|intcomma }}" maxlength="8"
+                                            oninput="this.value = this.value.replace(/[^\d.]/g, '');">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Banco</label>
+                                        <select name="banco" class="form-select">
+                                            {% for bancos in banco %}
+                                                <option value="{{ bancos.id_banco }}"
+                                                {% if contrato.id_banco.id_banco == bancos.id_banco %}
+                                                    selected    
+                                                {% endif %}>
+                                                {{ bancos.nombre_banco }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">N° Cuenta</label>
+                                        <input type="text" name="numero_cuenta" class="form-control"
+                                            value="{{ contrato.numero_cuenta }}" maxlength="20">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Tipo de contrato</label>
+                                        <select name="tipo_contrato" class="form-select" disabled>
+                                            {% for tpc in tipo_contrato %}
+                                                <option value="{{ tpc.id_tipo_contrato }}"
+                                                {% if contrato.id_tipo_contrato.id_tipo_contrato == tpc.id_tipo_contrato %}
+                                                    selected
+                                                {% endif %}>
+                                                    {{ tpc.nombre_tipo_contrato }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <input type="hidden" name="tipo_contrato" value="{{ contrato.id_tipo_contrato.id_tipo_contrato }}">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Pensión</label>
+                                        <select name="pension" class="form-select">
+                                            {% for pensiones in pension %}
+                                                <option value="{{ pensiones.id_administradoras_pensiones }}"
+                                                {% if contrato.id_administradoras_pensiones and contrato.id_administradoras_pensiones.id_administradoras_pensiones == pensiones.id_administradoras_pensiones %}
+                                                    selected    
+                                                {% endif %}>
+                                                    {{ pensiones.nombre_administradora }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <button type="submit" class="btn btn-soft-success">
+                                            <i class="bi bi-arrow-clockwise"></i> Actualizar
+                                        </button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#datosArchivos">
+                        Anexar Documentos
+                    </button>
+                </h2>
+                <div id="datosArchivos" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="row align-items-center mb-1">
+                                <div class="col-12 col-md-8">
+                                    <h5 class="mb-2 mb-md-0">
+                                        Nombre de Usuario:
+                                        <span class="badge bg-success">
+                                            {{ contrato.id_usuario.nombres }} {{ contrato.id_usuario.apellidos }}
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="col-12 col-md-4 text-md-end">
+                                    <span class="badge bg-danger text-center">
+                                        SOLO ARCHIVOS (.pdf)
+                                    </span>
+                                </div>
+                            </div>
+                            <form class="row mt-2" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="tipo" value="anexar_documentos">
+                                <input type="hidden" name="usuario_id" value="{{ contrato.id_usuario.id_usuario }}">
+                                <input type="hidden" name="contrato_id" value="{{ contrato.id_contratacion }}">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Entrevista</label>
+                                        <div class="input-group">
+                                        <input type="file" name="entrevista" class="form-control">    
+                                            {% for doc in documento_contrato %}
+                                                {% if doc.id_contratacion.id_contratacion == contrato.id_contratacion %}
+                                                    {% if doc.entrevista %}
+                                                        <a href="{{ doc.entrevista.url }}" target="_blank" class="btn btn-soft-success">
+                                                            <i class="bi bi-eye-fill"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Prueba Técnica</label>
+                                        <div class="input-group">
+                                            <input type="file" name="prueba" class="form-control">
+                                            {% for doc in documento_contrato %}
+                                                {% if doc.id_contratacion.id_contratacion == contrato.id_contratacion and doc.prueba_tecnica %}
+                                                    <a href="{{ doc.prueba_tecnica.url }}" target="_blank" class="btn btn-soft-success">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Remisión Medica</label>
+                                        <div class="input-group">
+                                            <input type="file" name="remision" class="form-control">
+                                            {% for doc in documento_contrato %}
+                                                {% if doc.id_contratacion.id_contratacion == contrato.id_contratacion %}
+                                                    {% if doc.remision %}
+                                                        <a href="{{ doc.remision.url }}" target="_blank" class="btn btn-soft-success">
+                                                            <i class="bi bi-eye-fill"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">ARL</label>
+                                        <div class="input-group">
+                                            <input type="file" name="arlfile" class="form-control">
+                                            {% for doc in documento_contrato %}
+                                                {% if doc.id_contratacion.id_contratacion == contrato.id_contratacion %}
+                                                    {% if doc.arl %}
+                                                        <a href="{{ doc.arl.url }}" target="_blank" class="btn btn-soft-success">
+                                                            <i class="bi bi-eye-fill"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">EPS</label>
+                                        <input type="file" name="epsfile" class="form-control">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Caja Compensación</label>
+                                        <input type="file" name="cajafile" class="form-control">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Fondo Pensión</label>
+                                        <input type="file" name="pensionfile" class="form-control">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Certificado Bancario</label>
+                                        <div class="input-group">
+                                            <input type="file" name="bancofile" class="form-control">
+                                            {% for doc in documento_contrato %}
+                                                {% if doc.id_contratacion.id_contratacion == contrato.id_contratacion %}
+                                                    {% if doc.bancos %}
+                                                        <a href="{{ doc.bancos.url }}" target="_blank" class="btn btn-soft-success">
+                                                            <i class="bi bi-eye-fill"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Resultados Medicos</label>
+                                        <input type="file" name="resultados" class="form-control">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label class="form-label">Resumen Técnico</label>
+                                        <input type="file" name="resumen" class="form-control">
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <button type="submit" class="btn btn-soft-success">
+                                            <i class="bi bi-arrow-clockwise"></i> Actualizar
+                                        </button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% if messages %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% for message in messages %}
+        Swal.fire({
+            icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+            title: "{{ message }}",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+        {% endfor %}
+    });
+</script>
+{% endif %}

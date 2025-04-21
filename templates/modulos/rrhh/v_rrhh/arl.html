@@ -1,0 +1,98 @@
+<style>
+    .card-header.custom-border {
+        border-bottom: 3px solid #2263b8; 
+        padding-bottom: 10px; 
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin-top: -10px;
+        padding: 5px;
+        color: #2263b8;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center">ARL</h2>
+    </div>
+</div>
+<button class="btn btn-soft-success toggleBtn" data-target="arl">
+    <i class="bi bi-plus"></i> Crear
+</button>
+<div class="card" id="arl" style="display: none;">
+    <div class="container my-3">
+        <form class="row g-3" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="tipo" value="arl">
+            <input type="hidden" id="idArl" name="id_arl">
+            <div class="col-md-12">
+                <label class="form-label">Nombre ARL</label>
+                <input type="text" id="nombreArl" name="nombre_arl" class="form-control" style="text-transform: uppercase;" required>
+            </div>
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-soft-success">
+                    Agregar
+                </button>
+            </div>
+        </form>
+        <br>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-centered mt-2">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for arls in arl %}
+            <tr>
+                <td>{{ arls.nombre_arl }}</td>
+                <td>
+                    <button class="btn btn-soft-info btn-sm btnArl"
+                        data-id="{{ arls.id_arl }}"
+                        data-nombre="{{ arls.nombre_arl }}">
+                        <i class="bi bi-pencil-square"></i> 
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+</div>
+{% if messages %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% for message in messages %}
+        Swal.fire({
+            icon: '{% if message.tags == "success" %}success{% else %}warning{% endif %}',
+            title: "{{ message }}",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+        });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.btnArl').forEach(button => {
+            button.addEventListener('click', function () {
+                let idArl = this.getAttribute('data-id');
+                let nombreArl = this.getAttribute('data-nombre');
+
+                document.getElementById('idArl').value = idArl;
+                document.getElementById('nombreArl').value = nombreArl;
+
+                document.getElementById('arl').style.display = 'block';
+            })
+        })
+    })
+</script>

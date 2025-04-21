@@ -1,0 +1,76 @@
+<style>
+    /* Clase personalizada para el borde inferior debajo del texto */
+    .card-header.custom-border {
+        border-bottom: 3px solid #3bc0c3; /* Color del borde y grosor */
+        padding-bottom: 10px; /* Espacio entre el texto y el borde */
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin: 0; /* Elimina márgenes del título */
+        padding: 5px;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-primary">Fechas de las cuotas de financiación</h2>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="programa" class="form-label">Programa</label>
+                    <input type="text" class="form-control" id="programa">
+                </div>
+                <div class="col-md-6">
+                    <label for="semestre" class="form-label">Semestre</label>
+                    <select class="form-select" id="semestre">
+                        <option selected>Seleccione semestre</option>
+                        <option value="1">Semestre 1</option>
+                        <option value="2">Semestre 2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="cuota_no" class="form-label">Cuota No</label>
+                    <select class="form-select" id="cuota_no">
+                        <option selected>1</option>
+                        <!-- Agregar más opciones según sea necesario -->
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="fecha_pago" class="form-label">Fecha Pago Cuota</label>
+                    <select class="form-select" id="fecha_pago">
+                        <option selected>Enero</option>
+                        <!-- Agregar más meses según sea necesario -->
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="tipo_cuota" class="form-label">Tipo de Cuota</label>
+                    <input type="text" class="form-control" id="tipo_cuota" placeholder="Nombre Cuota/ Matrícula">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-soft-primary">Aceptar</button>
+        </form>
+    </div>
+    <div class="card-footer bg-white">
+        <form class="row">
+            <div class="col-md-4">
+                <label for="programa_replicar" class="form-label">Programa</label>
+                <input type="text" class="form-control" id="programa_replicar">
+            </div>
+            <div class="col-md-4">
+                <label for="semestre_replicar" class="form-label">Semestres</label>
+                <select class="form-select" id="semestre_replicar">
+                    <option selected>Seleccione semestre</option>
+                    <option value="1">Semestre 1</option>
+                    <option value="2">Semestre 2</option>
+                </select>
+            </div>
+            <div class="col-md-4 align-self-end">
+                <button type="submit" class="btn btn-soft-primary">Replicar Fechas</button>
+            </div>
+        </form>
+    </div>
+</div>

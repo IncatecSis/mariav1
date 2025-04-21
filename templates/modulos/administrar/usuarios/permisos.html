@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    {% include 'partials/title_meta.html' %}
+    {% include 'partials/head-css.html' %}
+    <title>Gestión de Permisos</title>
+</head>
+<body>
+    <div class="wrapper">
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+        <div class="content-page">
+            <div class="content">
+                <div class="container-fluid">
+                    <h1 class="mb-4">Gestión de Permisos</h1>
+
+                    <!-- Información del Usuario -->
+                    <div class="mb-3">
+                        <p><strong>Nombre del usuario:</strong> <span class="badge bg-primary">{{ usuario.nombre }}</span></p>
+                        <p><strong>Rol del usuario:</strong> {{ usuario.roles.nombre }}</p>
+                    </div>
+                    <!-- Formulario para Gestionar Permisos -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="accordion" id="accordionPermisos">
+                            {% for vista in permisos %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ vista.id }}">
+                                    <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapse{{ vista.id }}" aria-expanded="true"
+                                        aria-controls="collapse{{ vista.id }}">
+                                        {{ vista.descripcion }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ vista.id }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+                                    aria-labelledby="heading{{ vista.id }}" data-bs-parent="#accordionPermisos">
+                                    <div class="accordion-body">
+                                        <!-- Checkbox de la Vista -->
+                                        <label class="form-check">
+                                            <input class="form-check-input vista-checkbox" type="checkbox" name="permisos"
+                                                value="{{ vista.id }}" {% if vista.id in permisos_asignados %}checked{% endif %}>
+                                            <strong>{{ vista.descripcion }}</strong>
+                                        </label>
+                    
+                                        <!-- Subvistas -->
+                                        {% for sub_vista in vista.sub_vistas %}
+                                        <div class="ms-3">
+                                            <label class="form-check">
+                                                <input class="form-check-input subvista-checkbox" type="checkbox" name="permisos"
+                                                    value="{{ sub_vista.id }}" {% if sub_vista.id in permisos_asignados %}checked{% endif %}>
+                                                {{ sub_vista.descripcion }}
+                                            </label>
+                    
+                                            <!-- Acciones -->
+                                            {% if sub_vista.acciones %}
+                                            <div class="ms-4">
+                                                {% for accion in sub_vista.acciones %}
+                                                <label class="form-check">
+                                                    <input class="form-check-input accion-checkbox" type="checkbox" name="permisos"
+                                                        value="{{ accion.id }}" {% if accion.id in permisos_asignados %}checked{% endif %}>
+                                                    {{ accion.descripcion }}
+                                                </label>
+                                                {% endfor %}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">Guardar Permisos</button>
+                        <a href="{% url 'Incatec:usuarios' %}" class="btn btn-secondary mt-3">Volver</a>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'partials/right-sidebar.html' %}
+    {% include 'partials/footer-scripts.html' %}
+    <script src="{% static 'js/app.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	{% if messages %}
+	<script>
+		{% for message in messages %}
+		Swal.fire({
+			icon: '{% if message.tags == "success" %}success{% else %}error{% endif %}',
+			title: '{{ message }}',
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000,
+			timerProgressBar: true,
+		});
+		{% endfor %}
+	</script>
+	{% endif %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Seleccionar/deseleccionar hijos cuando un padre es marcado
+            document.querySelectorAll('.vista-checkbox').forEach(function (vistaCheckbox) {
+                vistaCheckbox.addEventListener('change', function () {
+                    const isChecked = this.checked;
+                    const subVistaContainer = this.closest('.accordion-body');
+                    if (subVistaContainer) {
+                        subVistaContainer.querySelectorAll('.subvista-checkbox, .accion-checkbox').forEach(function (childCheckbox) {
+                            childCheckbox.checked = isChecked;
+                        });
+                    }
+                });
+            });
+        
+            // Actualizar estado del padre basado en hijos
+            document.querySelectorAll('.subvista-checkbox, .accion-checkbox').forEach(function (childCheckbox) {
+                childCheckbox.addEventListener('change', function () {
+                    const parentAccordionBody = this.closest('.accordion-body');
+                    if (parentAccordionBody) {
+                        const parentCheckbox = parentAccordionBody.querySelector('.vista-checkbox');
+                        if (parentCheckbox) {
+                            const allSiblings = parentAccordionBody.querySelectorAll('.subvista-checkbox, .accion-checkbox');
+                            const allChecked = Array.from(allSiblings).every(checkbox => checkbox.checked);
+                            const noneChecked = Array.from(allSiblings).every(checkbox => !checkbox.checked);
+        
+                            if (allChecked) {
+                                parentCheckbox.checked = true;
+                                parentCheckbox.indeterminate = false;
+                            } else if (noneChecked) {
+                                parentCheckbox.checked = false;
+                                parentCheckbox.indeterminate = false;
+                            } else {
+                                parentCheckbox.indeterminate = true;
+                            }
+                        }
+                    }
+                });
+            });
+        });
+        </script>        
+</body>
+</html>

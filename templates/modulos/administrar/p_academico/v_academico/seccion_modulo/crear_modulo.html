@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Registros Módulos</title>
+</head>
+<style>
+/* Clase personalizada para el borde inferior debajo del texto */
+.card-header.custom-border {
+    border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+    padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -35px; /* Elimina márgenes del título */
+    padding: 5px;
+}
+</style>
+<body>
+<div class="container mt-4">
+    <!-- Título -->
+    <div class="card">
+        <div class="card-header custom-border bg-white">
+            <h2 class="text-center text-purple">Registros de Módulos</h2>
+        </div>
+    </div>
+
+    <!-- Formulario de módulos -->
+<form>
+        <div class="card p-3 mb-4">
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label for="codigoCNO" class="form-label">Código C.N.O.</label>
+                <input type="text" class="form-control" id="codigoCNO" value="">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="nombreModuloAbreviado" class="form-label">Nombre Módulo Abreviado</label>
+                <input type="text" class="form-control" id="nombreModuloAbreviado" value="">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="nombreModulo" class="form-label">Nombre Módulo</label>
+                <input type="text" class="form-control" id="nombreModulo" value="">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="normaCNO" class="form-label">Norma Según C.N.O.</label>
+                <input type="text" class="form-control" id="normaCNO" value="">
+            </div>
+        </div>
+
+        <!-- Checkbox de requisitos -->
+        <div class="row mb-3 mt-3">
+            <div class="col-md-12">
+                <label class="form-label">Requisito</label>
+                <div class="d-flex flex-wrap">
+                    <div class="form-check me-3">
+                        <input class="form-check-input" type="checkbox" id="requisitoAcademico">
+                        <label class="form-check-label" for="requisitoAcademico">Académico</label>
+                    </div>
+                    <div class="form-check me-3">
+                        <input class="form-check-input" type="checkbox" id="requisitoFinanciero">
+                        <label class="form-check-label" for="requisitoFinanciero">Financiero</label>
+                    </div>
+                    <div class="form-check me-3">
+                        <input class="form-check-input" type="checkbox" id="moduloPracticas">
+                        <label class="form-check-label" for="moduloPracticas">Módulo de Prácticas</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón de agregar -->
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-soft-purple">
+                    <i class="bi bi-file-earmark-check-fill"></i> Crear
+                </button>
+            </div>
+        </div>
+    </div>   
+</form>
+
+</div>
+</body>
+</html>

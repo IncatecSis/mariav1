@@ -1,0 +1,97 @@
+<style>
+    /* Clase personalizada para el borde inferior debajo del texto */
+    .card-header.custom-border {
+        border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+        padding-bottom: 10px; /* Espacio entre el texto y el borde */
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin-top: -15px; /* Elimina márgenes del título */
+        padding: 5px;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-purple">Creacion de Jornadas</h2>
+    </div>
+</div>
+
+<form>
+<!-- Fila adicional con selectores -->
+<div class="row mb-3">
+    <!-- Select de Horario -->
+    <div class="col-md-5">
+        <label for="horario" class="form-label">Programa</label>
+        <select class="form-select" id="horario">
+            <option selected>------</option>
+            <option value="Seleccione">1</option>
+            <option value="Seleccione">2</option>
+            <option value="Seleccione">3</option>
+            <option value="Seleccione">4</option>
+            <!-- Agrega más opciones según sea necesario -->
+        </select>
+    </div>
+
+    <!-- Select de Jornada -->
+    <div class="col-md-5">
+        <label for="jornada" class="form-label">Semestre</label>
+        <select class="form-select" id="jornada">
+            <option selected>------</option>
+            <option value="Seleccione">1er Semestre</option>
+            <option value="Seleccione">2do Semestre</option>
+            <option value="Seleccione">3er Semestre</option>
+            <!-- Agrega más opciones según sea necesario -->
+        </select>
+    </div>
+</div>
+
+<!-- Fila adicional con selectores -->
+<div class="row mb-3">
+    <!-- Select de Horario -->
+            <div class="col-md-4">
+                <label for="horario" class="form-label">Horario</label>
+                <select class="form-select" id="horario">
+                    <option selected>------</option>
+                    <option value="horario">Lunes a Viernes</option>
+                    <option value="horario">Lunes, Miercoles y Viernes</option>
+                    <option value="horario">Martes y Jueves</option>
+                    <option value="horario">Sabado</option>
+                    <!-- Agrega más opciones según sea necesario -->
+                </select>
+            </div>
+            <!-- Botón de agregar en la misma fila -->
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-soft-purple">
+                    <i class="ri-add-circle-line"></i>
+                </button>
+            </div>
+            
+            <!-- Select de Jornada -->
+            <div class="col-md-4">
+                <label for="jornada" class="form-label">Jornada</label>
+                <select class="form-select" id="jornada">
+                    <option selected>------</option>
+                    <option value="seleccione">Mañana</option>
+                    <option value="seleccione">Tarde</option>
+                    <option value="seleccione">Virtual</option>
+                    <!-- Agrega más opciones según sea necesario -->
+                </select>
+            </div>
+            <!-- Botón de agregar en la misma fila -->
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-soft-purple">
+                    <i class="ri-add-circle-line"></i>
+                </button>
+            </div>
+            
+</div>
+        
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-soft-purple me-2">
+                Guardar
+            </button>
+        </div>
+    </div>
+</form>

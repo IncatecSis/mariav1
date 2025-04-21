@@ -1,0 +1,329 @@
+{% load static %}
+<style>
+.card-header.custom-border {
+        border-bottom: 3px solid #2263b8; 
+        padding-bottom: 10px; 
+        position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -10px;
+    padding: 5px;
+    color: #2263b8;
+}
+.accordion-button.custom-bg {
+        background-color:white;
+        transition: background-color 0.3s ease;
+    }
+.accordion-button.custom-bg:not(.collapsed) {
+        background-color: #2263b8;
+        color: white;
+    }
+.accordion-button.custom-bg.collapsed {
+    background-color: white;
+}
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center" id="titulo-principal">
+                Nuevo usuario
+        </h2>        
+    </div>
+</div> 
+<div class="container mt-3">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6 mt-2">
+                <label class="form-label">Nombres</label>
+                <input type="text" name="nombres" class="form-control" maxlength="30"
+                    required style="text-transform: uppercase;">
+            </div>
+            <div class="col-md-6 mt-2">
+                <label class="form-label">Apellidos</label>
+                <input type="text" name="apellidos" class="form-control" maxlength="30" 
+                    required style="text-transform: uppercase;">
+            </div>
+            <div class="col-md-6 mt-2">
+                <label class="form-label">Fecha de Nacimiento</label>
+                <input type="date" name="fecha_nacimiento" class="form-control" maxlength="30" required>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label class="form-label">Lugar de Nacimiento</label>
+                <select name="pais" class="form-select" required>
+                    <option value="">SELECCIONE</option>
+                    {% for pais in paises %}
+                        <option value="{{ pais.id_pais }}">{{ pais.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>
+                <select class="form-select" name="tipo_identificacion" required>
+                    <option value="">SELECCIONE</option>
+                    {% for tipo in tipos_identificacion %}
+                        <option value="{{ tipo.id_tipo_identificacion }}">{{ tipo.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="smlv" class="form-label">Nº Documento</label>
+                <input type="text" name="numero_documento" class="form-control" maxlength="10">
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="id_departamento_expedicion" class="form-label">Departamento de Expedición</label>
+                <select class="form-select departamento-select" name="id_departamento_expedicion" data-target="municipio-expedicion" required>
+                    <option value="">SELECCIONE</option>
+                    {% for dep in departamentos %}
+                        <option value="{{ dep.id_departamento }}">{{ dep.departamento }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="municipios_expedicion" class="form-label">Municipio de Expedición</label>
+                <select class="form-select municipio-select municipio-expedicion" name="id_municipio_expedicion" required>
+                    <option value="">SELECCIONE</option>
+                    {% for dep in departamentos %}
+                        {% for mun in dep.municipios.all %}
+                            <option value="{{ mun.id_municipio }}" data-departamento="{{ dep.id_departamento }}">
+                                {{ mun.municipio }}
+                            </option>
+                        {% endfor %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="departamento_nacimiento" class="form-label">Departamento de Nacimiento</label>
+                <select class="form-select departamento-select" name="id_departamento_nacimiento" data-target="municipio-nacimiento" required>
+                    <option value="">SELECCIONE</option>
+                    {% for dep in departamentos %}
+                        <option value="{{ dep.id_departamento }}">{{ dep.departamento }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="municipio_nacimiento" class="form-label">Municipio de Nacimiento</label>
+                <select class="form-select municipio-select municipio-nacimiento" name="id_municipio_nacimiento" required>
+                    <option value="">SELECCIONE</option>
+                    {% for dep in departamentos %}
+                        {% for mun in dep.municipios.all %}
+                            <option value="{{ mun.id_municipio }}" data-departamento="{{ dep.id_departamento }}">
+                                {{ mun.municipio }}
+                            </option>
+                        {% endfor %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 mt-2">
+                <label for="sexo" class="form-label">Sexo</label>
+                <select class="form-select" name="sexo" required>
+                    <option value="">SELECCIONE</option>
+                    {% for sexo in sexos %}
+                        <option value="{{ sexo.id_sexo }}">{{ sexo.sexo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3 mt-2">
+                <label for="tipo_sangre" class="form-label">Tipo de Sangre</label>
+                <select class="form-select" name="tipo_sangre" required>
+                    <option value="">SELECCIONE</option>
+                    {% for sangre in tipos_sangre %}
+                        <option value="{{ sangre.id_tipo_sangre }}">{{ sangre.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-5 mt-2">
+                <label for="estado_civil" class="form-label">Estado Civil</label>
+                <select class="form-select" name="estado_civil" required>
+                    <option value="">SELECCIONE</option>
+                    {% for estado in estados_civiles %}
+                        <option value="{{ estado.id_estado_civil }}">{{ estado.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="departamento_residencia" class="form-label">Departamento de Residencia</label>
+                <select class="form-select departamento-select" name="id_departamento_residencia" data-target="municipio-residencia" required>
+                    <option value="">SELECCIONE</option>
+                    {% for dep in departamentos %}
+                        <option value="{{ dep.id_departamento }}">{{ dep.departamento }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="municipio_residencia" class="form-label">Municipio de Residencia</label>
+                <select class="form-select municipio-select municipio-residencia" name="id_municipio_residencia"  required>
+                    <option value="">SELECCIONE</option>
+                    {% for dep in departamentos %}
+                        {% for mun in dep.municipios.all %}
+                            <option value="{{ mun.id_municipio }}" data-departamento="{{ dep.id_departamento }}">
+                                {{ mun.municipio }}
+                            </option>
+                        {% endfor %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="smlv" class="form-label">Dirección de Residencia</label>
+                <input type="text" name="direccion_residencia" class="form-control" maxlength="50"
+                    value="{{ usuario_registrado.direccion_residencia }}" style="text-transform: uppercase;" required> 
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="smlv" class="form-label">Barrio</label>
+                <input type="text" name="barrio" class="form-control" maxlength="50"
+                    value="{{ usuario_registrado.barrio }}" style="text-transform: uppercase;" required>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="municipio_expulsor" class="form-label">Municipio Expulsor</label>
+                <select name="id_municipio_expulsor" class="form-select municipio-select municipio-expulsor">
+                    <option value="" selected disabled>SELECCIONE</option>
+                    {% for dep in departamentos %}
+                        {% for mun in dep.municipios.all %}
+                            <option value="{{ mun.id_municipio }}" data-departamento="{{ dep.id_departamento }}">
+                                {{ mun.municipio }}
+                            </option>
+                        {% endfor %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="departamento_expulsor" class="form-label">Departamento Expulsor</label>
+                <select class="form-select departamento-select" name="id_departamento_expulsor" data-target="municipio-expulsor">
+                    <option value="" selected>SELECCIONE</option>
+                    {% for dep in departamentos %}
+                        <option value="{{ dep.id_departamento }}">{{ dep.departamento }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3 mt-2">
+                <label class="form-label">Celular</label>
+                <input type="text" name="celular" class="form-control" maxlength="10" placeholder="+57" required>
+            </div>
+            <div class="col-md-3 mt-2">
+                <label class="form-label">Teléfono</label>
+                <input type="text" name="telefono" class="form-control" maxlength="10" placeholder="(601)" required>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label for="smlv" class="form-label">Correo Electrónico</label>
+                <input type="email" name="correo_electronico" class="form-control" placeholder="example@gmail.com" 
+                    style="text-transform: uppercase;" required>
+            </div>
+            <div class="col-md-5 mt-2">
+                <label for="etnia" class="form-label">Etnia</label>
+                <select class="form-select" name="etnia" required>
+                    <option value="">SELECCIONE</option>
+                    {% for etnia in etnias %}
+                        <option value="{{ etnia.id_etnia }}">{{ etnia.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3 mt-2">
+                <label for="estrato" class="form-label">Estrato</label>
+                <select class="form-select" name="estrato" required>
+                    <option value="">SELECCIONE</option>
+                    {% for estrato in estratos %}
+                        <option value="{{ estrato.id_estrato }}">{{ estrato.estrato }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 mt-2">
+                <label for="zona_residencial" class="form-label">Zona Residencial</label>
+                <select class="form-select" name="zona_residencial" required>
+                    <option value="">SELECCIONE</option>
+                    {% for zona in zonas_residenciales %}
+                        <option value="{{ zona.id_zona_residencial }}">{{ zona.zona_residencial }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 mt-2">
+                <label for="eps" class="form-label">EPS</label>
+                <select class="form-select" name="eps" required>
+                    <option value="">SELECCIONE</option>
+                    {% for eps in epss %}
+                        <option value="{{ eps.id_eps }}">{{ eps.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 mt-2">
+                <label for="sisben" class="form-label">Sisben</label>
+                <select class="form-select" name="sisben" required>
+                    <option value="">SELECCIONE</option>
+                    {% for sisben in sisbenes %}
+                        <option value="{{ sisben.id_sisben }}">{{ sisben.sisben }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 mt-2">
+                <label for="tipo_discapacidad" class="form-label">Tipo de Discapacidad</label>
+                <select class="form-select" name="tipo_discapacidad">
+                    <option value="">SELECCIONE</option>
+                    {% for discapacidad in tipos_discapacidad %}
+                        <option value="{{ discapacidad.id_tipo_discapacidad }}">{{ discapacidad.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label class="form-label">Sede Asociada</label>
+                <select class="form-select" name="sedes">
+                    <option value="">SELECCIONE</option>
+                    {% for sede in sedes %}
+                        <option value="{{ sede.id_sede }}">{{ sede.nombre_sede }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mt-2">
+                <label class="form-label">Foto del Usuario</label>
+                <input type="file" name="foto_perfil" class="form-control" accept="image/*">
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-soft-success">
+                    <i class="bi bi-person-plus-fill"></i>
+                        Registrar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if messages %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% for message in messages %}
+        Swal.fire({
+            icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+            title: "{{ message }}",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const departamentoSelects = document.querySelectorAll('.departamento-select');
+
+        const filtrarMunicipios = (departamentoId, targetClass) => {
+            const municipiosSelect = document.querySelector(`.${targetClass}`);
+            Array.from(municipiosSelect.options).forEach(option => {
+                if (option.value === "" || option.getAttribute('data-departamento') === departamentoId) {
+                    option.style.display = 'block';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+            municipiosSelect.value = '';
+        };
+
+        departamentoSelects.forEach(departamentoSelect => {
+            const targetClass = departamentoSelect.getAttribute('data-target');
+            departamentoSelect.addEventListener('change', function() {
+                filtrarMunicipios(this.value, targetClass);
+            });
+        });
+    });
+</script>

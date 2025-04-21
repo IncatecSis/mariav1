@@ -1,0 +1,257 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ titulo_pagina }}</title>
+    {% include 'partials/title_meta.html' %}
+	{% include 'partials/head-css.html' %}
+    <link rel="stylesheet" href="{% static 'css/vendor/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/jquery-jvectormap-1.2.2.css' %}">
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+        <div class="content-page">
+            <div class="container">
+                {% include 'partials/page-title.html' %}
+                <div class="card p-4 mb-4 shadow-sm">
+                    <h4 class="mb-4 text-primary">Crear Nuevo Grupo</h4>
+                    <form id="grupoForm">
+                
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="modulo" class="form-label">Nombre Programa</label>
+                                <select id="modulo" name="programas" class="form-select" required>
+                                    <option value="">SELECCIONE</option>
+                                    {% for pg in programas %}
+                                        <option value="{{ pg.id_programa }}">
+                                            {{ pg.nombre_programa }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="nombre" class="form-label">Nombre del Grupo</label>
+                                <input type="text" id="nombre" name="nombre" class="form-control" required>
+                            </div>
+                
+                            <div class="col-md-6">
+                                <label for="modulo" class="form-label">Módulo Académico</label>
+                                <select id="modulo" name="modulo" class="form-select" required>
+                                    <option value="">Seleccione un módulo</option>
+                                    <option value="Matemáticas">Matemáticas</option>
+                                    <option value="Programación">Programación</option>
+                                    <option value="Base de Datos">Base de Datos</option>
+                                    <option value="Redes">Redes</option>
+                                    <option value="Diseño Gráfico">Diseño Gráfico</option>
+                                </select>
+                            </div>
+                
+                            <div class="col-md-6">
+                                <label for="profesor" class="form-label">Profesor</label>
+                                <select id="profesor" name="profesor" class="form-select" required>
+                                    <option value="">Seleccione un profesor</option>
+                                    <option value="Carlos Rodríguez">Carlos Rodríguez</option>
+                                    <option value="Ana Martínez">Ana Martínez</option>
+                                    <option value="Luis González">Luis González</option>
+                                    <option value="María Pérez">María Pérez</option>
+                                    <option value="Juan López">Juan López</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="tipo_salon" class="form-label">Tipo de Salón</label>
+                                <select id="tipo_salon" name="areas" class="form-select" required>
+                                    <option value="">SELECCIONE</option>
+                                    {% for area in areas %}
+                                        <option value="{{ area.id_area }}">{{ area.nombre_area }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="salon" class="form-label">Salón</label>
+                                <select id="salon" name="salon" class="form-select" required>
+                                    <option value="">SELECCIONE</option>
+                                    {% for ubicacion in ubicaciones %}
+                                        <option value="{{ ubicacion.id_ubicacion }}"
+                                                data-area="{{ ubicacion.id_area.id_area }}"
+                                                data-aforo="{{ ubicacion.aforo }}">
+                                            {{ ubicacion.nombre_ubicacion }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="capacidad" class="form-label">Capacidad</label>
+                                <input type="number" id="capacidad" name="capacidad" class="form-control" readonly>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Días de Clase</label>
+                                <div class="d-flex flex-wrap gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="lunes" name="dias" value="Lunes">
+                                        <label class="form-check-label" for="lunes">Lunes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="martes" name="dias" value="Martes">
+                                        <label class="form-check-label" for="martes">Martes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="miercoles" name="dias" value="Miércoles">
+                                        <label class="form-check-label" for="miercoles">Miércoles</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="jueves" name="dias" value="Jueves">
+                                        <label class="form-check-label" for="jueves">Jueves</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="viernes" name="dias" value="Viernes">
+                                        <label class="form-check-label" for="viernes">Viernes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="sabado" name="dias" value="Sábado">
+                                        <label class="form-check-label" for="sabado">Sábado</label>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="col-md-6">
+                                <label for="horaInicio" class="form-label">Hora de Inicio</label>
+                                <input type="time" id="horaInicio" name="horaInicio" class="form-control" required>
+                            </div>
+                
+                            <div class="col-md-6">
+                                <label for="horaFin" class="form-label">Hora de Fin</label>
+                                <input type="time" id="horaFin" name="horaFin" class="form-control" required>
+                            </div>
+                
+                            <div class="col-md-4">
+                                <label for="horasTotales" class="form-label">Horas Totales</label>
+                                <input type="number" id="horasTotales" name="horasTotales" class="form-control" min="1" required>
+                            </div>
+                
+                            <div class="col-md-4">
+                                <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+                                <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" required>
+                            </div>
+                
+                            <div class="col-md-4">
+                                <label for="fechaFin" class="form-label">Fecha de Fin</label>
+                                <input type="date" id="fechaFin" name="fechaFin" class="form-control" required disabled>
+                            </div>
+                
+                            <div class="col-12">
+                                <div class="alert alert-info d-none" id="resultadoCalculo">
+                                    <p><strong>Clases totales requeridas:</strong> <span id="clasesTotales">0</span></p>
+                                    <p><strong>Horas por sesión:</strong> <span id="horasPorSesion">0</span></p>
+                                </div>
+                            </div>
+                
+                            <div class="col-12 d-flex justify-content-between mt-3">
+                                <button type="button" id="calcularBtn" class="btn btn-primary">Calcular Clases</button>
+                                <button type="submit" class="btn btn-primary">Guardar Grupo</button>
+                            </div>
+                
+                            <div class="col-12">
+                                <div class="text-danger mt-3" id="errorMessage"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card p-4 shadow-sm">
+                    <h4 class="mb-3 text-primary">Grupos Creados</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-centered mb-0" id="gruposTable">
+                            <thead>
+                                <tr>
+                                    <th>Grupo</th>
+                                    <th>Módulo</th>
+                                    <th>Profesor</th>
+                                    <th>Salón</th>
+                                    <th>Fechas</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Los datos se cargarán dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        {% include 'partials/footer.html' %}
+    </div>
+    {% include 'partials/right-sidebar.html' %}
+    {% include 'partials/footer-scripts.html' %}
+    <div id="detalleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Detalle del Grupo: <span id="detalleNombre"></span></h2>
+
+            <div id="detalleInfo"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectTipoSalon = document.getElementById('tipo_salon');
+            const selectSalon = document.getElementById('salon');
+            const inputCapacidad = document.getElementById('capacidad');
+        
+            selectTipoSalon.addEventListener('change', function () {
+                const idAreaSeleccionada = this.value;
+        
+                Array.from(selectSalon.options).forEach(option => {
+                    const areaOption = option.getAttribute('data-area');
+                    option.hidden = !(option.value === "" || areaOption === idAreaSeleccionada);
+                });
+        
+                selectSalon.value = '';
+                inputCapacidad.value = '';
+            });
+        
+            selectSalon.addEventListener('change', function () {
+                const aforo = this.options[this.selectedIndex].getAttribute('data-aforo');
+                inputCapacidad.value = aforo || '';
+            });
+        });
+    </script>            
+    
+    <script src="{% static 'js/vendor/moment.min.js' %}"></script>
+    <script src="{% static 'js/vendor/daterangepicker.js' %}"></script>
+
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <script src="{% static 'js/vendor/apexcharts.min.js' %}"></script>
+
+    <script src="{% static 'js/vendor/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <script src="{% static 'js/pages/dashboard.js' %}"></script>
+
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+    <script src="{% static 'js/pop-pup.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>

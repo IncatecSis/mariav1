@@ -1,0 +1,1178 @@
+{% load static %}
+<!-- =============main.html======================== -->
+<!DOCTYPE html>
+<html lang="en">
+<!-- ============================================================== -->
+
+<head>
+	<title>| {{ titulo_pagina }}</title>
+
+	{% include 'partials/title_meta.html' %}
+
+	{% include 'partials/head-css.html' %}
+	<script src="{% static 'js/script.js?v=1.0' %}" defer></script>
+	<script src="{% static 'js/script.js' %}" defer></script>
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div class="wrapper">
+
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- Start Content-->
+                <div class="container-fluid">
+
+                    {% include 'partials/page-title.html' %}
+
+                    <div class="row">
+                        <div class="col-12">
+							<!-- Datos iniciales -->
+                            <div class="card" id="formulario_base">
+                                <div class="card-header">
+                                    <h4 class="header-title">1. Datos iniciales del estudiante</h4>
+                                </div>
+								
+                                <div class="card-body">
+									<form method="POST" enctype="multipart/form-data">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-lg-6">
+													<div class="mb-3">
+														<label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>
+														<select class="form-select" name="tipo_identificacion" required>
+															<option value="">SELECCIONE</option>
+															{% for tipo in tipos_identificacion %}
+																<option value="{{ tipo.id_tipo_identificacion }}">{{ tipo.nombre }}</option>
+															{% endfor %}
+														</select>
+													</div>
+													<div class="mb-3">
+														<label for="id_departamento_expedicion" class="form-label">Departamento de Expedición</label>
+														<select class="form-select departamento-select" name="id_departamento_expedicion" data-target="municipio-expedicion" required>
+															<option>SELECCIONE</option>
+															{% for dep in departamentos %}
+																<option value="{{ dep.id_departamento }}">
+																	{{ dep.departamento }}
+																</option>
+															{% endfor %}
+														</select>
+													</div>
+													
+													<!--Nombres-->
+													<div class="mb-3">
+														<label for="nombre" class="form-label">Nombres</label>
+														<input type="text" id="nombre" name="nombres" class="form-control" placeholder="Ingrese sus nombres" required>
+													</div>
+													
+													
+													<!--Fecha de Nacimiento-->
+													<div class="mb-3">
+														<label for="fecha-nacimiento" class="form-label">Fecha de Nacimiento</label>
+														<input class="form-control" id="fecha_nacimiento" type="date" name="fecha_nacimiento">
+													</div>
+
+													<!-- Departamento de Nacimiento -->
+													<div class="mb-3">
+														<label for="departamento_nacimiento" class="form-label">Departamento de Nacimiento</label>
+														<select class="form-select departamento-select" name="id_departamento_nacimiento" data-target="municipio-nacimiento" required>
+															<option value="">SELECCIONE</option>
+															{% for dep in departamentos %}
+																<option value="{{ dep.id_departamento }}">{{ dep.departamento }}</option>
+															{% endfor %}
+														</select>
+													</div>
+													
+													<!-- Tipo de sangre -->
+													<div class="mb-3">
+														<label for="tipo-sangre" class="form-label">Tipo de sangre</label>
+														<select class="form-select" name="tipo_sangre" required>
+															<option value="">SELECCIONE</option>
+															{% for sangre in tipos_sangre %}
+																<option value="{{ sangre.id_tipo_sangre }}">{{ sangre.nombre }}</option>
+															{% endfor %}
+														</select>
+													</div>
+													
+													<!--Recidencia - Departamento-->
+													<div class="mb-3">
+														<label for="departamento_residencia" class="form-label">Departamento de Residencia</label>
+														<select class="form-select departamento-select" name="id_departamento_residencia" data-target="municipio-residencia" required>
+															<option value="">SELECCIONE</option>
+															{% for dep in departamentos %}
+																<option value="{{ dep.id_departamento }}">{{ dep.departamento }}</option>
+															{% endfor %}
+														</select>
+													</div>
+													
+													<!--Direcion-->
+													<div class="mb-3">
+														<label for="direccion" class="form-label">Direccion Residencia</label>
+														<input type="text" name="direccion_residencia" class="form-control" placeholder="Ingrese la direcion del estudiante" required>
+													</div>
+													
+													<!--Correo-->
+													<div class="mb-3">
+														<label class="form-label">Teléfono</label>
+                										<input type="text" name="telefono" class="form-control" maxlength="10" placeholder="(601)" required>
+													</div>
+
+													<!--Correo-->
+													<div class="mb-3">
+														<label for="correo" class="form-label">Correo electronico</label>
+														<input type="email" id="correo" name="correo_electronico" class="form-control" placeholder="Ingrese el correo" required>
+													</div>
+													
+													<!-- Sisben -->
+													<div class="mb-3">
+														<label for="sisben" class="form-label">Sisben</label>
+														<select class="form-select" name="sisben" required>
+															<option value="">SELECCIONE</option>
+															{% for sisben in sisbenes %}
+																<option value="{{ sisben.id_sisben }}">{{ sisben.sisben }}</option>
+															{% endfor %}
+														</select>
+													</div>
+													
+													<!-- zona residencia -->
+													<div class="mb-3">
+														<label for="zona-residencia" class="form-label">Zona de Residencia</label>
+														<select class="form-select" name="zona_residencial" required>
+															<option value="">SELECCIONE</option>
+															{% for zona in zonas_residenciales %}
+																<option value="{{ zona.id_zona_residencial }}">{{ zona.zona_residencial }}</option>
+															{% endfor %}
+														</select>
+													</div>
+													
+													<!--Tipo Discapacidad-->
+													<div class="mb-3">
+														<label for="discapacidad" class="form-label">Discapacidad</label>
+														<select class="form-select" name="tipo_discapacidad">
+															<option value="">SELECCIONE</option>
+															{% for discapacidad in tipos_discapacidad %}
+																<option value="{{ discapacidad.id_tipo_discapacidad }}">{{ discapacidad.nombre }}</option>
+															{% endfor %}
+														</select>
+													</div>
+
+													<!--Ultimo Depto. Expulsor-->
+													<div class="mb-3">
+														<label for="departamento_expulsor" class="form-label">Departamento Expulsor</label>
+														<select class="form-select departamento-select" name="id_departamento_expulsor" data-target="municipio-expulsor">
+															<option value="" selected>SELECCIONE</option>
+															{% for dep in departamentos %}
+																<option value="{{ dep.id_departamento }}">{{ dep.departamento }}</option>
+															{% endfor %}
+														</select>
+													</div>
+													<div class="mb-3 d-none">
+														<label class="form-label">Sede Asociada</label>
+														<select class="form-select" name="sedes">
+															<option value="">SELECCIONE</option>
+															{% for sede in sedes %}
+																<option value="{{ sede.id_sede }}"
+																	{% if forloop.first %}selected{% endif %}>
+																	{{ sede.nombre_sede }}
+																</option>
+															{% endfor %}
+														</select>
+													</div>
+													<div class="py-3">
+														<button class="btn btn-primary" type="submit">
+															<i class="bi bi-person-add"></i> Guardar
+														</button>
+													</div>
+											</div>
+
+											<div class="col-lg-6">
+													<!--# documento-->
+													<div class="mb-3">
+														<label for="documento" class="form-label">Documento</label>
+														<input type="text" name="numero_documento" class="form-control" maxlength="10">
+													</div>
+
+													<!--Lugar Expedición Municipio-->
+													<div class="mb-3">
+														<label for="municipios_expedicion" class="form-label">Municipio de Expedición</label>
+														<select class="form-select municipio-select municipio-expedicion" name="id_municipio_expedicion" required>
+															<option value="">SELECCIONE</option>
+															{% for dep in departamentos %}
+																{% for mun in dep.municipios.all %}
+																	<option value="{{ mun.id_municipio }}" data-departamento="{{ dep.id_departamento }}">
+																		{{ mun.municipio }}
+																	</option>
+																{% endfor %}
+															{% endfor %}
+														</select>
+													</div>
+
+													<!--Apellidos-->
+													<div class="mb-3">
+														<label for="apellido" class="form-label">Apellidos</label>
+														<input type="text" id="apellido" name="apellidos" class="form-control" placeholder="Ingrese sus apellidos" required>
+													</div>
+
+													<!--Nacionalidad-->
+													<div class="mb-3">
+														<label class="form-label">Nacionalidad</label>
+														<select name="pais" class="form-select" required>
+															<option value="">SELECCIONE</option>
+															{% for pais in paises %}
+																<option value="{{ pais.id_pais }}">{{ pais.nombre }}</option>
+															{% endfor %}
+														</select>
+													</div>
+													
+													<!-- Municipio de Nacimiento -->
+													<div class="mb-3">
+														<label for="municipio_nacimiento" class="form-label">Municipio de Nacimiento</label>
+														<select class="form-select municipio-select municipio-nacimiento" name="id_municipio_nacimiento" required>
+															<option value="">SELECCIONE</option>
+															{% for dep in departamentos %}
+																{% for mun in dep.municipios.all %}
+																	<option value="{{ mun.id_municipio }}" data-departamento="{{ dep.id_departamento }}">
+																		{{ mun.municipio }}
+																	</option>
+																{% endfor %}
+															{% endfor %}
+														</select>
+													</div>
+
+													<!--Genero-->
+													<div class="mb-3">
+														<label for="genero" class="form-label">Género</label>
+														<select class="form-select" name="sexo" required>
+															<option value="">SELECCIONE</option>
+															{% for sexo in sexos %}
+																<option value="{{ sexo.id_sexo }}">{{ sexo.sexo }}</option>
+															{% endfor %}
+														</select>
+													</div>
+
+													<!--Lugar Expedición Municipio-->
+													<div class="mb-3">
+														<label for="municipio_residencia" class="form-label">Municipio de Residencia</label>
+														<select class="form-select municipio-select municipio-residencia" name="id_municipio_residencia"  required>
+															<option value="">SELECCIONE</option>
+															{% for dep in departamentos %}
+																{% for mun in dep.municipios.all %}
+																	<option value="{{ mun.id_municipio }}" data-departamento="{{ dep.id_departamento }}">
+																		{{ mun.municipio }}
+																	</option>
+																{% endfor %}
+															{% endfor %}
+														</select>
+													</div>
+													
+													<!-- Estado Civil -->
+													<div class="mb-3">
+														<label for="estado-civil" class="form-label">Estado Civil</label>
+														<select class="form-select" name="estado_civil" required>
+															<option value="">SELECCIONE</option>
+															{% for estado in estados_civiles %}
+																<option value="{{ estado.id_estado_civil }}">{{ estado.nombre }}</option>
+															{% endfor %}
+														</select>
+													</div>
+
+													<!-- Celular-->
+													<div class="mb-3">
+														<label for="celular" class="form-label">Celular</label>
+														<input type="text" name="celular" class="form-control" maxlength="10" placeholder="+57" required>
+													</div>
+													
+													<!--Barrio-->
+													<div class="mb-3">
+														<label for="barrio" class="form-label">Barrio</label>
+														<input type="text" id="barrio" name="barrio" class="form-control" placeholder="Ingrese el Barrio" required>
+													</div>
+													
+													<!--Estrato-->
+													<div class="mb-3">
+														<label for="estrato" class="form-label">Estrato</label>
+														<select class="form-select" name="estrato" required>
+															<option value="">SELECCIONE</option>
+															{% for estrato in estratos %}
+																<option value="{{ estrato.id_estrato }}">{{ estrato.estrato }}</option>
+															{% endfor %}
+														</select>
+													</div>
+
+													<!--Etnia-->
+													<div class="mb-3">
+														<label for="etnia" class="form-label">Etnia</label>
+														<select class="form-select" name="etnia" required>
+															<option value="">SELECCIONE</option>
+															{% for etnia in etnias %}
+																<option value="{{ etnia.id_etnia }}">{{ etnia.nombre }}</option>
+															{% endfor %}
+														</select>
+													</div>
+
+													<!--EPS-->
+													<div class="mb-3">
+														<label for="eps" class="form-label">EPS</label>
+														<select class="form-select" name="eps" required>
+															<option value="">SELECCIONE</option>
+															{% for eps in epss %}
+																<option value="{{ eps.id_eps }}">{{ eps.nombre }}</option>
+															{% endfor %}
+														</select>
+													</div>
+
+													<!--Municipio Expulsor-->
+													<div class="mb-3">
+														<label for="municipio_expulsor" class="form-label">Municipio Expulsor</label>
+														<select name="id_municipio_expulsor" class="form-select municipio-select municipio-expulsor">
+															<option value="" selected disabled>SELECCIONE</option>
+															{% for dep in departamentos %}
+																{% for mun in dep.municipios.all %}
+																	<option value="{{ mun.id_municipio }}" data-departamento="{{ dep.id_departamento }}">
+																		{{ mun.municipio }}
+																	</option>
+																{% endfor %}
+															{% endfor %}
+														</select>
+													</div>
+													
+													<div class="mb-3">
+														<label class="form-label">Foto del Estudiante</label>
+														<input type="file" name="foto_perfil" class="form-control" accept="image/*">
+													</div>
+											</div>
+										</div>
+                                    </form>
+                                </div>
+                            </div>
+							
+							<!-- Datos adicionales -->
+                            <div class="card" id="formulario_adicional">
+                                <div class="card-header">
+                                    <h4 class="header-title">2. Datos adicionales del estudiante</h4>
+                                </div>
+								
+                                <div class="card-body">
+									<form method="POST">
+                                    	<div class="row">
+											{% csrf_token %}
+                                        	<div class="col-lg-6">
+												<div class="mb-3">
+													<label class="form-label">Usuario registrado</label>
+													<input type="text" class="form-control" value="{{ nombres_usuario }}" readonly>
+													<input type="hidden" name="usuario_id" id="usuario_id" value="{{ id_usuario }}">
+												</div>
+												<!-- Ocupación -->
+												<div class="mb-3">
+													<label for="ocupacion" class="form-label">Ocupación</label>
+													<select class="form-select" id="ocupacion" name="ocupacion">
+														<option value="">Seleccione su ocupación</option>
+														<option value="empleado">Empleado/a</option>
+														<option value="desempleado">Desempleado/a</option>
+														<option value="estudiante_bachillerato">Estudiante de Bachillerato</option>
+														<option value="estudiante_educacion_superior">Estudiante de Educación Superior</option>
+													</select>
+												</div>
+												
+												<!--Cargo que Ocupa-->
+												<div class="mb-3">
+													<label for="cargo" class="form-label">Cargo</label>
+													<input type="text" id="cargo" name="cargo" class="form-control" placeholder="Ingrese el cargo que ocupa" required>
+												</div>
+                                        	</div> <!-- end col -->
+
+                                        	<div class="col-lg-6">
+													<!--Empresa Donde Labora-->
+												<div class="mb-3">
+													<label for="empresa_labora" class="form-label"><strong></strong>Empresa</label>
+													<input type="text" id="empresa_labora" name="empresa_labora" class="form-control" placeholder="Ingrese la empresa donde labora" required>
+												</div>
+												
+												<!-- Celular-empresa-->
+                                                <div class="mb-3">
+													<label for="celular-empresa" class="form-label">Celular de la empresa</label>
+													<input type="text" id="celular-empresa" class="form-control" maxlength="10" inputmode="numeric" placeholder="Ingrese el Teléfono de Ubicación">
+												</div>
+												<div class="py-3 text-end">
+													<button class="btn btn-soft-primary" type="submit">
+														<i class="bi bi-person-add"></i> Guardar
+													</button>
+												</div>																					
+											</div>
+										</div>
+									</form>
+									
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Tipo</th>
+												<th>Enfoque/Programa/Carrera</th>
+												<th>Lugar/Institución</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<input type="checkbox" class="form-check-input" id="bachillerato" name="bachillerato">
+													<label class="form-check-label" for="bachillerato">Bachillerato</label>
+												</td>
+												<td>
+													<input type="text" id="enfasis" name="enfasis" class="form-control" placeholder="Énfasis">
+												</td>
+												<td><input type="text" id="lugar_bachillerato" name="lugar_bachillerato" class="form-control" placeholder="Lugar/Institución"></td>
+											</tr>
+											<tr>
+												<td>
+													<input type="checkbox" class="form-check-input" id="tecnico" name="tecnico">
+													<label for="tecnico" class="form-check-label">Técnico</label>
+												</td>
+												<td><input type="text" id="programa" name="programa" class="form-control" placeholder="Programa"></td>
+												<td><input type="text" id="lugar_tecnico" name="lugar_tecnico" class="form-control" placeholder="Lugar/Institución"></td>
+											</tr>
+											<tr>
+												<td>
+													<input type="checkbox" class="form-check-input" id="universitarios" name="universitarios">
+													<label for="universitarios" class="form-check-label">Universitarios</label>
+												</td>
+												<td><input type="text" id="carrera" name="carrera" class="form-control" placeholder="Carrera"></td>
+												<td><input type="text" id="lugar_universitarios" name="lugar_universitarios" class="form-control" placeholder="Lugar/Institución"></td>
+											</tr>
+											<tr>
+												<td>
+													<input type="checkbox" class="form-check-input" id="otros" name="otros">
+													<label for="otros" class="form-check-label">Otros (Nivel de Formación)</label>
+												</td>
+												<td><input type="text" id="cual" name="cual" class="form-control" placeholder="¿Cuál?"></td>
+												<td><input type="text" id="lugar_otros" name="lugar_otros" class="form-control" placeholder="Lugar/Institución"></td>
+											</tr>
+										</tbody>
+									</table>
+									
+                                    <!-- end row-->
+                                </div>
+                            </div>
+							<!-- end Datos iniciales -->
+							
+							<!-- Orden de Matricula arreglando-->
+							<div class="card p-0">
+								<div class="card-header">
+                                    <h4 class="header-title">3. Orden de Matricula</h4>
+									
+									<!--
+                                    <p class="text-muted mb-0">
+                                        Most common form control, text-based input fields. Includes support for all
+                                        HTML5 types: <code>text</code>, <code>password</code>, <code>datetime</code>,
+                                        <code>datetime-local</code>, <code>date</code>, <code>month</code>,
+                                        <code>time</code>, <code>week</code>, <code>number</code>, <code>email</code>,
+                                        <code>url</code>, <code>search</code>, <code>tel</code>, and <code>color</code>.
+                                    </p>
+									-->
+									
+                                </div>
+                                <div class="row">
+									<div class="col-sm-12">
+										<div class="card p-0">
+											<div class="card-body p-0">
+												<div class="profile-content">
+													<ul class="nav nav-underline nav-justified gap-0">
+														<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab"
+																data-bs-target="#aboutme" type="button" role="tab"
+																aria-controls="home" aria-selected="true" href="#aboutme">Programa</a>
+														</li>
+														<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+																data-bs-target="#user-activities" type="button" role="tab"
+																aria-controls="home" aria-selected="true"
+																href="#user-activities">Cursos</a></li>
+														<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+																data-bs-target="#edit-profile" type="button" role="tab"
+																aria-controls="home" aria-selected="true"
+																href="#edit-profile">Diplomados</a></li>
+													</ul>
+
+													<div class="tab-content m-0 p-4">
+														<div class="tab-pane active" id="aboutme" role="tabpanel"
+															aria-labelledby="home-tab" tabindex="0">
+															
+															<div class="row">
+																<div class="col-lg-6">
+																	<form>
+																		<!--Programas-->
+																		<div class="mb-3">
+																			<label for="programa-select" class="form-label">Programa</label>
+																			<select class="form-select" id="programa-select">
+																				<option value="">Seleccione un programa</option>
+																				<option value="auxiliar_almacen_bodega">Auxiliar de Almacén y Bodega</option>
+																				<option value="auxiliar_seguridad_laboral">Auxiliar en Seguridad Laboral</option>
+																				<option value="auxiliar_administrativo">Auxiliar Administrativo</option>
+																				<option value="auxiliar_administrativo_salud">Auxiliar Administrativo en Salud</option>
+																				<option value="auxiliar_contable_financiero">Auxiliar Contable y Financiero</option>
+																				<option value="auxiliar_bodega">Auxiliar de Bodega</option>
+																				<option value="auxiliar_talento_humano">Auxiliar de Talento Humano</option>
+																				<option value="auxiliar_archivo">Auxiliar en Archivo</option>
+																				<option value="auxiliar_artes_graficas">Auxiliar en Artes Gráficas</option>
+																				<option value="auxiliar_caja_servicios">Auxiliar en Caja y Servicios</option>
+																				<option value="auxiliar_enfermeria">Auxiliar en Enfermería</option>
+																				<option value="auxiliar_recursos_humanos">Auxiliar en Recursos Humanos</option>
+																				<option value="auxiliar_salud_oral">Auxiliar en Salud Oral</option>
+																				<option value="auxiliar_servicios_farmaceuticos">Auxiliar en Servicios Farmacéuticos</option>
+																				<option value="auxiliar_sistemas_informaticos">Auxiliar en Sistemas Informáticos</option>
+																			</select>
+																		</div>
+
+																		<!--Jornada-->
+																		<div class="mb-3">
+																			<label for="jornada" class="form-label">Jornada</label>
+																			<select class="form-select" id="jornada">
+																				<option value="">Seleccione la jornada</option>
+																				<option value="lunes_vienes_mañana">Lunes a Viernes - Mañana</option>
+																				<option value="lunes_vienes_tarde">Lunes a Viernes - Tarde</option>
+																				<option value="sabados_mañana_tarde">Sábados - Mañana y Tarde</option>
+																				<option value="lunes_vienes_noche">Lunes a Viernes - Noche</option>
+																			</select>
+																		</div>
+
+																		<!--Grupo-->
+																		<div class="mb-3">
+																			<label for="jornada" class="form-label">Grupo</label>
+																			<select class="form-select" id="jornada">
+																				<option value="">Seleccione</option>
+																				<option value="grupo-1">Grupo 1</option>
+																				<option value="grupo-2">Grupo 2</option>
+																				<option value="grupo-3">Grupo 3</option>
+																				<option value="grupo-4">Grupo 4</option>
+																			</select>
+																		</div>
+																		
+																		<!--Costo de programa-->
+																		<div class="mb-3">
+																			<label for="jornada" class="form-label">Costo del Programa</label>
+																			<select class="form-select" id="jornada">
+																				<option value=""></option>
+																				<option value="grupo-1">$ 1.324.000</option>
+																			</select>
+																		</div>
+																	</form>
+																</div> <!-- end col -->
+
+
+																<div class="col-lg-6">
+																	<form>
+
+																		<!--Semestre-->
+																		<div class="mb-3">
+																			<label for="semestre" class="form-label">Semestre</label>
+																			<select class="form-select" id="semestre">
+																				<option value="">Seleccione el semestre</option>
+																				<option value="1">1er Semestre</option>
+																				<option value="2">2do Semestre</option>
+																				<option value="3">3er Semestre</option>
+																				<option value="4">4to Semestre</option>
+																			</select>
+																		</div>
+
+																		<!-- Tipo de Matricula -->
+																		<div class="mb-3">
+																			<label for="tipo-matricula" class="form-label">Tipo de Matricula</label>
+																			<select class="form-select" id="tipo-matricula">
+																				<option value="">Seleccione una opción</option>
+																				<option value="por_primera_vez_nuevo">Por primera vez (Nuevo)</option>
+																				<option value="reingreso_antiguo">Reingreso (Antiguo)</option>
+																				<option value="transferencia_externa">Transferencia Externa</option>
+																				<option value="transferencia_interna_reintegro">Transferencia Interna (Reintegro)</option>
+																				<option value="homologacion">Homologación</option>
+																				<option value="reintegro">Reintegro</option>
+																				<option value="por_primera_vez_cursos">Por primera vez (Cursos - Diplomados - Seminarios)</option>
+																			</select>
+																		</div>
+
+																		<!--Población victima del conflicto-->
+																		<div class="mb-3">
+																			<label for="etnia" class="form-label">Corregir Periodos</label>
+																			<select class="form-select" id="etnia">
+																				<option value="2023-a">2023 - A</option>
+																				<option value="2023-b">2023 - B</option>
+																				<option value="2024-a">2024 - A</option>
+																				<option value="2024-b">2024 - B</option>
+																			</select>
+																		</div>
+																	</form>
+																</div> <!-- end col -->
+																
+																<!-- Lista de Matricula - Programas -->
+															<div class="card-body">
+																	<div class="table-responsive-sm">
+																		<table class="table table-striped table-centered mb-0">
+																			<thead>
+																				<tr>
+																					<th>Matricula</th>
+																					<th>Semestre</th>
+																					<th>Financiación</th>
+																					<th>Academica</th>
+																					<th>Jornada</th>
+																					<th>Cartera</th>
+																					<th>Actualización</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<tr>
+																					<td class="table-user">
+																						<img src="{% static 'images/users/avatar-2.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																						Enfermeria
+																					</td>
+																					<td>1er  Semestre</td>
+																					<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																					<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																					<td>AC336 508 2157</td>
+																					<td><span class="badge bg-primary">$ 1.245.145</span></td>
+																					<td>
+																						<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																					</td>
+																				</tr>
+																				<tr>
+																					<td class="table-user">
+																						<img src="{% static 'images/users/avatar-3.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																						Enfermeria
+																					</td>
+																					<td>2er  Semestre</td>
+																					<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																					<td><input type="checkbox" class="form-check-input" id="customCheck6" disabled=""></td>
+																					<td>AC336 508 2157</td>
+																					<td><span class="badge bg-primary">$ 1.245.145</span></td>
+																					<td>
+																						<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div> 
+																<!-- end table-responsive-->
+																</div>
+															<!-- end Lista de Matricula - Programas-->
+																
+															</div> <!-- end profile-desk -->
+														</div> <!-- about-me -->
+
+														<!-- Activities -->
+														<div id="user-activities" class="tab-pane">
+															<div class="row">
+																<div class="col-lg-6">
+																	<form>
+																		<!--Cursos-->
+																		<div class="mb-3">
+																			<label for="curso-select" class="form-label">Curso</label>
+																			<select class="form-select" id="curso-select">
+																				<option value="">Seleccione un curso</option>
+																				<option value="auxiliar_almacen_bodega">Auxiliar de Almacén y Bodega</option>
+																				<option value="auxiliar_seguridad_laboral">Auxiliar en Seguridad Laboral</option>
+																				<option value="auxiliar_administrativo">Auxiliar Administrativo</option>
+																				<option value="auxiliar_administrativo_salud">Auxiliar Administrativo en Salud</option>
+																				<option value="auxiliar_contable_financiero">Auxiliar Contable y Financiero</option>
+																				<option value="auxiliar_bodega">Auxiliar de Bodega</option>
+																				<option value="auxiliar_talento_humano">Auxiliar de Talento Humano</option>
+																				<option value="auxiliar_archivo">Auxiliar en Archivo</option>
+																				<option value="auxiliar_artes_graficas">Auxiliar en Artes Gráficas</option>
+																				<option value="auxiliar_caja_servicios">Auxiliar en Caja y Servicios</option>
+																				<option value="auxiliar_enfermeria">Auxiliar en Enfermería</option>
+																				<option value="auxiliar_recursos_humanos">Auxiliar en Recursos Humanos</option>
+																				<option value="auxiliar_salud_oral">Auxiliar en Salud Oral</option>
+																				<option value="auxiliar_servicios_farmaceuticos">Auxiliar en Servicios Farmacéuticos</option>
+																				<option value="auxiliar_sistemas_informaticos">Auxiliar en Sistemas Informáticos</option>
+																			</select>
+																		</div>
+
+																		<!--Jornada-->
+																		<div class="mb-3">
+																			<label for="jornada" class="form-label">Jornada</label>
+																			<select class="form-select" id="jornada">
+																				<option value="">Seleccione la jornada</option>
+																				<option value="lunes_vienes_mañana">Lunes a Viernes - Mañana</option>
+																				<option value="lunes_vienes_tarde">Lunes a Viernes - Tarde</option>
+																				<option value="sabados_mañana_tarde">Sábados - Mañana y Tarde</option>
+																				<option value="lunes_vienes_noche">Lunes a Viernes - Noche</option>
+																			</select>
+																		</div>
+
+																		<!--Grupo-->
+																		<div class="mb-3">
+																			<label for="jornada" class="form-label">Grupo</label>
+																			<select class="form-select" id="jornada">
+																				<option value="">Seleccione</option>
+																				<option value="grupo-1">Grupo 1</option>
+																				<option value="grupo-2">Grupo 2</option>
+																				<option value="grupo-3">Grupo 3</option>
+																				<option value="grupo-4">Grupo 4</option>
+																			</select>
+																		</div>
+																	</form>
+																</div> <!-- end col -->
+
+
+																<div class="col-lg-6">
+																	<form>
+
+																		<!--Semestre-->
+																		<div class="mb-3">
+																			<label for="ciclo" class="form-label">Ciclos</label>
+																			<select class="form-select" id="ciclo">
+																				<option value="">Seleccione el ciclo</option>
+																				<option value="1">Ciclo 1</option>
+																				<option value="2">Ciclo 2</option>
+																				<option value="3">Ciclo 3</option>
+																				<option value="4">Ciclo 4</option>
+																			</select>
+																		</div>
+
+																		<!-- Tipo de Matricula -->
+																		<div class="mb-3">
+																			<label for="tipo-matricula" class="form-label">Tipo de Matricula</label>
+																			<select class="form-select" id="tipo-matricula">
+																				<option value="">Seleccione una opción</option>
+																				<option value="por_primera_vez_nuevo">Por primera vez (Nuevo)</option>
+																				<option value="reingreso_antiguo">Reingreso (Antiguo)</option>
+																				<option value="transferencia_externa">Transferencia Externa</option>
+																				<option value="transferencia_interna_reintegro">Transferencia Interna (Reintegro)</option>
+																				<option value="homologacion">Homologación</option>
+																				<option value="reintegro">Reintegro</option>
+																				<option value="por_primera_vez_cursos">Por primera vez (Cursos - Diplomados - Seminarios)</option>
+																			</select>
+																		</div>
+
+																		<!--Población victima del conflicto-->
+																		<div class="mb-3">
+																			<label for="etnia" class="form-label">Corregir Periodos</label>
+																			<select class="form-select" id="etnia">
+																				<option value="2023-a">2023 - A</option>
+																				<option value="2023-b">2023 - B</option>
+																				<option value="2024-a">2024 - A</option>
+																				<option value="2024-b">2024 - B</option>
+																			</select>
+																		</div>
+
+
+																	</form>
+																</div> <!-- end col -->
+																
+																<!-- Lista de Matricula - Cursos -->
+																<div class="card-body">
+																		<div class="table-responsive-sm">
+																			<table class="table table-striped table-centered mb-0">
+																				<thead>
+																					<tr>
+																						<th>Matricula</th>
+																						<th>Ciclos</th>
+																						<th>Financiación</th>
+																						<th>Academica</th>
+																						<th>Jornada</th>
+																						<th>Cartera</th>
+																						<th>Actualización</th>
+																					</tr>
+																				</thead>
+																				<tbody>
+																					<tr>
+																						<td class="table-user">
+																							<img src="{% static 'images/users/avatar-2.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																							Inyectologia
+																						</td>
+																						<td>Ciclo 1</td>
+																						<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																						<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																						<td>Martes - Noche</td>
+																						<td><span class="badge bg-primary">$ 1.245.145</span></td>
+																						<td>
+																							<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																						</td>
+																					</tr>
+																					<tr>
+																						<td class="table-user">
+																							<img src="{% static 'images/users/avatar-3.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																							UCI
+																						</td>
+																						<td>Ciclo 1</td>
+																						<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																						<td><input type="checkbox" class="form-check-input" id="customCheck6" disabled=""></td>
+																						<td>Jueves Tarde</td>
+																						<td><span class="badge bg-primary">$ 1.245.145</span></td>
+																						<td>
+																							<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																						</td>
+																					</tr>
+																				</tbody>
+																			</table>
+																		</div> 
+																	<!-- end table-responsive-->
+																	</div>
+																<!-- end Lista de Matricula - Cursos-->
+																
+															</div>
+														</div>
+
+														<!-- settings -->
+														<div id="edit-profile" class="tab-pane">
+															<div class="user-profile-content">
+																<div class="row">
+																	<div class="col-lg-6">
+																		<form>
+																			<!--Diplomados-->
+																			<div class="mb-3">
+																				<label for="diplomado-select" class="form-label">Diplomado</label>
+																				<select class="form-select" id="diplomado-select">
+																					<option value="">Seleccione un diplomados</option>
+																					<option value="auxiliar_almacen_bodega">Auxiliar de Almacén y Bodega</option>
+																					<option value="auxiliar_seguridad_laboral">Auxiliar en Seguridad Laboral</option>
+																					<option value="auxiliar_administrativo">Auxiliar Administrativo</option>
+																					<option value="auxiliar_administrativo_salud">Auxiliar Administrativo en Salud</option>
+																					<option value="auxiliar_contable_financiero">Auxiliar Contable y Financiero</option>
+																					<option value="auxiliar_bodega">Auxiliar de Bodega</option>
+																					<option value="auxiliar_talento_humano">Auxiliar de Talento Humano</option>
+																					<option value="auxiliar_archivo">Auxiliar en Archivo</option>
+																					<option value="auxiliar_artes_graficas">Auxiliar en Artes Gráficas</option>
+																					<option value="auxiliar_caja_servicios">Auxiliar en Caja y Servicios</option>
+																					<option value="auxiliar_enfermeria">Auxiliar en Enfermería</option>
+																					<option value="auxiliar_recursos_humanos">Auxiliar en Recursos Humanos</option>
+																					<option value="auxiliar_salud_oral">Auxiliar en Salud Oral</option>
+																					<option value="auxiliar_servicios_farmaceuticos">Auxiliar en Servicios Farmacéuticos</option>
+																					<option value="auxiliar_sistemas_informaticos">Auxiliar en Sistemas Informáticos</option>
+																				</select>
+																			</div>
+
+																			<!--Jornada-->
+																			<div class="mb-3">
+																				<label for="jornada" class="form-label">Jornada</label>
+																				<select class="form-select" id="jornada">
+																					<option value="">Seleccione la jornada</option>
+																					<option value="lunes_vienes_mañana">Lunes a Viernes - Mañana</option>
+																					<option value="lunes_vienes_tarde">Lunes a Viernes - Tarde</option>
+																					<option value="sabados_mañana_tarde">Sábados - Mañana y Tarde</option>
+																					<option value="lunes_vienes_noche">Lunes a Viernes - Noche</option>
+																				</select>
+																			</div>
+
+																			<!--Grupo-->
+																			<div class="mb-3">
+																				<label for="jornada" class="form-label">Grupo</label>
+																				<select class="form-select" id="jornada">
+																					<option value="">Seleccione</option>
+																					<option value="grupo-1">Grupo 1</option>
+																					<option value="grupo-2">Grupo 2</option>
+																					<option value="grupo-3">Grupo 3</option>
+																					<option value="grupo-4">Grupo 4</option>
+																				</select>
+																			</div>
+																		</form>
+																	</div> <!-- end col -->
+
+
+																	<div class="col-lg-6">
+																		<form>
+
+																			<!--Semestre-->
+																			<div class="mb-3">
+																				<label for="semestre" class="form-label">Semestre o Ciclos</label>
+																				<select class="form-select" id="semestre">
+																					<option value="">Seleccione el semestre</option>
+																					<option value="semestre-1">1er Semestre</option>
+																					<option value="semestre-2">2do Semestre</option>
+																					<option value="ciclo-1">Ciclo 1</option>
+																					<option value="ciclo-1">Ciclo 2</option>
+																				</select>
+																			</div>
+
+																			<!-- Tipo de Matricula -->
+																			<div class="mb-3">
+																				<label for="tipo-matricula" class="form-label">Tipo de Matricula</label>
+																				<select class="form-select" id="tipo-matricula">
+																					<option value="">Seleccione una opción</option>
+																					<option value="por_primera_vez_nuevo">Por primera vez (Nuevo)</option>
+																					<option value="reingreso_antiguo">Reingreso (Antiguo)</option>
+																					<option value="transferencia_externa">Transferencia Externa</option>
+																					<option value="transferencia_interna_reintegro">Transferencia Interna (Reintegro)</option>
+																					<option value="homologacion">Homologación</option>
+																					<option value="reintegro">Reintegro</option>
+																					<option value="por_primera_vez_cursos">Por primera vez (Cursos - Diplomados - Seminarios)</option>
+																				</select>
+																			</div>
+
+																			<!--Población victima del conflicto-->
+																			<div class="mb-3">
+																				<label for="etnia" class="form-label">Corregir Periodos</label>
+																				<select class="form-select" id="etnia">
+																					<option value="2023-a">2023 - A</option>
+																					<option value="2023-b">2023 - B</option>
+																					<option value="2024-a">2024 - A</option>
+																					<option value="2024-b">2024 - B</option>
+																				</select>
+																			</div>
+																		</form>
+																	</div> <!-- end col -->
+																	
+																	<!-- Lista de Matricula - Diplomados -->
+																	<div class="card-body">
+																			<div class="table-responsive-sm">
+																				<table class="table table-striped table-centered mb-0">
+																					<thead>
+																						<tr>
+																							<th>Matricula</th>
+																							<th>Semestre o Ciclos</th>
+																							<th>Financiación</th>
+																							<th>Academica</th>
+																							<th>Jornada</th>
+																							<th>Cartera</th>
+																							<th>Actualización</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						<tr>
+																							<td class="table-user">
+																								<img src="{% static 'images/users/avatar-2.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																								Inyectologia
+																							</td>
+																							<td>Ciclo 1</td>
+																							<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																							<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																							<td>Martes - Noche</td>
+																							<td><span class="badge bg-primary">$ 1.245.145</span></td>
+																							<td>
+																								<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																							</td>
+																						</tr>
+																						<tr>
+																							<td class="table-user">
+																								<img src="{% static 'images/users/avatar-3.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																								UCI
+																							</td>
+																							<td>Ciclo 1</td>
+																							<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																							<td><input type="checkbox" class="form-check-input" id="customCheck6" disabled=""></td>
+																							<td>Jueves Tarde</td>
+																							<td><span class="badge bg-primary">$ 1.245.145</span></td>
+																							<td>
+																								<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																							</td>
+																						</tr>
+																					</tbody>
+																				</table>
+																			</div> 
+																		<!-- end table-responsive-->
+																		</div>
+																	<!-- end Lista de Matricula - Diplomados-->
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+
+										</div>
+							<!-- end Orden de Matricula -->
+							
+							<!-- Mercadeo -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="header-title">4. Datos Mercadeo</h4>
+									
+									<!--
+                                    <p class="text-muted mb-0">
+                                        Most common form control, text-based input fields. Includes support for all
+                                        HTML5 types: <code>text</code>, <code>password</code>, <code>datetime</code>,
+                                        <code>datetime-local</code>, <code>date</code>, <code>month</code>,
+                                        <code>time</code>, <code>week</code>, <code>number</code>, <code>email</code>,
+                                        <code>url</code>, <code>search</code>, <code>tel</code>, and <code>color</code>.
+                                    </p>
+									-->
+									
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+											
+											<div class="row">
+												<div class="col-lg-6">
+													<form>
+														<div class="mt-2">
+															<div class="form-check form-radio-success mb-2">
+																<input type="radio" id="referido" name="referido"
+																	class="form-check-input">
+																<label class="form-check-label" for="referido">Referido</label>
+															</div>
+															<div class="form-check form-radio-info mb-2">
+																<input type="radio" id="volante" name="volante"
+																	class="form-check-input">
+																<label class="form-check-label" for="volante">Volante</label>
+															</div>
+															<div class="form-check form-radio-success mb-2">
+																<input type="radio" id="facebook" name="facebook"
+																	class="form-check-input">
+																<label class="form-check-label" for="facebook">Facebook</label>
+															</div>
+															<div class="form-check form-radio-info mb-2">
+																<input type="radio" id="instagram" name="instagram"
+																	class="form-check-input">
+																<label class="form-check-label" for="instagram">Instagram</label>
+															</div>
+															<div class="form-check form-radio-secondary mb-2">
+															<input type="radio" id="google" name="google"
+																class="form-check-input">
+															<label class="form-check-label" for="google">Google</label>
+															</div>
+													</div>
+
+													</form>
+												</div> <!-- end col -->
+
+												<div class="col-lg-6">
+												<form>
+													<div class="mt-2">
+														<div class="form-check form-radio-warning mb-2">
+															<input type="radio" id="fundacion" name="fundacion"
+																class="form-check-input">
+															<label class="form-check-label" for="fundacion">Fundación</label>
+														</div>
+														<div class="form-check form-radio-danger mb-2">
+															<input type="radio" id="visita-colegios" name="visita-colegios"
+																class="form-check-input">
+															<label class="form-check-label" for="visita-colegios">Visita a Colegios</label>
+														</div>
+
+
+													</div>
+													
+												</form>	
+												</div> <!-- end col -->
+											</div>
+												
+												<!-- Informacion Adicional: -->
+                                         		<div class="mb-3">
+                                                    <label for="tipo-sangre" class="form-label">Informacion Adicional:</label>
+                                                    <select class="form-select" id="tipo-sangre">
+                                                        <option value=""></option>
+														<option value="n/a"></option>
+														<option value="alumno">Recomendación de otros alumno</option>
+														<option value="docente">Recomendación docente</option>
+														<option value="promotor">Promotor:</option>
+                                                    </select>
+                                                </div>
+											
+                                        </div> <!-- end col -->
+
+                                        <div class="col-lg-6">
+                                            <form>
+												
+												<!--Nombre - referido-->
+												<div class="mb-3">
+													<label for="nombre-referido" class="form-label">Nombre Referido</label>
+													<input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ingrese los nombres" required>
+												</div>	
+												
+												<!-- Celular-->
+                                                <div class="mb-3">
+													<label for="celular-referido" class="form-label">Celular Referido</label>
+													<input type="text" id="celular-referido" class="form-control" maxlength="10" inputmode="numeric" placeholder="Ingrese el celular del referido">
+												</div>																			
+												
+												<!--otro dato-->
+												<div class="mb-3">
+													<label for="nombre-recomendado" class="form-label">Nombre Recomendado</label>
+													<input type="text" id="nombre-recomendado" name="nombre-recomendado" class="form-control" placeholder="Ingrese el nombre" required>
+												</div>	
+
+												
+                                            </form>
+                                        </div> <!-- end col -->
+                                    </div>
+									
+									
+										
+										
+
+                                    <!-- end row-->
+                                </div> <!-- end card-body -->
+                            </div>
+							<!-- end Datos iniciales -->
+							
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+
+
+                </div> <!-- container -->
+
+            </div> <!-- content -->
+
+            
+			{% include 'partials/footer.html' %}
+        </div>
+
+        <!-- =======================================================<strong></strong>======= -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- END wrapper -->
+
+    {% include 'partials/right-sidebar.html' %}
+
+    {% include 'partials/footer-scripts.html' %}
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+	<!-- Enlace al archivo JavaScript externo -->
+    <script src="{% static 'js/script.js' %}" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	{% if messages %}
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			{% for message in messages %}
+			Swal.fire({
+				icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+				title: "{{ message }}",
+				toast: true,
+				position: "top-end",
+				showConfirmButton: false,
+				timer: 3000,
+				timerProgressBar: true,
+			});
+			{% endfor %}
+		});
+	</script>
+	{% endif %}
+	
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const departamentoSelects = document.querySelectorAll('.departamento-select');
+	
+			const filtrarMunicipios = (departamentoId, targetClass) => {
+				const municipiosSelect = document.querySelector(`.${targetClass}`);
+				Array.from(municipiosSelect.options).forEach(option => {
+					if (option.value === "" || option.getAttribute('data-departamento') === departamentoId) {
+						option.style.display = 'block';
+					} else {
+						option.style.display = 'none';
+					}
+				});
+				municipiosSelect.value = '';
+			};
+	
+			departamentoSelects.forEach(departamentoSelect => {
+				const targetClass = departamentoSelect.getAttribute('data-target');
+				departamentoSelect.addEventListener('change', function() {
+					filtrarMunicipios(this.value, targetClass);
+				});
+			});
+		});
+	</script>
+</body>
+</html>

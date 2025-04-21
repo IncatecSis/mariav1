@@ -1,0 +1,36 @@
+<!-- Asignar Costos a Programa -->
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-primary">Asignar Costos a Programa</h2>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="programa_costos" class="form-label">Programa</label>
+                    <select class="form-select" id="programa_costos">
+                        <option selected>Seleccione programa</option>
+                        <!-- Agregar más opciones según sea necesario -->
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="semestre_costos" class="form-label">Semestre</label>
+                    <select class="form-select" id="semestre_costos">
+                        <option selected>Seleccione semestre</option>
+                        <option value="1">Semestre 1</option>
+                        <option value="2">Semestre 2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3 align-items-end">
+                <div class="col-md-8">
+                    <label for="costo_matricula" class="form-label">Costo Matrícula</label>
+                    <input type="number" class="form-control" id="costo_matricula">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-soft-primary w-100">Aceptar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

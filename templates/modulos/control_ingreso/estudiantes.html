@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ titulo_pagina }}</title>
+    {% include 'partials/title_meta.html' %}
+    {% include 'partials/head-css.html' %}
+    <link rel="stylesheet" href="{% static 'css/vendor/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/jquery-jvectormap-1.2.2.css' %}">
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+        <div class="content-page">
+            <div class="container">
+                {% include 'partials/page-title.html' %}
+                <h4 class="text-primary text-center mb-1">Control Estudiantes</h4>
+                <div class="row mb-3">
+                    <label class="form-label">Escanee el código de barras o escriba el documento</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="busqueda"
+                            placeholder="Escanear o digitar número de documento" autofocus>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-center">
+                        <button class="btn btn-primary w-100" onclick="buscarUsuario()">Buscar</button>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3">
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Documento</label>
+                        <input type="text" class="form-control" id="documento" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Ingresos</label>
+                        <input type="text" class="form-control" id="ingresos" readonly value="1">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-9">
+                        <label class="form-label fw-bold">Apellidos y Nombres</label>
+                        <input type="text" class="form-control" id="nombre_completo" readonly>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <img id="foto_perfil"
+                            src="https://cdn.pixabay.com/photo/2016/04/15/18/05/computer-1331579_1280.png"
+                            alt="Foto Estudiante" class="img-thumbnail" style="max-height: 120px;">
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-12 d-flex gap-2 flex-wrap">
+                        <h4 class="mt-1">Reporte de Novedades:</h4>
+                        <button class="btn btn-soft-danger">ESTUDIANTE SIN UNIFORME</button>
+                        <button class="btn btn-soft-warning">ESTUDIANTE SIN CARNET</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive mb-4">
+                    <table class="table table-striped table-centered mb-0">
+                        <thead>
+                            <tr>
+                                <th>Financiera</th>
+                                <th>Programa</th>
+                                <th>Semestre</th>
+                                <th>Académica</th>
+                                <th>Cancelado</th>
+                                <th>Saldo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_estudiante">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center" id="bloque_estado" style="display: none;">
+                    <h1 id="estado_final" class="fw-bold display-4">...</h1>
+                </div>
+            </div>
+        </div>
+        {% include 'partials/footer.html' %}
+    </div>
+    {% include 'partials/right-sidebar.html' %}
+
+    {% include 'partials/footer-scripts.html' %}
+    <script>
+        document.getElementById("busqueda").addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                buscarUsuario();
+            }
+        });
+
+        function buscarUsuario(codigo = null) {
+            const doc = codigo || document.getElementById("busqueda").value;
+
+            // Simulación de respuesta de backend
+            const estudiante = {
+                documento: doc,
+                nombre: "DIAZ MARTINEZ NICOLL",
+                foto: "https://i.pinimg.com/736x/ee/0c/5e/ee0c5e2218436d7154d73e6a47e8cb43.jpg",
+                ingresos: 1,
+                novedades: ["UNIFORME", "CARNET"],
+                programas: [
+                    {
+                        periodo: "2024B",
+                        programa: "AUXILIAR ADMINISTRATIVO",
+                        semestre: "1er Semestre",
+                        academica: "Sí",
+                        cancelado: "No Visible",
+                        saldo: "No Visible",
+                        aprobado: false
+                    },
+                    {
+                        periodo: "2025A",
+                        programa: "AUXILIAR ADMINISTRATIVO",
+                        semestre: "2do Semestre",
+                        academica: "Sí",
+                        cancelado: "No Visible",
+                        saldo: "No Visible",
+                        aprobado: false
+                    }
+                ]
+            };
+
+            // Datos básicos
+            document.getElementById("documento").value = estudiante.documento;
+            document.getElementById("nombre_completo").value = estudiante.nombre;
+            document.getElementById("foto_perfil").src = estudiante.foto;
+            document.getElementById("ingresos").value = estudiante.ingresos;
+
+            // Tabla dinámica
+            const tabla = document.getElementById("tabla_estudiante");
+
+            tabla.innerHTML = "";
+            let todoOk = true;
+
+            estudiante.programas.forEach(p => {
+                if (!p.aprobado) todoOk = false;
+
+                const fila = `
+                <tr class="${p.aprobado ? '' : 'table-ligth'}">
+                    <td>${p.periodo}</td>
+                    <td>${p.programa}</td>
+                    <td>${p.semestre}</td>
+                    <td>${p.academica}</td>
+                    <td>${p.cancelado}</td>
+                    <td>${p.saldo}</td>
+                    <td><span class="fs-3 ${p.aprobado ? 'text-success' : 'text-danger'}">
+                        ${p.aprobado ? '✔️' : '❌'}
+                    </span></td>
+                </tr>`;
+                tabla.innerHTML += fila;
+            });
+
+            // Mostrar mensaje según resultado
+            const mensaje = document.getElementById("estado_final");
+            const bloqueEstado = document.getElementById("bloque_estado");
+            bloqueEstado.style.display = "block";
+
+            if (todoOk) {
+                mensaje.className = "fw-bold display-4 text-success";
+                mensaje.innerHTML = "Adelante ✔️";
+            } else {
+                mensaje.className = "fw-bold display-4 text-danger";
+                mensaje.innerHTML = "Acceso Restringido ❌";
+            }
+
+            // Reiniciar input
+            document.getElementById("busqueda").value = "";
+            document.getElementById("busqueda").focus();
+        }
+    </script>
+
+    <script src="{% static 'js/vendor/moment.min.js' %}"></script>
+    <script src="{% static 'js/vendor/daterangepicker.js' %}"></script>
+
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <script src="{% static 'js/vendor/apexcharts.min.js' %}"></script>
+
+    <script src="{% static 'js/vendor/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <script src="{% static 'js/pages/dashboard.js' %}"></script>
+
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+    <script src="{% static 'js/pop-pup.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>

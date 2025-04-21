@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% include '../partials/title_meta.html' %}
+    {% include '../partials/head-css.html' %}
+    <style>
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .image-container img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body class="authentication-bg position-relative">
+    <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="card overflow-hidden">
+                        <div class="row g-0">
+                            <div class="p-2 image-container">
+                                <img src="{% static 'images/incatec2.png' %}" alt="">
+                            </div>
+                            <div class="">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="p-4 my-auto">
+                                        <h4 class="fs-20" style="align-content: center;">Iniciar Sesión</h4><br>
+
+                                        <form method="POST" id="login-form">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="username" class="form-label">Usuario</label><br>
+                                                <input class="form-control" type="text" id="username" name="username" placeholder="Ingresa tu Usuario" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="password" class="form-label">Contraseña</label><br>
+                                                <input class="form-control" type="password" id="password" name="password" placeholder="Ingresa tu Contraseña segura" required>
+                                            </div>
+                                            <div class="mb-0 text-start">
+                                                <button class="btn btn-soft-primary w-100" type="submit" id="submit-btn">
+                                                    <i class="ri-login-circle-fill me-1"></i> <span class="fw-bold">Iniciar</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer footer-alt fw-medium">
+        <span class="text-dark">
+            <script>
+                document.write(new Date().getFullYear())
+            </script> © María - Theme by Techzaa
+        </span>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+        Swal.fire({
+            icon: '{% if message.tags == "success" %}success{% else %}error{% endif %}',
+            title: '{{ message }}',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+        });
+        {% endfor %}
+    </script>
+    {% endif %}
+
+    {% if remaining_time > 0 %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let remainingTime = {{ remaining_time }};
+            const submitButton = document.getElementById("submit-btn");
+            const inputs = document.querySelectorAll("#login-form input");
+
+            function disableForm() {
+                inputs.forEach(input => input.disabled = true);
+                submitButton.disabled = true;
+            }
+
+            function enableForm() {
+                inputs.forEach(input => input.disabled = false);
+                submitButton.disabled = false;
+            }
+
+            disableForm();
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Demasiados intentos fallidos',
+                html: `🚫 Inténtalo en <b><span id="swal-countdown">${remainingTime}</span></b> segundos.`,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+            });
+
+            const countdown = setInterval(() => {
+                if (remainingTime > 0) {
+                    document.getElementById("swal-countdown").innerText = remainingTime;
+                    remainingTime -= 1;
+                } else {
+                    clearInterval(countdown);
+                    enableForm();
+                    Swal.close();
+                    window.location.reload();
+                }
+            }, 1000);
+        });
+    </script>
+    {% endif %}
+
+    {% include 'partials/footer-scripts.html' %}
+</body>
+</html>

@@ -1,0 +1,313 @@
+{% load static %}
+<style>
+.card-header.custom-border {
+        border-bottom: 3px solid #2263b8; 
+        padding-bottom: 10px; 
+        position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -10px;
+    padding: 5px;
+    color: #2263b8;
+}
+.accordion-button.custom-bg {
+        background-color:white;
+        transition: background-color 0.3s ease;
+    }
+.accordion-button.custom-bg:not(.collapsed) {
+        background-color: #2263b8;
+        color: white;
+    }
+.accordion-button.custom-bg.collapsed {
+    background-color: white;
+}
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center">Parametros de Nomina</h2>
+    </div>
+</div>
+<body class="bg-light">
+    <div class="container mt-2">
+        <div class="accordion" id="formAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#parametrosSection">
+                        Parámetros Nómina
+                    </button>
+                </h2>
+                <div id="parametrosSection" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="smlv" class="form-label">Período</label>
+                                <select class="form-select">
+                                    <option>2024</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="smlv" class="form-label">Copiar período</label>
+                                <select class="form-select">
+                                    <option>Seleccione</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="smlv" class="form-label">SMLV</label>
+                                <input type="number" class="form-control" id="smlv">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="auxTransporte" class="form-label">Aux. de Transporte</label>
+                                <input type="number" class="form-control" id="auxTransporte">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liquidación -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#liquidacionSection">
+                        Liquidación
+                    </button>
+                </h2>
+                <div id="liquidacionSection" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="salud" class="form-label">Salud</label>
+                                <input type="number" class="form-control" id="salud">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="pension" class="form-label">Pensión</label>
+                                <input type="number" class="form-control" id="pension">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#seguridadSocial">
+                        Seguridad social
+                    </button>
+                </h2>
+                <div id="seguridadSocial" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">Salud</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Pensión</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">ARL</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Caja compensacíon</label>
+                                <input type="number" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Parafiscales">
+                        Parafiscales
+                    </button>
+                </h2>
+                <div id="Parafiscales" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">SENA</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">ICBF</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">SUBSIDIO</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">ESAP</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">MEN</label>
+                                <input type="number" class="form-control">
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Prestaciones">
+                        Prestaciones sociales
+                    </button>
+                </h2>
+                <div id="Prestaciones" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">Cesantías</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Intereses</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Prima</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Vacaciones</label>
+                                <input type="number" class="form-control">
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Valor">
+                        Valor horas extras y festivos
+                    </button>
+                </h2>
+                <div id="Valor" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Hora extra diurna Ordinaria</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Recargo Nocturna</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Hora Extra Nocturna Ordinaria	</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Hora Dominical o Festiva</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Hora Extra Diurna Dominical o Festiva</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Hora Extra Nocturna Dominical o Festiva</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Recargo Nocturno Dominical y Festivo</label>
+                                <input type="number" class="form-control">
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button custom-bg collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#descuentos">
+                        Devengado y Deducciones
+                    </button>
+                </h2>
+                <div id="descuentos" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="text-success">Devengados</h5>
+                                <button class="btn btn-success btn-sm mb-3 toggleBtn" data-target="Devengado">
+                                    Crear Devengado
+                                </button>
+                                <div class="card" id="Devengado" style="display: none;">
+                                    <div class="container">
+                                        <form class="row g-3">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" style="text-transform: uppercase;">
+                                            </div>
+                                            <div class="col-md-12 text-center">
+                                                <button type="button" class="btn btn-soft-success">
+                                                    Agregar
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <br>
+                                    </div>
+                                </div>
+                                <ul class="list-group" id="devengadosList">
+                                    <li class="list-group-item">
+                                        <input type="text" class="form-control form-control-sm" value="Devengados 1">
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="text" class="form-control form-control-sm" value="Devengados 2">
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Deducciones -->
+                            <div class="col-md-6">
+                                <h5 class="text-danger">Deducciones</h5>
+                                <button type="button" class="btn btn-danger btn-sm mb-3 toggleBtn" data-target="Deducciones">
+                                    Crear Deducción
+                                </button>
+                                <div class="card" id="Deducciones" style="display: none;">
+                                    <div class="container">
+                                        <form class="row g-3">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" style="text-transform: uppercase;">
+                                            </div>
+                                            <div class="col-md-12 text-center">
+                                                <button type="button" class="btn btn-soft-success">
+                                                    Agregar
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <br>
+                                    </div>
+                                </div>
+                                <ul class="list-group" id="deduccionesList">
+                                    <li class="list-group-item">
+                                        <input type="text" class="form-control form-control-sm" value="Deducción 1">
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="text" class="form-control form-control-sm" value="Deducción 2">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-soft-success">
+                    <i class="bi bi-arrow-clockwise"></i> Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const accordionItems = document.querySelectorAll('.accordion-button');
+        accordionItems.forEach((item) => {
+            item.classList.remove('show');
+            item.previousElementSibling.classList.add('collapsed');
+            item.previousElementSibling.setAttribute('aria-expanded', false);
+        });
+    })
+</script>

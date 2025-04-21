@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% include '../partials/title_meta.html' %}
+    {% include '../partials/head-css.html' %}
+    <style>
+        /* Estilo para el input con clase no-border */
+        .no-border {
+            font-size: inherit;
+            font-family: inherit;
+            font-weight: inherit;
+            color: inherit;
+            border: none;
+            outline: none;
+            background: transparent;
+            width: fit-content;
+            padding: 0;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .image-container img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Estilo para el pop-up */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .countdown {
+            font-size: 1.5em;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body class="authentication-bg position-relative">
+    <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 posición-relative">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="card overflow-hidden">
+                        <div class="row g-0">
+                            <div class="p-2 image-container">
+                                <h1>
+                                    PORTAL DOCENTES
+                                </h1>
+                            </div>
+                            <div class="">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="p-4 my-auto">
+                                        <h4 class="fs-20" style="align-content: center;">Iniciar Sesión</h4><br>
+                                            {% if messages %}
+                                                {% for message in messages %}
+                                                    <div class="alert alert-danger" role="alert">
+                                                        {{ message }}
+                                                    </div>
+                                                {% endfor %}
+                                                {% elif remaining_time %}
+                                                <div class="alert alert-danger" role="alert">
+                                                    <p id="block-message">
+                                                        Debes esperar <span id="timer">{{ remaining_time }}</span> segundos para intentarlo de nuevo.
+                                                    </p>
+                                                </div>
+                                            {% endif %}
+                                        <!-- Formulario -->
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="username" class="form-label">Usuario</label><br>
+                                                <input class="form-control" type="text" id="username" name="username" placeholder="Ingresa tu Usuario" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="password" class="form-label">Contraseña</label><br>
+                                                <input class="form-control" type="password" id="password" name="password" placeholder="Ingresa tu Contraseña segura" required>
+                                            </div>
+                                            <div class="mb-0 text-start">
+                                                <button class="btn btn-soft-primary w-100" type="submit"><i class="ri-login-circle-fill me-1"></i> <span class="fw-bold">Iniciar</span></button>
+                                            </div>
+                                        </form>
+                                    </div>    
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
+
+    <footer class="footer footer-alt fw-medium">
+        <span class="text-dark">
+            <script>
+                document.write(new Date().getFullYear())
+            </script> © María - Theme by Techzaa
+        </span>
+    </footer>
+    {% if remaining_time %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            const submitButton = form.querySelector("button[type='submit']");
+            const countdownElement = document.getElementById("timer");
+    
+            // Tiempo restante del backend o recuperado de localStorage
+            let remainingTime = localStorage.getItem("remainingTime")
+                ? parseInt(localStorage.getItem("remainingTime"), 10)
+                : {{ remaining_time }};
+    
+            // Sincronizar tiempo restante con el backend (evitar desincronización)
+            if (remainingTime > {{ remaining_time }}) {
+                remainingTime = {{ remaining_time }};
+                localStorage.setItem("remainingTime", remainingTime);
+            }
+    
+            // Deshabilitar el formulario
+            function disableForm() {
+                form.querySelectorAll("input").forEach(input => input.disabled = true);
+                submitButton.disabled = true;
+            }
+    
+            // Habilitar el formulario
+            function enableForm() {
+                form.querySelectorAll("input").forEach(input => input.disabled = false);
+                submitButton.disabled = false;
+            }
+    
+            // Iniciar el contador
+            disableForm();
+            const countdown = setInterval(() => {
+                if (remainingTime > 0) {
+                    countdownElement.innerText = remainingTime;
+                    remainingTime -= 1;
+    
+                    // Guardar el tiempo restante en localStorage
+                    localStorage.setItem("remainingTime", remainingTime);
+                } else {
+                    // Una vez que el contador termina, limpia el intervalo y recarga con GET
+                    clearInterval(countdown);
+                    localStorage.removeItem("remainingTime");
+                    enableForm();
+                    window.location.href = window.location.pathname; // Recarga con GET
+                }
+            }, 1000);
+        });
+    </script>
+    {% endif %}     
+{% include 'partials/footer-scripts.html' %}
+</body>
+</html>

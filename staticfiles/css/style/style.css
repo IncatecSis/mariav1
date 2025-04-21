@@ -1,0 +1,30 @@
+/* Para centrar las imágenes dentro de la tarjeta */
+.card img {
+    display: block;            /* Asegura que la imagen sea un bloque */
+    margin-left: auto;         /* Margen automático a la izquierda */
+    margin-right: auto;        /* Margen automático a la derecha */
+    object-fit: contain;       /* Ajusta la imagen sin recortarla */
+    height: 200px;             /* Ajusta la altura de la imagen si es necesario */
+    width: 150px;               /* Deja que el ancho se ajuste automáticamente */
+    max-width: 70%;           /* La imagen no debe exceder el ancho del contenedor */
+    padding-bottom: 5px;      /* Espacio entre la imagen y el contenido */
+}
+
+/* Estilo del botón con transparencia
+.btn-custom {
+    color: #003780; 
+    padding: 8px 20px; 
+    border-radius: 8px; 
+    font-size: 14px; 
+    border: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Transición suave para el hover
+}
+Efecto hover: cambia el fondo a más oscuro
+.btn-custom:hover {
+    background-color: #003780;
+    color: white; /* Mantiene el color del texto 
+    cursor: pointer;
+}
+
+*/

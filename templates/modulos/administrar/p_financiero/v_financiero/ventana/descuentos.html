@@ -1,0 +1,95 @@
+<style>
+    /* Clase personalizada para el borde inferior debajo del texto */
+    .card-header.custom-border {
+        border-bottom: 3px solid #3bc0c3; /* Color del borde y grosor */
+        padding-bottom: 10px; /* Espacio entre el texto y el borde */
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin: 0; /* Elimina márgenes del título */
+        padding: 5px;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-primary">Asignar descuentos a programa</h2>
+    </div>
+</div>
+<form>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="programa" class="form-label">Programa</label>
+        <input type="text" class="form-control" id="programa">
+      </div>
+  
+      <div class="col-md-6">
+        <label for="semestre" class="form-label">Semestre</label>
+        <select class="form-select" id="semestre">
+          <option selected>Seleccionar Semestre</option>
+          <option value="1">Semestre 1</option>
+          <option value="2">Semestre 2</option>
+          <!-- Otros semestres -->
+        </select>
+      </div>
+    </div>
+  
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="categoria" class="form-label">Categoría</label>
+        <select class="form-select" id="categoria">
+          <option selected>Seleccionar Categoría</option>
+          <option value="A">Categoría A</option>
+          <option value="B">Categoría B</option>
+        </select>
+      </div>
+  
+      <div class="col-md-4">
+        <label for="tipo" class="form-label">Tipo</label>
+        <select class="form-select" id="tipo">
+          <option selected>Seleccionar Tipo</option>
+          <option value="Porcentaje">Porcentaje</option>
+          <option value="Valor">Valor</option>
+        </select>
+      </div>
+  
+      <div class="col-md-4">
+        <label for="descuento" class="form-label">Descuento (%)</label>
+        <input type="text" class="form-control" id="descuento">
+      </div>
+    </div>
+  
+    <div class="row mb-3">
+      <div class="col-md-4 d-flex align-items-center">
+        <input class="form-check-input" type="checkbox" id="descuentoVariable">
+        <label class="form-check-label ms-2" for="descuentoVariable">Descuento Variable</label>
+      </div>
+  
+      <div class="col-md-8">
+        <label for="descripcion" class="form-label">Descripción Descuento</label>
+        <input type="text" class="form-control" id="descripcion">
+      </div>
+    </div>
+  
+    <div class="row mb-3">
+      <div class="col-md-4 d-flex align-items-center">
+        <input class="form-check-input" type="checkbox" id="limitarFecha">
+        <label class="form-check-label ms-2" for="limitarFecha">Limitar por Fecha</label>
+      </div>
+  
+      <div class="col-md-4">
+        <label for="fechaInicio" class="form-label">Inicia</label>
+        <input type="date" class="form-control" id="fechaInicio">
+      </div>
+  
+      <div class="col-md-4">
+        <label for="fechaFin" class="form-label">Finaliza</label>
+        <input type="date" class="form-control" id="fechaFin">
+      </div>
+    </div>
+  
+    <div class="d-flex justify-content-center mt-4">
+      <button type="submit" class="btn btn-soft-primary">Aceptar</button>
+    </div>
+  </form>
+  

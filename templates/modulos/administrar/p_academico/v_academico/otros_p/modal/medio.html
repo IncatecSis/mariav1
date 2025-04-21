@@ -1,0 +1,142 @@
+<style>
+    /* Clase personalizada para el borde inferior debajo del texto */
+    .card-header.custom-border {
+        border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+        padding-bottom: 10px; /* Espacio entre el texto y el borde */
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin-top: -10px; /* Elimina márgenes del título */
+        padding: 5px;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-purple">Registro de inscripción</h2>
+    </div>
+</div>
+<button class="btn btn-soft-purple toggleBtn" data-target="inscripcion">
+    <i class="bi bi-plus"></i> Crear
+</button>
+<div class="card" id="inscripcion" style="display: none;">
+    <div class="container my-3">
+        <!-- Formulario -->
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="nombreMedio" class="form-label">Nombre del medio</label>
+                    <input type="text" class="form-control" id="nombreMedio">
+                </div>
+            </div>
+            
+            <!-- Checkboxes organizados en dos filas -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="activoVisibleWeb">
+                        <label class="form-check-label" for="activoVisibleWeb">Visible Web</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="otroMedio">
+                        <label class="form-check-label" for="otroMedio">Otro Medio</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="activoVisibleSAC">
+                        <label class="form-check-label" for="activoVisibleSAC">Visible SAC</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="clienteExterno">
+                        <label class="form-check-label" for="clienteExterno">Cliente Externo</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="clienteInterno">
+                        <label class="form-check-label" for="clienteInterno">Cliente Interno</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="pqrsf">
+                        <label class="form-check-label" for="pqrsf">PQRFS</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botón Agregar -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-soft-purple">
+                    Agregar <i class="bi bi-plus-circle"></i> <!-- Icono opcional (puedes usar Bootstrap Icons) -->
+                </button>
+            </div>
+            <br>
+        </form>
+    </div>
+</div>
+<div class="table-responsive sm">
+    <table class="table table-striped table-centered mb-0">
+        <thead class="table">
+            <tr>
+                <th>Nombre Medio</th>
+                <th>Web</th>
+                <th>Otros</th>
+                <th>Sac</th>
+                <th>Externo</th>
+                <th>Interno</th>
+                <th>Pqrsf</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>REFERIDO</td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td>
+                    <button class="btn btn-sm btn-soft-info">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-soft-danger">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>PERIÓDICO</td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td>
+                    <button class="btn btn-sm btn-soft-info d-flex align-items-center gap-1">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-soft-danger d-flex align-items-center gap-1">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

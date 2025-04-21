@@ -1,0 +1,224 @@
+{% load static %}
+
+<!-- =============main.html======================== -->
+<!DOCTYPE html>
+<html lang="es">
+<!-- ============================================================== -->
+<head>
+<meta charset="UTF-8">
+<title>{{ titulo_pagina }}</title>
+    {% include 'partials/title_meta.html' %}
+
+<!-- Daterangepicker css -->
+<link rel="stylesheet" href="{% static 'css/vendor/daterangepicker.css' %}">
+
+<!-- Vector Map css -->
+<link rel="stylesheet" href="{% static 'css/vendor/jquery-jvectormap-1.2.2.css' %}">
+
+<!-- estilo personalizado css -->
+<link rel="stylesheet" href="{% static 'css/style/style.css' %}">
+<link rel="stylesheet" href="{% static 'source/scss/new/pop-up.css' %}">
+<link rel="stylesheet" href="{% static 'source/scss/new/ventanas_modales/pop-up_ofertas.css' %}">
+
+    {% include 'partials/head-css.html' %} <!-- Incluimos el archivo head-css usando Jinja2 -->
+</head>
+<body>
+    <!-- Begin page -->
+<div class="wrapper">
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+        <div class="content-page">
+          <!-- Start Content-->
+          <div class="container">
+          {% include 'partials/page-title.html' %}
+                <!-- Configuración de documentos del sistema -->
+            <div class="card">
+                <div class="card-header bg-info-subtle">
+                    <h4 style="color: #33b0e0;">Configurar Documentos del Sistema</h4>
+                </div>
+                <div class="card-body">
+                    <form class="mb-3">
+                      <!-- Fila para seleccionar tipo de documento -->
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <label for="tipoDocumento" class="form-label">Tipo Documento</label>
+                          <select id="tipoDocumento" class="form-select">
+                            <option selected>Seleccionar tipo...</option>
+                            <option value="1">Documento 1</option>
+                            <option value="2">Documento 2</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="nombreDocumento" class="form-label">Nombre Documento</label>
+                          <input type="text" id="nombreDocumento" class="form-control" placeholder="Ingrese nombre">
+                        </div>
+                      </div>
+                      <!-- Fila para los campos de nombre, código, fecha y versión -->
+                      <div class="row mb-3">
+                        <div class="col-md-3">
+                          <label for="codigo" class="form-label">Código</label>
+                          <input type="text" id="codigo" class="form-control" placeholder="Ingrese código">
+                        </div>
+                        <div class="col-md-3">
+                          <label for="fecha" class="form-label">Fecha</label>
+                          <input type="date" id="fecha" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                          <label for="version" class="form-label">Versión</label>
+                          <input type="text" id="version" class="form-control" placeholder="Ingrese versión">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                          <button type="button" class="btn btn-soft-info">
+                            <i class="bi bi-check-circle"></i> Aceptar
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped table-centered mb-0">
+                        <thead class="border-0 border-bottom border-info border-3">
+                          <tr>
+                            <th class="text-info">Nº</th>
+                            <th class="text-info">Descripción</th>
+                            <th class="text-info">Detalles del Formato Compromiso de Pago</th>
+                            <th class="text-info">Editar</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="align-middle">1</td>
+                            <td class="align-middle">Compromiso de Pago</td>
+                            <td>
+                              <textarea class="form-control" rows="3">Observaciones: Antes de Firmar el Compromiso de pago lea con cuidado las siguientes condiciones.</textarea>
+                            </td>
+                            <td class="align-middle">
+                              <button class="btn btn-soft-info btn-sm">
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="align-middle">2</td>
+                            <td class="align-middle">Compromiso de Pago</td>
+                            <td>
+                              <textarea class="form-control" rows="3">1) Debe diligenciar y firmar el compromiso de pago...</textarea>
+                            </td>
+                            <td class="align-middle">
+                              <button class="btn btn-soft-info btn-sm">
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="align-middle">3</td>
+                            <td class="align-middle">Compromiso de Pago</td>
+                            <td>
+                              <textarea class="form-control" rows="3">2) Presentar ante las oficinas, la copia del formulario...</textarea>
+                            </td>
+                            <td class="align-middle">
+                              <button class="btn btn-soft-info btn-sm">
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="align-middle">4</td>
+                            <td class="align-middle">Compromiso de Pago</td>
+                            <td>
+                              <textarea class="form-control" rows="3">3) Diligenciar la FICHA DE MATRICULA en las oficinas de la institución.</textarea>
+                            </td>
+                            <td class="align-middle">
+                              <button class="btn btn-soft-info btn-sm">
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="align-middle">5</td>
+                            <td class="align-middle">Compromiso de Pago</td>
+                            <td>
+                              <textarea class="form-control" rows="3">4) Cancelar Inmediatamente la cuota inicial y el Valor del Combo estudiantil ( Seguro estudiantil, Carnet y Uniforme).</textarea>
+                            </td>
+                            <td class="align-middle">
+                              <button class="btn btn-soft-info btn-sm">
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="align-middle">6</td>
+                            <td class="align-middle">Compromiso de Pago</td>
+                            <td>
+                              <textarea class="form-control" rows="3">5) No se devolverá dinero bajo ninguna circunstancia sobre valores de: Incripcion, semana de clases, uniforme, seguro y carnet estudiantil.</textarea>
+                            </td>
+                            <td class="align-middle">
+                              <button class="btn btn-soft-info btn-sm">
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                            </td>
+                          </tr>
+                          <!-- Más filas si es necesario -->
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!-- content -->
+            {% include 'partials/footer.html' %}
+
+
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    <!-- END wrapper -->
+
+    {% include 'partials/right-sidebar.html' %}
+
+    {% include 'partials/footer-scripts.html' %}
+    <!-- Daterangepicker js -->
+    <script src="{% static 'js/vendor/moment.min.js' %}"></script>
+    <script src="{% static 'js/vendor/daterangepicker.js' %}"></script>
+
+    <!-- Bootstrap Datepicker Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- Apex Charts js -->
+    <script src="{% static 'js/vendor/apexcharts.min.js' %}"></script>
+
+    <!-- Vector Map js -->
+    <script src="{% static 'js/vendor/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+    <!-- Table Editable plugin-->
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <!-- Table editable init-->
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <!-- Dashboard App js -->
+    <script src="{% static 'js/pages/dashboard.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+    <!-- Po-put -->
+    <script src="{% static 'js/pop-pup.js' %}"></script>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+
+</body>
+</html>

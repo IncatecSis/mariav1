@@ -1,0 +1,84 @@
+<style>
+    /* Clase personalizada para el borde inferior debajo del texto */
+    .card-header.custom-border {
+        border-bottom: 3px solid #3bc0c3; /* Color del borde y grosor */
+        padding-bottom: 10px; /* Espacio entre el texto y el borde */
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin: 0; /* Elimina márgenes del título */
+        padding: 5px;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-primary">Asignar incrementos a programa</h2>
+    </div>
+</div>
+<form>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="programa" class="form-label">Nombre Programa</label>
+        <input type="text" class="form-control" id="programa">
+      </div>
+  
+      <div class="col-md-6 mb-3">
+        <label for="semestre" class="form-label">Semestre</label>
+        <input type="text" class="form-control" id="semestre">
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="categoria" class="form-label">Categoría</label>
+        <input type="text" class="form-control" id="categoria">
+      </div>
+  
+      <div class="col-md-6 mb-3">
+        <label for="tipo" class="form-label">Tipo</label>
+        <input type="text" class="form-control" id="tipo">
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="valor" class="form-label">Valor (%)</label>
+        <select class="form-select" id="valor">
+          <option value="5%">5%</option>
+          <option value="10%">10%</option>
+          <option value="15%">15%</option>
+          <option value="20%" selected>20%</option>
+        </select>
+      </div>
+  
+      <div class="col-md-6 mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <input type="text" class="form-control" id="descripcion">
+      </div>
+    </div>
+  
+    <div class="row">
+        <div class="col-md-4">
+          <label for="inicio" class="form-label">Inicio</label>
+          <input type="date" class="form-control" id="inicio" />
+        </div>
+      
+        <div class="col-md-4">
+          <label for="vencimiento" class="form-label">Vencimiento</label>
+          <input type="date" class="form-control" id="vencimiento" />
+        </div>
+      
+        <div class="col-md-4 mb-4 d-flex align-items-start mt-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="limitar">
+            <label class="form-check-label" for="limitar">Limitar por fecha</label>
+          </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-2">
+      <button type="button" class="btn btn-soft-primary">
+        Guardar
+      </button>
+    </div>
+</form>

@@ -1,0 +1,112 @@
+<style>
+    .card-header.custom-border {
+        border-bottom: 3px solid #2263b8; 
+        padding-bottom: 10px; 
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin-top: -10px;
+        padding: 5px;
+        color: #2263b8;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center">Riesgo Laboral</h2>
+    </div>
+</div>
+<button class="btn btn-soft-success toggleBtn" data-target="riesgo">
+    <i class="bi bi-plus"></i> Crear
+</button>
+<div class="card" id="riesgo" style="display: none;">
+    <div class="container my-3">
+        <form class="row g-3" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="tipo" value="riesgo">
+            <input type="hidden" name="id_riesgo_laboral" id="idRiesgo">
+            <div class="col-md-6">
+                <label class="form-label">Riesgo|Nivel</label>
+                <input type="text" class="form-control" id="NivelRiesgo" name="nivel_riesgo" style="text-transform: uppercase;">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Porcentaje</label>
+                <input type="number" class="form-control" id="Rporcentaje" name="porcentaje"
+                    step="0.001" min="0" max="10">
+            </div>
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-soft-success">
+                    Agregar
+                </button>
+            </div>
+        </form>
+        <br>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-centered mt-2">
+        <thead>
+            <tr>
+                <th>Riesgo|Nivel</th>
+                <th>Porcentaje</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for riesgo in riesgos %}
+            <tr>
+                <td>{{ riesgo.nivel_riesgo }}</td>
+                <td>{{ riesgo.porcentaje }}</td>
+                <td>
+                    <button class="btn btn-soft-info btn-sm btnRiesgo"
+                        data-id="{{ riesgo.id_riesgo_laboral }}"
+                        data-nombre="{{ riesgo.nivel_riesgo }}"
+                        data-porcentaje="{{ riesgo.porcentaje }}">
+                        <i class="bi bi-pencil-square"></i> 
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+</div>
+{% if messages %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% for message in messages %}
+        Swal.fire({
+            icon: "success",
+            title: "{{ message }}",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+        });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btnRiesgo').forEach(button => {
+        button.addEventListener('click', function () {
+            let idRiesgo = this.getAttribute('data-id');
+            let nivelRiesgo = this.getAttribute('data-nombre');
+            let porcentaje = this.getAttribute('data-porcentaje');
+
+            porcentaje = porcentaje.replace(',', '.');
+
+            console.log("Porcentaje Modificado:", porcentaje);
+
+            document.getElementById('idRiesgo').value = idRiesgo;
+            document.getElementById('NivelRiesgo').value = nivelRiesgo;
+            document.getElementById('Rporcentaje').value = porcentaje;
+
+            document.getElementById('riesgo').style.display = 'block';
+        });
+    });
+});
+
+</script>

@@ -1,0 +1,332 @@
+{% load static %}
+<head>
+	<title>{{ titulo_pagina }}</title>
+	<!-- pop-up css -->
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_administrar/pop-up_semestre.css' %}">
+	
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_administrar/pop-up_jornada.css' %}">
+
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_administrar/pop-up_pensum.css' %}">
+
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_administrar/pop-up_modulo.css' %}">
+	<!-- end pop-up css -->
+	
+	{% include 'partials/title_meta.html' %}
+    {% include 'partials/head-css.html' %}
+	
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div class="wrapper">
+
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+                <!-- Start Content-->
+                <div class="container-fluid">
+
+                    {% include 'partials/page-title.html' %}
+					
+				</div> <!-- container -->
+
+				<!-- Bloque #1 -->
+				<div class="row">
+					<!-- consultar estudiante -->
+					<div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+								<div class="input-group">
+									<input type="text" id="example-input1-group2" name="example-input1-group2" class="form-control" placeholder="Consulta por numero de documento">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-purple rounded-start-0">
+												<i class="ri-search-line fs-16"></i>
+											</button>
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+                    <div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="d-flex justify-content-around gap-2">
+											<button type="button" class="btn btn-soft-purple" data-popup="crear_c_s_Popup">
+												<i class="mdi mdi-calendar-edit"></i> Asignar Semestre
+											</button>
+											<button type="button" class="btn btn-soft-purple" data-popup="crear_m_Popup">
+                                                <i class="ri-settings-2-line"></i> Asignar Modúlos
+                                            </button>
+											<button type="button" class="btn btn-soft-purple" data-popup="crear_c_j_Popup">
+                                                <i class="ri-settings-2-line"></i> Asignar Jornadas
+                                            </button>
+											<button type="button" class="btn btn-soft-purple" data-popup="crear_p_Popup">
+                                                <i class="ri-settings-2-line"></i> Pensum
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+							</div>
+						</div>
+					</div>
+				</div>				
+				<!-- Matriculas para pagos -->
+                <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                    <div class="table-responsive">
+										<div class="profile-content">
+													<ul class="nav nav-underline nav-justified gap-0">
+														<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+																data-bs-target="#aboutme1" type="button" role="tab"
+																aria-controls="home" aria-selected="true" href="#aboutme1">Ver semestres</a>
+														</li>
+														<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+																data-bs-target="#aboutme2" type="button" role="tab"
+																aria-controls="home" aria-selected="true"
+																href="#aboutme2">Ver modúlos</a>
+														</li>
+														<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+																data-bs-target="#aboutme1" type="button" role="tab"
+																aria-controls="home" aria-selected="true"
+																href="#aboutme1">Ver jornadas</a>
+														</li>
+														<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+																data-bs-target="#aboutme2" type="button" role="tab"
+																aria-controls="home" aria-selected="true"
+																href="#aboutme2">Pensum</a>
+														</li>
+													</ul>
+
+													<div class="tab-content m-0 p-3">
+														<div class="tab-pane" id="aboutme1" role="tabpanel"
+															aria-labelledby="home-tab" tabindex="0">												
+														<!-- Matricula - Programas -->
+														<div class="table-responsive-sm">
+																<table class="table table-striped table-centered mb-0">
+																	<thead>
+																		<tr>
+																			<th class="text-purple">Concepto</th>
+																			<th class="text-purple">Tipo</th>
+																			<th class="text-purple">Matricula</th>
+																			<th class="text-purple">Descuentos</th>
+																			<th class="text-purple">Incremento</th>
+																			<th class="text-purple">Monto Total</th>
+																			<th class="text-purple">Monto Pagado</th>
+																			<th class="text-purple">Pendiente</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr>
+																			<td class="table-user">
+																				AUX. Enfermería
+																			</td>
+																			<td>Credito</td>
+																			<td>$ 1.254.458</td>
+																			<td>$ 459.000</td>
+																			<td>$ 0</td>
+																			<td><span class="badge bg-purple">$ 795.458</span></td>
+																			<td><span class="badge bg-primary">$ 100.000</span></td>
+																			<td><span class="badge bg-danger">$ 695.458</span></td>
+																			<td>
+																				<button type="button" class="btn btn-soft-primary openPopupBtn">
+																				<i class="mdi mdi-cash-multiple align-text-bottom fs-16 lh-1"></i>
+																				</button>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td class="table-user">
+																				AUX. Enfermería
+																			</td>
+																			<td>Credito</td>
+																			<td>$ 1.254.458</td>
+																			<td>$ 459.000</td>
+																			<td>$ 0</td>
+																			<td><span class="badge bg-purple">$ 795.458</span></td>
+																			<td><span class="badge bg-primary">$ 100.000</span></td>
+																			<td><span class="badge bg-danger">$ 695.458</span></td>
+																			<td>
+																				<button type="button" class="btn btn-soft-primary openPopupBtn">
+																				<i class="mdi mdi-cash-multiple align-text-bottom fs-16 lh-1"></i>
+																				</button>
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														<!-- end Lista de Matricula-->
+														</div> <!-- about-me -->
+
+														<!-- Matricula - Cursos -->
+														<div id="aboutme2" class="tab-pane">
+															<div class="row">
+																<!-- Lista de Matricula - Cursos -->
+																	<div class="table-responsive-sm">
+																		<table class="table table-striped table-centered mb-0">
+																			<thead>
+																				<tr>
+																					<th class="text-purple">Concepto</th>
+																					<th class="text-purple">Tipo</th>
+																					<th class="text-purple">Matricula</th>
+																					<th class="text-purple">Descuentos</th>
+																					<th class="text-purple">Incremento</th>
+																					<th class="text-purple">Monto Total</th>
+																					<th class="text-purple">Monto Pagado</th>
+																					<th class="text-purple">Pendiente</th>
+																					<th class="text-purple">Pagar</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<tr>
+																					<td class="table-user">
+																						Inyectologia
+																					</td>
+																					<td>Credito</td>
+																					<td>$ 654.458</td>
+																					<td>$ 100.000</td>
+																					<td>$ 0</td>
+																					<td><span class="badge bg-purple">$ 554.458</span></td>
+																					<td><span class="badge bg-primary">$ 200.000</span></td>
+																					<td><span class="badge bg-danger">$ 354.458</span></td>
+																					<td>
+																						<button type="button" class="btn btn-soft-primary">
+																						<i class="mdi mdi-cash-multiple align-text-bottom fs-16 lh-1"></i>
+																						</button>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div> 
+																	<!-- end table-responsive-->
+																<!-- end Lista de Matricula - Cursos-->
+																
+															</div>
+														</div>
+
+														<!-- Matricula - Diplomados -->
+														<div id="aboutme3" class="tab-pane">
+															<div class="user-profile-content">
+																<div class="row">
+																	<!-- Lista de Matricula - Diplomados -->
+																		<div class="table-responsive-sm">
+																			<table class="table table-striped table-centered mb-0">
+																				<thead>
+																					<tr>
+																						<th class="text-purple">Concepto</th>
+																						<th class="text-purple">Tipo</th>
+																						<th class="text-purple">Matricula</th>
+																						<th class="text-purple">Descuentos</th>
+																						<th class="text-purple">Incremento</th>
+																						<th class="text-purple">Monto Total</th>
+																						<th class="text-purple">Monto Pagado</th>
+																						<th class="text-purple">Pendiente</th>
+																						<th class="text-purple">Pagar</th>
+																					</tr>
+																				</thead>
+																				<tbody>
+																					<!--lista-diplomados-->
+																				</tbody>
+																			</table>
+																		</div> 
+																		<!-- end table-responsive-->
+																	<!-- end Lista de Matricula - Diplomados-->
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+                                        <table class="table table-centered mb-0 table-nowrap" id="inline-editable">
+                                        </table>
+                                    </div>
+                                    <!-- end .table-responsive-->
+                                <!-- end card-body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                        <!-- end col -->
+                    </div>
+                <!-- end Matriculas -->
+                
+                <!--Pop-up semestre -->
+                <div id="crear_c_s_Popup" class="popup_se" style="display:none;">
+                    <div class="popup-content_se">
+                        <span data-close="crear_c_s_Popup" class="close">&times;</span>
+							{% include 'modulos/administrar/p_academico/v_academico/modulo/ventana_modal/semestre.html' %}
+                    </div>
+                </div>
+                <!-- end semestre -->
+				
+                <!--Pop-up Jornada -->
+                <div id="crear_c_j_Popup" class="popup_jo" style="display:none;">
+                    <div class="popup-content_jo">
+                        <span data-close="crear_c_j_Popup" class="close">&times;</span>
+							{% include 'modulos/administrar/p_academico/v_academico/modulo/ventana_modal/jornada.html' %}
+                    </div>
+                </div>
+                <!-- end jornada -->
+				
+                <!--Pop-up pensum -->
+                <div id="crear_p_Popup" class="popup_p" style="display:none;">
+                    <div class="popup-content_p">
+                        <span data-close="crear_p_Popup" class="close">&times;</span>
+							{% include 'modulos/administrar/p_academico/v_academico/modulo/ventana_modal/pensum.html' %}
+                    </div>
+                </div>
+                <!-- end pensum -->
+				
+                <!--Pop-up modulo -->
+                <div id="crear_m_Popup" class="popup_m" style="display:none;">
+                    <div class="popup-content_m">
+                        <span data-close="crear_m_Popup" class="close">&times;</span>
+							{% include 'modulos/administrar/p_academico/v_academico/modulo/ventana_modal/modulo.html' %}
+                    </div>
+                </div>
+                <!-- end modulo -->
+				
+				
+
+                </div> <!-- container -->
+
+            </div> <!-- content -->
+
+			
+        </div>
+		
+		{% include 'partials/footer.html' %}
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+		
+    </div>
+    <!-- END wrapper -->
+
+    {% include 'partials/right-sidebar.html' %}
+
+    {% include 'partials/footer-scripts.html' %}
+
+    <!-- Table Editable plugin-->
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <!-- Table editable init-->
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <!-- Bootstrap Datepicker Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+	<script src="{% static 'js/pop-pup.js' %}"></script>
+</body>
+</html>

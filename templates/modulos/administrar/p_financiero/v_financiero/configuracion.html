@@ -1,0 +1,131 @@
+<style>
+/* Clase personalizada para el borde inferior debajo del texto */
+.card-header.custom-border {
+    border-bottom: 3px solid #3bc0c3; /* Color del borde y grosor */
+    padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin: 0; /* Elimina márgenes del título */
+    padding: 5px;
+}
+</style>
+    <div class="container mt-2">
+        <div class="card">
+            <div class="card-header custom-border bg-white">
+                <h2 class="text-center text-primary">Parámetros Consecutivos Recibos de Caja y Facturación</h2>
+            </div>
+        </div>
+        
+        <!-- Formulario de Parámetros -->
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="tipo-parametro" class="form-label">Tipo de Parámetro</label>
+                    <select id="tipo-parametro" class="form-select">
+                        <option value="">Seleccione</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="nombre-documento" class="form-label">Nombre Documento</label>
+                    <input type="text" id="nombre-documento" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <label for="sigla" class="form-label">Sigla</label>
+                    <input type="text" id="sigla" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <label for="numero-actual" class="form-label">Número Actual</label>
+                    <input type="text" id="numero-actual" class="form-control">
+                </div>
+                <div class="col-md-2 mt-2">
+                    <label for="longitud" class="form-label">Longitud</label>
+                    <input type="text" id="longitud" class="form-control">
+                </div>
+                <div class="col-md-2 mt-2">
+                    <label for="alfa" class="form-label">Alfa#</label>
+                    <input type="text" id="alfa" class="form-control">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="resolucion-dian" class="form-label">Resolución DIAN</label>
+                    <textarea id="resolucion-dian" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label for="detalle-recibo" class="form-label">Detalle Recibo</label>
+                    <textarea id="detalle-recibo" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <button type="submit" class="btn btn-soft-primary">
+                    Aceptar <i class="bi bi-check-circle"></i>
+                </button>
+            </div>
+        </form>
+
+        <!-- Tabla de Configuración General del Recibo de Caja -->
+        <div class="card">
+            <div class="card-header custom-border bg-white"">
+                <h2 class="text-center text-primary mb-3">Configuración General del Recibo de Caja</h2>
+            </div>
+        </div>
+        <table class="table table-nowrap table-hover mb-0">
+            <thead class="table">
+                <tr>
+                    <th class="text-primary">Configuración</th>
+                    <th class="text-primary">Mostrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mostrar en el Recibo de Caja la Cartera Total del Estudiante</td>
+                    <td><input type="checkbox" class="form-check-input"></td>
+                </tr>
+                <tr>
+                    <td>Mostrar el Lugar de Expedición del Documento de Identidad del Estudiante</td>
+                    <td><input type="checkbox" class="form-check-input"></td>
+                </tr>
+                <tr>
+                    <td>Mostrar el Código QR en el Recibo de Caja</td>
+                    <td><input type="checkbox" class="form-check-input" checked></td>
+                </tr>
+                <tr>
+                    <td>Mostrar el Barrio del Estudiante</td>
+                    <td><input type="checkbox" class="form-check-input" checked></td>
+                </tr>
+                <tr>
+                    <td>Mostrar la Resolución de la DIAN (Datos Entidad)</td>
+                    <td><input type="checkbox" class="form-check-input"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Selección de Tipo de Libreta de Pago -->
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-4">
+                    <h5 class="mb-3">Tipo de Libreta de Pago</h5>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipo-libreta" id="modelo1" value="modelo1">
+                        <label class="form-check-label" for="modelo1">Modelo 1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipo-libreta" id="modelo2" value="modelo2">
+                        <label class="form-check-label" for="modelo2">Modelo 2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipo-libreta" id="modelo3" value="modelo3" checked>
+                        <label class="form-check-label" for="modelo3">Recibo de Pago</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipo-libreta" id="no-aplica" value="no-aplica">
+                        <label class="form-check-label" for="no-aplica">No Aplica</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

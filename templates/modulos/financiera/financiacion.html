@@ -1,0 +1,540 @@
+{% load static %}
+<!-- =============main.html======================== -->
+<!DOCTYPE html>
+<html lang="es">
+<!-- ============================================================== -->
+
+<head>
+	<title>| {{ titulo_pagina }}</title>
+	
+	{% include 'partials/title_meta.html' %}
+
+	{% include 'partials/head-css.html' %}
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div class="wrapper">
+
+        {% include 'partials/topbar.html' %}
+    	{% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- Start Content-->
+                <div class="container-fluid">
+
+                    {% include 'partials/page-title.html' %}
+					
+				</div> <!-- container -->
+
+				<!-- consultar estudiante -->
+				<div class="row">
+					<!-- consultar estudiante -->
+					<div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+								<div class="input-group">
+									<input type="text" id="example-input1-group2" name="example-input1-group2" class="form-control" placeholder="Consulta por numero de documento">
+										<span class="input-group-append">
+											<button type="button" class="btn btn-primary rounded-start-0"><i class="ri-search-line fs-16"></i></button>
+										</span>
+								</div>
+							</div>
+						</div>
+						<div class="d-flex justify-content-end align-items-center gap-2">
+							<button type="button" class="btn btn-soft-dark" id="toggleHistorialBtn">
+								<i class="mdi mdi-calendar-edit align-text-bottom me-1 fs-16 lh-1"></i>
+								Refinanciar Fechas
+							</button>
+							<button type="button" class="btn btn-soft-purple">
+                            <i class="mdi mdi-calendar-sync align-text-bottom me-1 fs-16 lh-1"></i>
+                            	Refinanciar Semestre
+                            </button>
+                        </div>
+						<br>
+					</div>
+					
+					<!-- Estudiante -->
+					<div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+								<div class="input-group">
+								</div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="profile-user-img"><img src="{% static 'images/users/avatar-1.jpg' %}" alt=""
+                                                class="avatar-lg rounded-circle"></div>
+                                        <div class="">
+                                            <h4 class="mt-4 fs-17 ellipsis">Juan Andres</h4>
+                                            <p class="font-13"> 124567489</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="d-flex justify-content-end align-items-center gap-2">
+											<button type="button" class="btn btn-soft-danger">
+                                                <i class="ri-settings-2-line align-text-bottom fs-16 lh-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+							</div>
+						</div>
+					</div>
+				</div>	
+				
+				<!-- Financiaciones (programas-cursos-diplomados) -->
+                <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                    <div class="table-responsive">
+										<div class="profile-content">
+													<ul class="nav nav-underline nav-justified gap-0">
+														<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab"
+																data-bs-target="#aboutme" type="button" role="tab"
+																aria-controls="home" aria-selected="true" href="#aboutme">Programa</a>
+														</li>
+														<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+																data-bs-target="#user-activities" type="button" role="tab"
+																aria-controls="home" aria-selected="true"
+																href="#user-activities">Cursos</a></li>
+														<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+																data-bs-target="#edit-profile" type="button" role="tab"
+																aria-controls="home" aria-selected="true"
+																href="#edit-profile">Diplomados</a></li>
+													</ul>
+
+													<div class="tab-content m-0 p-3">
+														<div class="tab-pane active" id="aboutme" role="tabpanel"
+															aria-labelledby="home-tab" tabindex="0">													
+															<div class="row">
+																<!-- Lista de Matricula - Programas -->
+																	<div class="table-responsive-sm">
+																		<table class="table table-striped table-centered mb-0">
+																			<thead>
+																				<tr>
+																					<th>Programa</th>
+																					<th>Semestre</th>
+																					<th>Tipo</th>
+																					<th>Periodo</th>
+																					<th>Financiación</th>
+																					<th>Financiar</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<tr>
+																					<td class="table-user">
+																						<img src="{% static 'images/users/avatar-2.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																						Enfermeria
+																					</td>
+																					<td>1er  Semestre</td>
+																					<td>Credito</td>
+																					<td>2024-A</td>
+																					<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																					<td>
+																						<button type="button" class="btn btn-soft-primary openPopupBtn">
+																						<i class="mdi mdi-account-cash-outline align-text-bottom fs-16 lh-1"></i>
+																						</button>
+																					</td>
+																				</tr>
+																				<tr>
+																					<td class="table-user">
+																						<img src="{% static 'images/users/avatar-3.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																						Enfermeria
+																					</td>
+																					<td>2er  Semestre</td>
+																					<td>Credito</td>
+																					<td>2024-B</td>
+																					<td><input type="checkbox" class="form-check-input" id="customCheck6" disabled=""></td>
+																					<td>
+																						<button type="button" class="btn btn-soft-primary openPopupBtn">
+																						<i class="mdi mdi-account-cash-outline align-text-bottom fs-16 lh-1"></i>
+																						</button>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div> 
+																<!-- end table-responsive-->
+															</div> <!-- end profile-desk -->
+														</div> <!-- about-me -->
+
+														<!-- Cursos -->
+														<div id="user-activities" class="tab-pane">
+															<div class="row">
+																<!-- Lista de Matricula - Cursos -->
+																		<div class="table-responsive-sm">
+																			<table class="table table-striped table-centered mb-0">
+																				<thead>
+																					<tr>
+																						<th>Matricula</th>
+																						<th>Ciclos</th>
+																						<th>Tipo</th>
+																						<th>Periodo</th>
+																						<th>Financiación</th>
+																					</tr>
+																				</thead>
+																				<tbody>
+																					<tr>
+																						<td class="table-user">
+																							<img src="{% static 'images/users/avatar-2.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																							Inyectologia
+																						</td>
+																						<td>Ciclo 1</td>
+																						<td>Contado</td>
+																						<td>2023-B</td>
+																						<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																						<td>
+																							<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																						</td>
+																					</tr>
+																					<tr>
+																						<td class="table-user">
+																							<img src="{% static 'images/users/avatar-3.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																							UCI
+																						</td>
+																						<td>Ciclo 1</td>
+																						<td>Credito</td>
+																						<td>2024-B</td>
+																						<td><input type="checkbox" class="form-check-input" id="customCheck6" disabled=""></td>
+																						<td>
+																							<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																						</td>
+																					</tr>
+																				</tbody>
+																			</table>
+																		</div> 
+																	<!-- end table-responsive-->
+																<!-- end Lista de Matricula - Cursos-->
+																
+															</div>
+														</div>
+
+														<!-- Diplomados -->
+														<div id="edit-profile" class="tab-pane">
+															<div class="user-profile-content">
+																<div class="row">
+																	<!-- Lista de Matricula - Diplomados -->
+																			<div class="table-responsive-sm">
+																				<table class="table table-striped table-centered mb-0">
+																					<thead>
+																						<tr>
+																							<th>Matricula</th>
+																							<th>Ciclos</th>
+																							<th>Tipo</th>
+																							<th>Periodo</th>
+																							<th>Financiación</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						<tr>
+																							<td class="table-user">
+																								<img src="{% static 'images/users/avatar-2.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																								Inyectologia
+																							</td>
+																							<td>Ciclo 1</td>
+																							<td>Credito</td>
+																							<td>2022-A</td>
+																							<td><input type="checkbox" class="form-check-input" id="customCheck5" checked="" disabled=""></td>
+																							<td>
+																								<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																							</td>
+																						</tr>
+																						<tr>
+																							<td class="table-user">
+																								<img src="{% static 'images/users/avatar-3.jpg' %}" alt="table-user" class="me-2 rounded-circle" />
+																								UCI
+																							</td>
+																							<td>Ciclo 1</td>
+																							<td>Credito</td>
+																							<td>2024-A</td>
+																							<td><input type="checkbox" class="form-check-input" id="customCheck6" disabled=""></td>
+																							<td>
+																								<a href="javascript: void(0);" class="text-reset fs-16 px-1"> <i class="ri-settings-3-line"></i></a>
+																							</td>
+																						</tr>
+																					</tbody>
+																				</table>
+																			</div> 
+																		<!-- end table-responsive-->
+																	<!-- end Lista de Matricula - Diplomados-->
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+                                        <table class="table table-centered mb-0 table-nowrap" id="inline-editable">
+                                        </table>
+                                    </div>
+                                    <!-- end .table-responsive-->
+                                <!-- end card-body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                        <!-- end col -->
+                    </div>
+                <!-- end row -->
+					
+				<!-- Hacer Financiacion-->
+				<div class="card">
+                                <div class="card-header">
+                                    <h4 class="header-title">Enfermeria - 1er Semestre</h4>
+									
+									<!--
+                                    <p class="text-muted mb-0">
+                                        Most common form control, text-based input fields. Includes support for all
+                                        HTML5 types: <code>text</code>, <code>password</code>, <code>datetime</code>,
+                                        <code>datetime-local</code>, <code>date</code>, <code>month</code>,
+                                        <code>time</code>, <code>week</code>, <code>number</code>, <code>email</code>,
+                                        <code>url</code>, <code>search</code>, <code>tel</code>, and <code>color</code>.
+                                    </p>
+									-->
+									
+                                </div>
+								
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <form>
+												<!--Estrato-->
+												<div class="mb-3">
+                                                    <label for="tipo-financiacion" class="form-label">Tipo de Financiación</label>
+                                                    <select class="form-select" id="tipo-financiacion">
+                                                        <option value="credito">Credito</option>
+														<option value="contado">Contado</option>
+                                                    </select>
+                                                </div>
+
+												<!--Etnia-->
+												<div class="mb-3">
+													<label for="costo-matricula" class="form-label">Costo de Matricula</label>
+													<input type="text" id="costo-matricula" class="form-control" inputmode="numeric" placeholder="$ 1.325.000" disabled>
+												</div>
+												
+												<!--EPS-->
+												<div class="mb-3">
+                                                    <label for="eps" class="form-label">Numero de cuotas</label>
+                                                    <select class="form-select" id="eps">
+														<option value="">Seleccione</option>
+														<option value="1">1 cuota</option>
+														<option value="2">2 cuotas</option>
+														<option value="3">3 cuotas</option>
+														<option value="4">4 cuotas</option>
+														<option value="5">5 cuotas</option>
+														<option value="6">6 cuotas</option>
+                                                    </select>
+                                                </div>
+
+												<!--Descuento-->
+												<div class="mb-3">
+													<label for="departamento_expulsor" class="form-label">Descuento N°2</label>
+													<select class="form-select" id="departamento_expulsor" name="departamento_expulsor">
+														<option value=""></option>
+														<option value="15">15 %</option>
+														<option value="30">30 %</option>
+														<option value="50">50 %</option>
+													</select>
+												</div>
+												
+												<!--Descuento N°3-->
+												<div class="mb-3">
+													<label for="departamento_expulsor" class="form-label">Descuento N°3</label>
+													<select class="form-select" id="departamento_expulsor" name="departamento_expulsor">
+														<option value=""></option>
+														<option value="15">15 %</option>
+														<option value="30">30 %</option>
+														<option value="50">50 %</option>
+													</select>
+												</div>
+												
+												<!--Incremento-->
+                                                <div class="mb-3">
+                                                    <label for="incremento" class="form-label">Incremento</label>
+                                                    <select class="form-select" id="incremento">
+                                                        <option value=""></option>
+														<option value="3">3 %</option>
+														<option value="5">5 %</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div> <!-- end col -->
+
+                                        <div class="col-lg-6">
+                                            <form>
+												
+												<!-- Sisben -->
+                                                <div class="mb-3">
+                                                    <label for="sisben" class="form-label">Generar Financiación</label>
+                                                    <select class="form-select" id="sisben">
+														<option value="mensual">Mensual</option>
+														<option value="quincenal">Quincenal</option>
+														<option value="semanal">Semanal</option>
+                                                    </select>
+                                                </div>
+												
+												<!-- zona residencia -->
+
+												<div class="mb-3 position-relative" id="datepicker1">
+													<label class="form-label">Fecha de Pago</label>
+													<input type="text" class="form-control" placeholder="Seleciona la fecha" data-provide="datepicker" data-date-today-highlight="true" data-date-container="#datepicker1">
+												</div>
+
+												<!--Descuento #1-->
+												<div class="mb-3">
+													<label for="departamento_expulsor" class="form-label">Descuento Inicial</label>
+													<select class="form-select" id="departamento_expulsor" name="departamento_expulsor">
+														<option value=""></option>
+														<option value="15">15 %</option>
+														<option value="30">30 %</option>
+														<option value="50">50 %</option>
+													</select>
+												</div>
+		
+												<!-- Tabla de costos total-->
+												<table class="table table-sm table-centered mb-0">
+													<thead>
+														<tr>
+															<th>Descuento</th>
+															<th>Monto</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>Descuento inicial</td>
+															<td>$120.000</span></td>
+														</tr>
+														<tr>
+															<td>Descuento inicial</td>
+															<td>$50.00</span></td>
+														</tr>
+														<tr>
+															<td>Descuento inicial</td>
+															<td>$0</span></td>
+														</tr>
+														<tr>
+															<td><h4>Total Matricula</h4></td>
+															<td><h4><span class="badge bg-primary">$1.115.049</span></h4></td>
+														</tr>
+													</tbody>
+												</table>
+												
+												<!--otro dato-->
+
+												
+                                            </form>
+                                        </div> <!-- end col -->
+                                    </div>
+                                    <!-- end row-->
+                                </div> <!-- end card-body -->
+                            </div>			
+				<!-- end Orden de Matricula -->
+				
+				<!-- Cuotas-->
+                <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="header-title mb-4">Generacion de Cuotas</h4>
+                                    <div class="table-responsive">
+                                        <table class="table table-centered mb-0 table-nowrap" id="btn-editable">
+                                            <thead>
+                                                <tr>
+                                                    <th>N°</th>
+                                                    <th>Nombre</th>
+                                                    <th>Fecha de Pago</th>
+                                                    <th>Valor de la cuota</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Tiger Nixon</td>
+                                                    <td>2016/04/25</td>
+                                                    <td>$320,800</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Garrett Winters</td>
+                                                    <td>2016/07/25</td>
+                                                    <td>$170,750</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Ashton Cox</td>
+                                                    <td>2019/01/12</td>
+                                                    <td>$86,000</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>Cedric Kelly</td>
+                                                    <td>2017/03/29</td>
+                                                    <td>$433,060</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>Airi Satou</td>
+                                                    <td>2018/11/28</td>
+                                                    <td>$162,700</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>6</td>
+                                                    <td>Brielle Williamson</td>
+                                                    <td>2017/12/02</td>
+                                                    <td>$372,000</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- end .table-responsive-->
+                                </div>
+                                <!-- end card-body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                        <!-- end col -->
+                    </div>
+                <!-- end row -->
+
+                </div> <!-- container -->
+
+            </div> <!-- content -->
+
+            {% include 'partials/footer.html' %}
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- END wrapper -->
+
+    {% include 'partials/right-sidebar.html' %}
+
+    {% include 'partials/footer-scripts.html' %}
+
+    <!-- Table Editable plugin-->
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <!-- Table editable init-->
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+	
+    <!-- Bootstrap Datepicker Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+				 
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+</body>
+
+</html>

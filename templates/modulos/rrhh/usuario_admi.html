@@ -1,0 +1,552 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<title>| {{ titulo_pagina }}</title>
+
+	{% include 'partials/title_meta.html' %}
+
+	{% include 'partials/head-css.html' %}
+	<link rel="stylesheet" href="{% static 'source/scss/new/pop-up.css' %}">
+</head>
+<style>
+	.btn-soft-orange {
+		background-color: rgba(253, 126, 20, 0.15);
+		color: #fd7e14;
+		border: none;
+		transition: background-color 0.1s, color 0.3s;
+	}
+
+	.btn-soft-orange:hover {
+		background-color: #fd7e14;
+		color: white;
+	}
+	
+</style>
+<body>
+	<div class="wrapper">
+
+		{% include 'partials/topbar.html' %}
+		{% include 'partials/horizontal-nav.html' %}
+		{% include 'partials/left-sidebar.html' %}
+
+		<div class="content-page">
+			<div class="content">
+				<div class="container-fluid">
+					{% include 'partials/page-title.html' %}
+				</div>
+				<div class="row">
+					<div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+								<div class="input-group">
+									<input type="text" id="buscar_documento" name="buscar_documento"
+										class="form-control" placeholder="Ingresar número de documento">
+								</div>
+							</div>
+							<div id="no_encontrado" class="text-center text-danger mb-2" style="display: none;">
+								No se encontró ningún usuario con ese número de documento.😁
+							</div>
+						</div>
+						<br>
+					</div>
+					<div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+								<div class="input-group">
+								</div>
+								<div class="d-flex justify-content-end align-items-center gap-2">
+									<button type="button" class="btn btn-soft-dark" data-popup="nuevoUsuarioPopup">
+										<i class="bi bi-person-add align-text-bottom me-1 fs-16 lh-1"></i>
+										Nuevo Usuario
+									</button>
+									<button type="button" class="btn btn-soft-purple" data-popup="ContratarPopup">
+										<i class="bi bi-folder-plus align-text-bottom me-1 fs-16 lh-1"></i>
+										Contratación Colaborador
+									</button>
+									<button type="button" class="btn btn-soft-purple" data-popup="DocentePopup">
+										<i class="bi bi-folder-plus align-text-bottom me-1 fs-16 lh-1"></i>
+										Contratación Docente
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="table-responsive">
+								<div class="profile-content">
+									<ul class="nav nav-underline nav-justified gap-0">
+										<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab"
+												data-bs-target="#aboutme" type="button" role="tab" aria-controls="home"
+												aria-selected="true" href="#aboutme">Administrativo</a>
+										</li>
+										<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+												data-bs-target="#user-activities" type="button" role="tab"
+												aria-controls="home" aria-selected="true"
+												href="#user-activities">Docentes</a>
+										</li>
+									</ul>
+
+									<div class="tab-content m-0 p-3">
+										<div class="tab-pane active" id="aboutme" role="tabpanel"
+											aria-labelledby="home-tab" tabindex="0">
+											<div class="row">
+												<div class="table-responsive-sm">
+													<table class="table table-striped table-centered mb-0" id="colaborador">
+														<thead>
+															<tr>
+																<th>Foto</th>
+																<th>Documento</th>
+																<th>Nombres</th>
+																<th>Apellidos</th>
+																<th>Sueldo</th>
+																<th>Editar</th>
+																<th>Horas extras</th>
+																<th>Descargar</th>
+																<th>Estado</th>
+															</tr>
+														</thead>
+														<tbody>
+															{% for usuario in usuarios_rol.COLABORADOR %}
+																{% with contratos=usuario.contrataciones_set.all|dictsortreversed:"fecha_inicio" %}
+																	{% for contrato in contratos %}
+																		{% if contrato.id_tipo_contrato.id_rol.nombre_rol == 'COLABORADOR' %}
+																			<tr>
+																				<td class="table-user">
+																					<img src="{% if usuario.foto_perfil %}{{ usuario.foto_perfil.url }}{% else %}/media/foto_usuarios/usuario.png{% endif %}"
+																						alt="Foto de usuario" class="rounded-circle">
+																				</td>
+																				<td>{{ contrato.id_usuario.numero_documento }}</td>
+																				<td>{{ contrato.id_usuario.nombres }}</td>
+																				<td>{{ contrato.id_usuario.apellidos }}</td>
+																				<td> 
+																					<span class="badge bg-success"> 
+																						$ {{ contrato.salario|floatformat:0|intcomma }}
+																					</span>
+																				</td>
+																				<td>
+																					<button type="button" class="btn btn-soft-info openPopupBtn"
+																						data-popup="EditarPopup{{ contrato.id_contratacion }}">
+																						<i class="bi bi-pencil-square align-text-bottom fs-16 lh-1"></i>
+																					</button>
+																				</td>
+																				<td>
+																					<button type="button" class="btn btn-soft-pink openPopupBtn"
+																						data-popup="HorasPopup{{ contrato.id_contratacion }}">
+																						<i class="bi bi-calendar-plus align-text-bottom fs-16 lh-1"></i>
+																					</button>
+																				</td>
+																				<td>
+																					<button type="button" class="btn btn-soft-orange generar-pdf" 
+																						data-contrato-id="{{ contrato.id_contratacion }}">
+																						<i class="bi bi-file-earmark-pdf"></i>
+																					</button>
+																				</td>
+																				<td>
+																					<input type="checkbox" class="form-check-input toggle-estado"
+																						data-contrato-id="{{ contrato.id_contratacion }}"
+																						{% if contrato.estado %} checked {% endif %} style="cursor: pointer;">
+																				</td>
+																			</tr>
+																		{% endif %}
+																	{% endfor %}
+																{% endwith %}
+															{% endfor %}
+														</tbody>
+													</table>
+													<div id="paginacionColaborador" class="mt-2"></div>																										
+												</div>
+											</div>
+										</div>
+										<div id="user-activities" class="tab-pane">
+											<div class="row">
+												<div class="table-responsive-sm">
+													<table class="table table-striped table-centered mb-0" id="docente">
+														<thead>
+															<tr>
+																<th>Foto</th>
+																<th>Documento</th>
+																<th>Nombres</th>
+																<th>Apellidos</th>
+																<th>Sueldo</th>
+																<th>Editar</th>
+																<th>Horas extras</th>
+																<th>Descargar</th>
+																<th>Estado</th>
+															</tr>
+														</thead>
+														<tbody>
+															{% for usuario in usuarios_rol.DOCENTE %}
+																{% with contratos=usuario.contrataciones_set.all|dictsortreversed:"fecha_inicio" %}
+																	{% for contrato in contratos %}
+																		{% if contrato.id_tipo_contrato.id_rol.nombre_rol == 'DOCENTE' %}
+																			<tr>
+																				<td class="table-user">
+																					<img src="{% if usuario.foto_perfil %}{{ usuario.foto_perfil.url }}{% else %}/media/foto_usuarios/usuario.png{% endif %}"
+																						alt="Foto de usuario" class="rounded-circle">
+																				</td>
+																				<td>{{ contrato.id_usuario.numero_documento }}</td>
+																				<td>{{ contrato.id_usuario.nombres }}</td>
+																				<td>{{ contrato.id_usuario.apellidos }}</td>
+																				<td> 
+																					<span class="badge bg-success"> 
+																						$ {{ contrato.salario|floatformat:0|intcomma }}
+																					</span>
+																				</td>
+																				<td>
+																					<button type="button" class="btn btn-soft-info openPopupBtn"
+																						data-popup="EditarPopup{{ contrato.id_contratacion }}">
+																						<i class="bi bi-pencil-square align-text-bottom fs-16 lh-1"></i>
+																					</button>
+																				</td>
+																				<td>
+																					<button type="button" class="btn btn-soft-pink openPopupBtn"
+																						data-popup="HorasPopup{{ contrato.id_contratacion }}">
+																						<i class="bi bi-calendar-plus align-text-bottom fs-16 lh-1"></i>
+																					</button>
+																				</td>
+																				<td>
+																					<button type="button" class="btn btn-soft-orange generar-pdf"
+																						data-contrato-id="{{ contrato.id_contratacion }}">
+																						<i class="bi bi-file-earmark-pdf"></i>
+																					</button>
+																				</td>
+																				<td>
+																					<input type="checkbox" class="form-check-input toggle-estado"
+																						data-contrato-id="{{ contrato.id_contratacion }}"
+																						{% if contrato.estado %} checked {% endif %} style="cursor: pointer;">
+																				</td>
+																			</tr>
+																		{% endif %}
+																	{% endfor %}
+																{% endwith %}
+															{% endfor %}
+														</tbody>
+													</table>
+													<div id="paginacionDocente" class="mt-2"></div>																										
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="nuevoUsuarioPopup" class="popup_o" style="display:none;">
+					<div class="popup-content_o">
+						<span data-close="nuevoUsuarioPopup" class="close">&times;</span>
+						{% include 'modulos/rrhh/administrativo/administrativo.html' %}
+					</div>
+				</div>
+
+				<div id="ContratarPopup" class="popup_o" style="display:none;">
+					<div class="popup-content_o">
+						<span data-close="ContratarPopup" class="close">&times;</span>
+						{% include 'modulos/rrhh/administrativo/contratacion.html' %}
+					</div>
+				</div>
+				<div id="DocentePopup" class="popup_o" style="display:none;">
+					<div class="popup-content_o">
+						<span data-close="DocentePopup" class="close">&times;</span>
+						{% include 'modulos/rrhh/administrativo/contratacion_docente.html' %}
+					</div>
+				</div>
+
+				{% for rol, usuarios in usuarios_rol.items %}
+					{% for usuario in usuarios %}
+						{% for contrato in usuario.contrataciones_set.all %}
+						<div id="EditarPopup{{ contrato.id_contratacion }}" class="popup_o" style="display:none;">
+							<div class="popup-content_o">
+								<span data-close="EditarPopup{{ contrato.id_contratacion }}" class="close">&times;</span>
+								{% include 'modulos/rrhh/administrativo/usuario_editar.html' %}
+							</div>
+						</div>
+
+						<div id="HorasPopup{{ contrato.id_contratacion }}" class="popup_o" style="display:none;">
+							<div class="popup-content_o">
+								<span data-close="HorasPopup{{ contrato.id_contratacion }}" class="close">&times;</span>
+								{% include 'modulos/rrhh/administrativo/horas.html' %}
+							</div>
+						</div>
+						{% endfor %}
+					{% endfor %}
+				{% endfor %}
+		</div>
+
+	</div>
+
+	{% include 'partials/footer.html' %}
+
+	{% include 'partials/right-sidebar.html' %}
+
+	{% include 'partials/footer-scripts.html' %}
+
+	<!-- Table Editable plugin-->
+	<script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+	<!-- Table editable init-->
+	<script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+	<!-- Bootstrap Datepicker Plugin js -->
+	<script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+	<!-- App js -->
+	<script src="{% static 'js/app.min.js' %}"></script>
+
+	<!-- Po-put -->
+	<script src="{% static 'js/pop-pup.js' %}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
+{% if messages %}
+<script>
+	{% for message in messages %}
+	Swal.fire({
+		icon: '{% if message.tags == "success" %}success{% else %}error{% endif %}',
+		title: '{{ message }}',
+		toast: true,
+		position: 'top-end',
+		showConfirmButton: false,
+		timer: 3000,
+		timerProgressBar: true,
+	});
+	{% endfor %}
+</script>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".toggle-estado").forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+            let contratoId = this.getAttribute("data-contrato-id");
+            let nuevoEstado = this.checked;
+            let checkbox = this;
+
+            if (!nuevoEstado) {
+                fetch("{% url 'Incatec:estado' %}") 
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            let opciones = "<option value='' selected disabled>SELECCIONE EL TIPO DE DESPIDO</option>";
+                            data.tipos.forEach(tipo => {
+                                opciones += `<option value="${tipo.id_tipo_despido}">${tipo.nombre_despido}</option>`;
+                            });
+
+                            Swal.fire({
+                                title: "Finalización de Contrato.",
+                                html: `
+                                    <div style="text-align: left; margin-bottom: 10px;">
+                                        <label for="tipo_despido"><b>Motivo de despido:</b></label>
+                                        <select id="tipo_despido" class="form-select mt-2" style="width: 100%; padding: 10px; border-radius: 6px; font-size: 15px;">
+                                            ${opciones}
+                                        </select>
+                                    </div>
+                                    <div style="text-align: left;">
+                                        <label for="fecha_fin"><b>Fecha de finalización:</b></label>
+                                        <input type="date" id="fecha_fin" class="form-select mt-2" value="${new Date().toISOString().split('T')[0]}" style="width: 100%; padding: 10px; border-radius: 6px; font-size: 15px;">
+                                    </div>
+                                `,
+                                
+                                
+                                showCancelButton: true,
+                                confirmButtonText: "Confirmar",
+                                cancelButtonText: "Cancelar",
+                                customClass: {
+                                    confirmButton: 'btn btn-soft-primary',
+                                    cancelButton: 'btn btn-soft-danger'
+                                },
+                                preConfirm: () => {
+                                    let tipoDespido = document.getElementById("tipo_despido").value;
+                                    let fechaFin = document.getElementById("fecha_fin").value;
+
+                                    if (!tipoDespido || !fechaFin) {
+                                        return Swal.showValidationMessage("Debe seleccionar un motivo de despido y una fecha de finalización.");
+                                    }
+
+                                    return { tipoDespido, fechaFin };
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    cambiarEstadoContrato(contratoId, nuevoEstado, result.value.tipoDespido, result.value.fechaFin);
+                                } else {
+                                    checkbox.checked = true;
+                                }
+                            });
+                        }
+                    });
+            } else {
+                cambiarEstadoContrato(contratoId, nuevoEstado, null, null);
+            }
+        });
+    });
+});
+
+function cambiarEstadoContrato(contratoId, nuevoEstado, idTipoDespido, fechaFin) {
+    fetch("{% url 'Incatec:estado' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+        body: JSON.stringify({ 
+            "contrato_id": contratoId, 
+            "estado": nuevoEstado, 
+            "id_tipo_despido": idTipoDespido, 
+            "fecha_fin": fechaFin
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: data.message,
+                timer: 2000,
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false
+            }).then(() => {
+                location.reload();
+            });
+        } else {
+            Swal.fire("Error", data.error, "error");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        Swal.fire("Error", "No se pudo conectar al servidor.", "error");
+    });
+}
+</script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".generar-pdf").forEach(function (button) {
+        button.addEventListener("click", function () {
+            let contratoId = this.getAttribute("data-contrato-id");
+
+            window.location.href = `/incatec/generar_contrato/${contratoId}/`;
+        });
+    });
+});
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const tablasPaginables = [
+			{ tablaId: 'colaborador', paginacionId: 'paginacionColaborador' },
+			{ tablaId: 'docente', paginacionId: 'paginacionDocente' }
+		];
+
+		const filasPorPagina = 5;
+
+		tablasPaginables.forEach(config => {
+			const tabla = document.getElementById(config.tablaId);
+			const paginacion = document.getElementById(config.paginacionId);
+			if (!tabla || !paginacion) return;
+
+			const tbody = tabla.querySelector('tbody');
+			const filas = Array.from(tbody.querySelectorAll('tr'));
+			const totalPaginas = Math.ceil(filas.length / filasPorPagina);
+			let paginaActual = 1;
+
+			function mostrarPagina(pagina) {
+				tbody.innerHTML = '';
+				const inicio = (pagina - 1) * filasPorPagina;
+				const final = inicio + filasPorPagina;
+				const visibles = filas.slice(inicio, final);
+				visibles.forEach(row => tbody.appendChild(row));
+				renderizarPaginacion();
+			}
+
+			function renderizarPaginacion() {
+				paginacion.innerHTML = '';
+				const ul = document.createElement('ul');
+				ul.className = 'pagination justify-content-center';
+
+				ul.appendChild(crearItem('Anterior', paginaActual > 1 ? paginaActual - 1 : null));
+
+				for (let i = 1; i <= totalPaginas; i++) {
+					ul.appendChild(crearItem(i, i));
+				}
+
+				ul.appendChild(crearItem('Siguiente', paginaActual < totalPaginas ? paginaActual + 1 : null));
+
+				paginacion.appendChild(ul);
+			}
+
+			function crearItem(label, pagina) {
+				const li = document.createElement('li');
+				li.className = `page-item ${pagina === null ? 'disabled' : ''} ${pagina === paginaActual ? 'active' : ''}`;
+				const a = document.createElement('a');
+				a.className = 'page-link';
+				a.href = '#';
+
+				if (label === 'Anterior') {
+					a.innerHTML = '<i class="bi bi-chevron-left"></i>';
+				} else if (label === 'Siguiente') {
+					a.innerHTML = '<i class="bi bi-chevron-right"></i>';
+				} else {
+					a.innerText = label;
+				}
+
+				if (pagina !== null) {
+					a.addEventListener('click', function (e) {
+						e.preventDefault();
+						paginaActual = pagina;
+						mostrarPagina(paginaActual);
+					});
+				}
+
+				li.appendChild(a);
+				return li;
+			}
+
+			mostrarPagina(paginaActual);
+		});
+	});
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function (){
+		const inputBuscar = document.getElementById('buscar_documento');
+		const mensaje = document.getElementById('no_encontrado');
+		const tablas = ['colaborador', 'docente'];
+
+		inputBuscar.addEventListener('input', function() {
+			const termino = inputBuscar.value.toLowerCase();
+			let coincidencias = false;
+
+			tablas.forEach(idTabla => {
+				const tabla = document.getElementById(idTabla);
+				if(!idTabla) return;
+
+				const filas = tabla.querySelectorAll('tbody tr');
+
+				filas.forEach(fila=> {
+					const colDocumento = fila.cells[1].textContent.toLowerCase();
+
+					if(colDocumento.includes(termino)) {
+						fila.style.display = '';
+						coincidencias = true;
+					}else {
+						fila.style.display = 'none';
+					}
+				});
+			});
+
+			if(termino && !coincidencias) {
+				mensaje.style.display = 'block';
+			} else {
+				mensaje.style.display = 'none';
+			}
+		});
+	});
+</script>

@@ -1,0 +1,62 @@
+<style>
+/* Clase personalizada para el borde inferior debajo del texto */
+.card-header.custom-border {
+    border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+    padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -10px; /* Elimina márgenes del título */
+    padding: 5px;
+}
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white ">
+        <h2 class="text-center text-purple">Asignar calificación a los modúlos</h2>
+    </div>
+</div>
+<div class="container my-3">
+    <form>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="programas" class="form-label">Programas</label>
+                <select class="form-select" id="programas">
+                    <option value="">Seleccione un programa</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="semestres" class="form-label">Semestres</label>
+                <select class="form-select" id="semestres">
+                    <option value="">Seleccione un semestre</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="modulos" class="form-label">Módulos</label>
+                <select class="form-select" id="modulos">
+                    <option value="">Seleccione un módulo</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="tipoCalificacion" class="form-label">Tipo de Calificación</label>
+                <select class="form-select" id="tipoCalificacion">
+                    <option value="Predeterminado">Predeterminado...</option>
+                    <option value="Predeterminado">3 Notas: 3 notas de 14% y una nota de 58%</option>
+                    <option value="Predeterminado">3 Notas: 3 notas de 33% y una nota de 34%</option>
+                    <option value="Predeterminado">3 Notas: 2 notas de 30% y una nota de 40%</option>
+                    <option value="Predeterminado">3 Notas: 2 notas de 33% y una nota de 34%</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-soft-purple">Guardar</button>
+        </div>
+    </form>
+</div>

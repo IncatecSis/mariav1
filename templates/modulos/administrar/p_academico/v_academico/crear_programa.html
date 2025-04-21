@@ -1,0 +1,133 @@
+<style>
+  /* Clase personalizada para el borde inferior debajo del texto */
+  .card-header.custom-border {
+    border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+    padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    position: relative;
+  }
+
+  .card-header.custom-border h2 {
+    margin-top: -10px; /* Elimina márgenes del título */
+    padding: 5px;
+  }
+</style>
+<div class="container mt-2">
+  <div class="card">
+    <div class="card-header custom-border bg-white">
+      <h2 class="text-center text-purple">Creación de Programas</h2>
+    </div>
+  </div>
+  <form>
+    <!-- Primera fila: Código, Tipo, Nombre del Programa -->
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <label for="codigo" class="form-label">Código</label>
+        <input type="text" class="form-control" id="codigo" />
+      </div>
+      <div class="col-md-3">
+        <label for="tipo" class="form-label">Tipo</label>
+        <select class="form-select" id="tipo">
+          <option selected>Seleccione</option>
+          <option value="Tecnicos">Tecnicós</option>
+          <option value="Diplomados">Diplomados</option>
+          <option value="Cursos">Cursos</option>
+          <option value="Otro">Otro</option>
+          <!-- Opciones -->
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="nombrePrograma" class="form-label"
+          >Nombre Completo del Programa</label
+        >
+        <input type="text" class="form-control" id="nombrePrograma" />
+      </div>
+    </div>
+
+    <!-- Segunda fila: Tipo de Calificación, Escuela, Centro de Costo -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="calificacion" class="form-label"
+          >Tipo de Calificación</label
+        >
+        <select id="calificacion" class="form-select">
+          <option selected>Notas Educación Continua</option>
+          <!-- Opciones -->
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="escuela" class="form-label">Escuela</label>
+        <select id="escuela" class="form-select">
+          <option selected>Seleccione</option>
+          <!-- Opciones -->
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="centroCosto" class="form-label">Centro de Costo</label>
+        <select id="centroCosto" class="form-select">
+          <option selected>Seleccione</option>
+          <!-- Opciones -->
+        </select>
+      </div>
+    </div>
+
+    <!-- Tercera fila: Fechas de inicio y vencimiento -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="inicio" class="form-label">Inicio</label>
+        <input type="date" class="form-control" id="inicio" />
+      </div>
+      <div class="col-md-6">
+        <label for="vencimiento" class="form-label">Vencimiento</label>
+        <input type="date" class="form-control" id="vencimiento" />
+      </div>
+    </div>
+
+    <!-- Quinta fila: Opciones de mostrar inscripción, matrícula, modalidad -->
+    <div class="col mb-3">
+      <div class="card p-2">
+        <label class="form-label">Opciones</label>
+        <div class="d-flex flex-wrap">
+          <div class="form-check me-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="mostrarInscripcion"
+              value="mostrarInscripcion"
+            />
+            <label class="form-check-label" for="mostrarInscripcion"
+              >Inscripción en Línea</label
+            >
+          </div>
+          <div class="form-check me-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="mostrarMatricula"
+              value="mostrarMatricula"
+            />
+            <label class="form-check-label" for="mostrarMatricula"
+              >Matrícula Virtual</label
+            >
+          </div>
+          <div class="form-check me-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="modalidadPresencial"
+              value="modalidadPresencial"
+            />
+            <label class="form-check-label" for="modalidadPresencial"
+              >Modalidad Híbrida</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Botón de envío -->
+    <div class="row mb-3">
+      <div class="col-md-12 text-center">
+        <button type="submit" class="btn btn-soft-purple">Crear</button>
+      </div>
+    </div>
+  </form>
+</div>

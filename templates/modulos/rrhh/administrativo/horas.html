@@ -1,0 +1,92 @@
+<body class="bg-light">
+    <div class="container mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header text-center bg-success text-white">
+                <h5>REGISTRO HORAS EXTRA EMPLEADO: {{ contrato.id_usuario.nombres }} {{ contrato.id_usuario.apellidos }} <span class="text-uppercase"></span></h5>
+            </div>
+            <div class="card-body">
+                <form id="registroHorasForm">
+                    <div class="mb-3">
+                        <input type="date" class="form-control" id="fechaActividad" required>
+                    </div>
+
+                    <div class="row">
+                        <!-- Primera columna de conceptos -->
+                        <div class="col-md-6">
+                            <table class="table table-striped table-centered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th>Total Horas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Hora extra diurna Ordinaria</td>
+                                        <td>
+                                            <input type="number" class="form-control" min="0" value="0" required>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hora Extra Nocturna Ordinaria</td>
+                                        <td>
+                                            <input type="number" class="form-control" min="0" value="0" required>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hora Extra Diurna Dominical o Festiva</td>
+                                        <td>
+                                            <input type="number" class="form-control" min="0" value="0" required>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Recargo Nocturno Dominical y Festivo</td>
+                                        <td>
+                                            <input type="number" class="form-control" min="0" value="0" required>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Segunda columna de conceptos -->
+                        <div class="col-md-6">
+                            <table class="table table-striped table-centered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th>Total Horas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Recargo Nocturna</td>
+                                        <td>
+                                            <input type="number" class="form-control" min="0" value="0" required>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hora Dominical o Festiva</td>
+                                        <td>
+                                            <input type="number" class="form-control" min="0" value="0" required>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hora Extra Nocturna Dominical o Festiva</td>
+                                        <td>
+                                            <input type="number" class="form-control" min="0" value="0" required>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-success">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>

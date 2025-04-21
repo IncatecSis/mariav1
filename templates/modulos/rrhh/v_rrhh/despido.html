@@ -1,0 +1,110 @@
+<style>
+    .card-header.custom-border {
+        border-bottom: 3px solid #2263b8; 
+        padding-bottom: 10px; 
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin-top: -10px;
+        padding: 5px;
+        color: #2263b8;
+    }
+    .form-check-input {
+        margin-top: 10px;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center">Causales de Despido</h2>
+    </div>
+</div>
+<button class="btn btn-soft-success toggleBtn" data-target="despido">
+    <i class="bi bi-plus"></i> Crear
+</button>
+<div class="card" id="despido" style="display: none;">
+    <div class="container my-3">
+        <form class="row g-3" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="tipo" value="despidos">
+            <input type="hidden" name="id_tipo_despido" id="idDespido">
+
+            <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input type="text" id="nombre_tipo_despido" name="nombre_despido" class="form-control" style="text-transform: uppercase;">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Descripción</label>
+                <input type="text" id="descripcion_despido" name="descripcion" class="form-control" style="text-transform: uppercase;" maxlength="250">
+            </div>
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-soft-success">
+                    Agregar
+                </button>
+            </div>
+        </form>
+        <br>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-centered mt-2">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for despidos in despido %}
+            <tr>
+                <td>{{ despidos.nombre_despido }}</td>
+                <td>{{ despidos.descripcion }}</td>
+                <td>
+                    <button class="btn btn-soft-info btn-sm btnDespido"
+                        data-id="{{ despidos.id_tipo_despido }}"
+                        data-nombre="{{ despidos.nombre_despido }}"
+                        data-descripcion="{{ despidos.descripcion }}">
+                        <i class="bi bi-pencil"></i> 
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if messages %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{% if message.tags == "success" %}success{% else %}warning{% endif %}',
+                title: '{{ message }}',
+                timer: 2000,
+                position: 'top-end',
+                timerProgressBar: true,
+                toast: true,
+                showConfirmButton: false,
+            });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.btnDespido').forEach(btn => {
+            btn.addEventListener('click', function () {
+                let idDespido = this.getAttribute('data-id');
+                let nombre = this.getAttribute('data-nombre');
+                let descripcion = this.getAttribute('data-descripcion');
+
+                document.getElementById('idDespido').value = idDespido;
+                document.getElementById('nombre_tipo_despido').value = nombre;
+                document.getElementById('descripcion_despido').value = descripcion;
+
+                document.getElementById('despido').style.display = 'block';
+            })
+        })
+    })
+</script>

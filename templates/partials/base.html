@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    {% block head %}
+        {% include '../partials/title_meta.html' %}
+        {% include '../partials/head-css.html' %}
+    {% endblock %}
+</head>
+
+<body>
+    <!-- Wrapper for the whole page -->
+    <div class="wrapper">
+        {% block topbar %}
+            {% include '../partials/topbar.html' %}
+        {% endblock %}
+
+        {% block sidebar %}
+            {% include '../partials/left-sidebar.html' %}
+        {% endblock %}
+
+        <!-- Main content of the page -->
+        <div class="content-page">
+            <div class="content">
+                <div class="container-fluid">
+                    {% block content %}
+                    <!-- Content will be inserted here from the specific page -->
+                    {% endblock %}
+                </div>
+            </div>
+
+            <!-- Footer -->
+            {% block footer %}
+                {% include '../partials/footer.html' %}
+            {% endblock %}
+        </div>
+
+    </div>
+
+    <!-- Barra fija inferior para sede y periodo -->
+    <div class="fixed-bottom fixed-bottom-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <strong>Sede Seleccionada:</strong> {{ sede.nombre }} 
+                </div>
+                <div class="col">
+                    <strong>Periodo Actual:</strong> {{ periodo.año }} - {{ periodo.semestre }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    {% block scripts %}
+        {% include '../partials/footer-scripts.html' %}
+    {% endblock %}
+
+    <!-- Custom JavaScript -->
+    <script src="{% static 'js/vendor/moment.min.js' %}"></script>
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+    <!-- Estilo para la barra fija inferior -->
+    <style>
+        .fixed-bottom-bar {
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+    </style>
+
+</body>
+</html>

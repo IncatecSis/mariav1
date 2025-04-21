@@ -1,0 +1,253 @@
+{% load static %}
+<!-- =============main.html======================== -->
+<!DOCTYPE html>
+<html lang="es">
+<!-- ============================================================== -->
+
+<head>
+    <title>{{ titulo_pagina }}</title>
+
+	{% include 'partials/title_meta.html' %}
+
+	{% include 'partials/head-css.html' %}
+    <link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/pop-up_crear_m.css' %}">
+
+    <!-- css eliminar -->
+    <link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/pop-up_eliminar.css' %}">
+    
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div class="wrapper">
+
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+<div class="content-page">
+    <div class="content">
+                <!-- Start Content-->
+                <div class="container-fluid">
+
+                    {% include 'partials/page-title.html' %}
+					
+				</div> <!-- container -->
+
+				<!-- consultar estudiante -->
+				<div class="row">
+					<!-- consultar estudiante -->
+					<div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+								<div class="input-group">
+									<input type="text" id="example-input1-group2" name="example-input1-group2" class="form-control" placeholder="Consulta los modúlos">
+								</div>
+							</div>
+						</div>
+						<br>
+					</div>
+					
+					<!-- Bloque de botones -->
+					<div class="col-lg-8 my-col">
+						<div class="card">
+							<div class="card-body">
+								<div class="input-group">
+								</div>
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    <!-- Botón para abrir el pop-up -->
+                                    <button type="button" class="btn btn-soft-purple" data-popup="crear_modulo_Popup">
+                                    <i class="mdi mdi-calendar-sync align-text-bottom me-1 fs-16 lh-1"></i>
+                                        Crear Modúlos
+                                    </button>
+                                </div>
+							</div>
+						</div>
+					</div>
+				</div>	
+				
+				<!-- Tabla Usuarios (Administrativo-Docentes) -->
+                <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                    <div class="table-responsive-sm">
+                                        <!-- Tabla de módulos -->
+                                        <table class="table table-striped table-centered mb-0">
+                                            <thead class="border-0 border-bottom border-purple border-3">
+                                                <tr>
+                                                    <th class="text-purple">Módulo</th>
+                                                    <th class="text-purple">Abreviado</th>
+                                                    <th class="text-purple">Código C.N.O.</th>
+                                                    <th class="text-purple">Norma Según C.N.O.</th>
+                                                    <th class="text-purple">Pre.</th>
+                                                    <th class="text-purple">Acad.</th>
+                                                    <th class="text-purple">Fin.</th>
+                                                    <th class="text-purple">Prac.</th>
+                                                    <th class="text-purple">Edit</th>
+                                                    <th class="text-purple">Del</th>
+                                                </tr>                                   
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Atención al Cliente</td>
+                                                    <td>COMUNICACIÓN</td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-soft-info btn-sm">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-soft-danger btn-sm" data-popup="eliminar_popup">
+                                                            <i class="bi bi-x-circle"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Comunicación</td>
+                                                    <td>COMUNICACIÓN</td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-soft-info btn-sm">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-soft-danger btn-sm" data-popup="eliminar_popup">
+                                                            <i class="bi bi-x-circle"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Emprendimiento</td>
+                                                    <td>EMPRENDIMIENTO</td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-soft-info btn-sm">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-soft-danger btn-sm" data-popup="eliminar_popup">
+                                                            <i class="bi bi-x-circle"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- end .table-responsive-->
+                                <!-- end card-body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                        <!-- end col -->
+                </div>
+                <!-- end row -->
+					
+                <!-- Pop-up crear programa -->
+                <div id="crear_modulo_Popup" class="popup_c_m" style="display:none;">
+                    <div class="popup-content_c_m">
+                        <span data-close="crear_modulo_Popup" class="close">&times;</span>
+                        {% include 'modulos/administrar/p_academico/v_academico/seccion_modulo/crear_modulo.html' %}
+                    </div>
+                </div>
+                <!-- end crear programa -->
+                
+                
+                <!--crear btn eliminar -->
+                <div id="eliminar_popup" class="popup_e" style="display:none;">
+                    <div class="popup-content_e">
+                        <span data-close="eliminar_popup" class="close">&times;</span>
+                        {% include 'modulos/administrar/p_academico/v_academico/seccion_modulo/eliminar_cont.html' %}
+                    </div>
+                </div>
+                <!-- end btn eliminar -->
+    </div> <!-- container -->
+
+</div> <!-- content -->
+
+            {% include 'partials/footer.html' %}
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    <!-- END wrapper -->
+
+    {% include 'partials/right-sidebar.html' %}
+
+    {% include 'partials/footer-scripts.html' %}
+
+    <!-- Table Editable plugin-->
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <!-- Table editable init-->
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <!-- Bootstrap Datepicker Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+    
+    <!-- Po-put -->
+    <script src="{% static 'js/pop-pup.js' %}"></script>
+</body>
+
+</html>

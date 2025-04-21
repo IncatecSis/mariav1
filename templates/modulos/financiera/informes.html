@@ -1,0 +1,437 @@
+{% load static %}
+{% include 'partials/main.html' %}
+
+<head>
+	<title>| {{ titulo_pagina }}</title>
+	{% include 'partials/title_meta.html' %}
+    <!-- Select2 css -->
+    <link href="{% static 'css/vendor/select2.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Daterangepicker css -->
+    <link href="{% static 'css/vendor/daterangepicker.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Bootstrap Touchspin css -->
+    <link href="{% static 'css/vendor/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Bootstrap Datepicker css -->
+    <link href="{% static 'css/vendor/bootstrap-datepicker.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Bootstrap Timepicker css -->
+    <link href="{% static 'css/vendor/bootstrap-timepicker.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Flatpickr Timepicker css -->
+    <link href="{% static 'css/vendor/flatpickr.min.css' %}" rel="stylesheet" type="text/css" />
+
+    {% include 'partials/head-css.html' %} 
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div class="wrapper">
+
+        {% include 'partials/menu.html' %}
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- Start Content-->
+                <div class="container-fluid">
+
+                    {% include 'partials/page-title.html' %}
+
+					<!-- Datos automaticos -->
+					<div class="row">
+                        <div class="col-xxl-3 col-sm-6">
+                            <div class="card widget-flat text-bg-pink">
+                                <div class="card-body">
+                                    <div class="float-end">
+                                        <i class="ri-eye-line widget-icon"></i>
+                                    </div>
+                                    <h6 class="text-uppercase mt-0" title="Customers">Daily Visits</h6>
+                                    <h2 class="my-2">8,652</h2>
+                                    <p class="mb-0">
+                                        <span class="badge bg-white bg-opacity-10 me-1">2.97%</span>
+                                        <span class="text-nowrap">Since last month</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div> <!-- end col-->
+
+                        <div class="col-xxl-3 col-sm-6">
+                            <div class="card widget-flat text-bg-purple">
+                                <div class="card-body">
+                                    <div class="float-end">
+                                        <i class="ri-wallet-2-line widget-icon"></i>
+                                    </div>
+                                    <h6 class="text-uppercase mt-0" title="Customers">Revenue</h6>
+                                    <h2 class="my-2">$9,254.62</h2>
+                                    <p class="mb-0">
+                                        <span class="badge bg-white bg-opacity-10 me-1">18.25%</span>
+                                        <span class="text-nowrap">Since last month</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div> <!-- end col-->
+
+                        <div class="col-xxl-3 col-sm-6">
+                            <div class="card widget-flat text-bg-info">
+                                <div class="card-body">
+                                    <div class="float-end">
+                                        <i class="ri-shopping-basket-line widget-icon"></i>
+                                    </div>
+                                    <h6 class="text-uppercase mt-0" title="Customers">Orders</h6>
+                                    <h2 class="my-2">753</h2>
+                                    <p class="mb-0">
+                                        <span class="badge bg-white bg-opacity-25 me-1">-5.75%</span>
+                                        <span class="text-nowrap">Since last month</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div> <!-- end col-->
+
+                        <div class="col-xxl-3 col-sm-6">
+                            <div class="card widget-flat text-bg-primary">
+                                <div class="card-body">
+                                    <div class="float-end">
+                                        <i class="ri-group-2-line widget-icon"></i>
+                                    </div>
+                                    <h6 class="text-uppercase mt-0" title="Customers">Users</h6>
+                                    <h2 class="my-2">63,154</h2>
+                                    <p class="mb-0">
+                                        <span class="badge bg-white bg-opacity-10 me-1">8.21%</span>
+                                        <span class="text-nowrap">Since last month</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div> <!-- end col-->
+                    </div>
+					<!-- end Datos automaticos -->
+					
+					<!-- Filtros -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+											 <!-- Predefined Date Ranges -->
+                                            <div>
+                                                <label class="form-label">Rango de la Consulta</label>
+                                                <div id="reportrange" class="form-control" data-toggle="date-picker-range" data-target-display="#selectedValue" data-cancel-class="btn-light">
+                                                    <i class="ri-calendar-2-line"></i>&nbsp;
+                                                    <span id="selectedValue"></span> <i class="ri-arrow-down-s-line"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                             <!-- Single Date Picker -->
+												<div class="mb-3">
+                                                    <label for="tipo-documento" class="form-label">Conceptos</label>
+                                                    <select class="form-select" id="tipo-documento">
+														<option value="todos">Mostrar Todos...</option>
+														<option value="alquiler_salon">Alquiler de Salon</option>
+														<option value="arriendo_cafeteria">Arriendo de Cafeteria</option>
+														<option value="cambio_jornada">Cambio de Jornada</option>
+														<option value="cambio_programa">Cambio de Programa</option>
+														<option value="cartilla_norma_icontec">Cartilla y Norma Icontec</option>
+														<option value="certificado_buena_conducta">Certificado de Buena Conducta</option>
+														<option value="certificado_notas">Certificado de Notas</option>
+														<option value="certificado_practicas">Certificado de Practicas</option>
+														<option value="certificado_general_notas">Certificado General de Notas</option>
+														<option value="congreso_x">Congreso x</option>
+														<option value="constancia_estudios">Constancia de Estudios</option>
+														<option value="contenido_curricular_semestre">Contenido de Curricular por semestre</option>
+														<option value="contenido_programatico_ciclo">Contenido Programatico por Ciclo o Semestre</option>
+														<option value="curso_primero_auxilios">Curso de Primero Auxilios</option>
+														<option value="curso_altura">Curso de Altura</option>
+														<option value="curso_aseo_hospitalario">Curso de Aseo Hospitalario</option>
+														<option value="curso_excel_avanzado">Curso de Excel Avanzado</option>
+														<option value="curso_ingles_conversacional">Curso de Ingles Conversacional</option>
+                                                    </select>
+                                                </div>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- end card-body -->
+                            </div> <!-- end card-->
+                        </div> <!-- end col -->
+                    </div>
+                    <!-- end Filtros -->
+
+					<!-- Informes -->
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="table-responsive">
+									<div class="profile-content">
+										<ul class="nav nav-underline nav-justified gap-0">
+											<li class="nav-item">
+												<a class="nav-link active" data-bs-toggle="tab" data-bs-target="#pagosRecaudados" type="button" role="tab" aria-controls="pagosRecaudados" aria-selected="true" href="#pagosRecaudados">Pagos Recaudados</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" data-bs-toggle="tab" data-bs-target="#cuadreCajero" type="button" role="tab" aria-controls="cuadreCajero" aria-selected="true" href="#cuadreCajero">Cuadre por Cajero</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" data-bs-toggle="tab" data-bs-target="#recibosCaja" type="button" role="tab" aria-controls="recibosCaja" aria-selected="true" href="#recibosCaja">Recibos de Caja</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" data-bs-toggle="tab" data-bs-target="#notasCreditoDebito" type="button" role="tab" aria-controls="notasCreditoDebito" aria-selected="true" href="#notasCreditoDebito">Notas de Crédito/Débito</a>
+											</li>
+										</ul>
+
+										<div class="tab-content m-0 p-3">
+											<!-- Tab Pagos Recaudados -->
+											<div class="tab-pane active" id="pagosRecaudados" role="tabpanel" aria-labelledby="pagosRecaudados-tab" tabindex="0">
+												<div class="table-responsive-sm">
+													<table class="table table-striped table-centered mb-0">
+														<thead>
+															<tr>
+																<th>Informe</th>
+																<th class="text-center">Acción</th> <!-- Centrado -->
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td class="table-user">1. Informe Pagos Recaudados</td>
+																<td class="text-center"> <!-- Centrado -->
+																	<button type="button" class="btn btn-soft-dark">
+																		<i class="mdi mdi-file-pdf-box align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-primary">
+																		<i class="mdi mdi-microsoft-excel align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-purple">
+																		<i class="mdi mdi-web align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																</td>
+															</tr>
+															<tr>
+																<td class="table-user">1.1 Mostrar Pagos Recaudados</td>
+																<td class="text-center"> <!-- Centrado -->
+																	<button type="button" class="btn btn-soft-dark">
+																		<i class="mdi mdi-file-pdf-box align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-primary">
+																		<i class="mdi mdi-microsoft-excel align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-purple">
+																		<i class="mdi mdi-web align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																</td>
+															</tr>
+															<tr>
+																<td class="table-user text-danger">2. Informe Pagos Recaudados - ANULADOS</td>
+																<td class="text-center"> <!-- Centrado -->
+																	<button type="button" class="btn btn-soft-dark">
+																		<i class="mdi mdi-file-pdf-box align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-primary">
+																		<i class="mdi mdi-microsoft-excel align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-purple">
+																		<i class="mdi mdi-web align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																</td>
+															</tr>
+															<!-- Más informes aquí -->
+														</tbody>
+													</table>
+												</div>
+											</div> 
+
+											<!-- Tab Cuadre por Cajero -->
+											<div id="cuadreCajero" class="tab-pane">
+												<div class="table-responsive-sm">
+													<table class="table table-striped table-centered mb-0">
+														<thead>
+															<tr>
+																<th>Informe</th>
+																<th class="text-center">Acción</th> <!-- Centrado -->
+															</tr>
+														</thead>
+														<tbody>
+															<!-- Informe del Cuadre por Cajero -->
+															<tr>
+																<td class="table-user">3. Cuadre por Cajero (Consolidado)</td>
+																<td class="text-center"> <!-- Centrado -->
+																	<button type="button" class="btn btn-soft-dark">
+																		<i class="mdi mdi-file-pdf-box align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-primary">
+																		<i class="mdi mdi-microsoft-excel align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-purple">
+																		<i class="mdi mdi-web align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																</td>
+															</tr>
+															<tr>
+																<td class="table-user">4. Cuadre por Cajero (Detalle)</td>
+																<td class="text-center"> <!-- Centrado -->
+																	<button type="button" class="btn btn-soft-dark">
+																		<i class="mdi mdi-file-pdf-box align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-primary">
+																		<i class="mdi mdi-microsoft-excel align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-purple">
+																		<i class="mdi mdi-web align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																</td>
+															</tr>
+															<!-- Más informes aquí -->
+														</tbody>
+													</table>
+												</div>
+											</div>
+
+											<!-- Tab Recibos de Caja -->
+											<div id="recibosCaja" class="tab-pane">
+												<div class="table-responsive-sm">
+													<table class="table table-striped table-centered mb-0">
+														<thead>
+															<tr>
+																<th>Informe</th>
+																<th class="text-center">Acción</th> <!-- Centrado -->
+															</tr>
+														</thead>
+														<tbody>
+															<!-- Informe Recibos de Caja -->
+															<tr>
+																<td class="table-user">7. Recibos de Caja x Fecha</td>
+																<td class="text-center"> <!-- Centrado -->
+																	<button type="button" class="btn btn-soft-dark">
+																		<i class="mdi mdi-file-pdf-box align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-primary">
+																		<i class="mdi mdi-microsoft-excel align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-purple">
+																		<i class="mdi mdi-web align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																</td>
+															</tr>
+															<!-- Más informes aquí -->
+														</tbody>
+													</table>
+												</div>
+											</div>
+
+											<!-- Tab Notas de Crédito/Débito -->
+											<div id="notasCreditoDebito" class="tab-pane">
+												<div class="table-responsive-sm">
+													<table class="table table-striped table-centered mb-0">
+														<thead>
+															<tr>
+																<th>Informe</th>
+																<th class="text-center">Acción</th> <!-- Centrado -->
+															</tr>
+														</thead>
+														<tbody>
+															<!-- Informe Notas de Crédito/Débito -->
+															<tr>
+																<td class="table-user">11. Informe Nota Créditos</td>
+																<td class="text-center"> <!-- Centrado -->
+																	<button type="button" class="btn btn-soft-dark">
+																		<i class="mdi mdi-file-pdf-box align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-primary">
+																		<i class="mdi mdi-microsoft-excel align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-purple">
+																		<i class="mdi mdi-web align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																</td>
+															</tr>
+															<tr>
+																<td class="table-user">12. Informe Nota Débitos</td>
+																<td class="text-center"> <!-- Centrado -->
+																	<button type="button" class="btn btn-soft-dark">
+																		<i class="mdi mdi-file-pdf-box align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-primary">
+																		<i class="mdi mdi-microsoft-excel align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																	<button type="button" class="btn btn-soft-purple">
+																		<i class="mdi mdi-web align-text-bottom fs-16 lh-1"></i>
+																	</button>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div> <!-- end card -->
+						</div> <!-- end col -->
+					</div> 
+					<!-- end Informes -->
+
+					
+                </div> <!-- container -->
+
+            </div> <!-- content -->
+
+            {% include 'partials/footer.html' %}
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- END wrapper -->
+
+    {% include 'partials/right-sidebar.html' %} 
+
+    {% include 'partials/footer-scripts.html' %} 
+
+    <!--  Select2 Plugin Js -->
+    <script src="{% static 'js/vendor/select2.min.js' %}"></script>
+
+    <!-- Daterangepicker Plugin js -->
+    <script src="{% static 'js/vendor/moment.min.js' %}"></script>
+    <script src="{% static 'js/vendor/daterangepicker.js' %}"></script>
+
+    <!-- Bootstrap Datepicker Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- Bootstrap Timepicker Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-timepicker.min.js' %}"></script>
+
+    <!-- Input Mask Plugin js -->
+    <script src="{% static 'js/vendor/jquery.mask.min.js' %}"></script>
+
+    <!-- Bootstrap Touchspin Plugin js -->
+    <script src="{% static 'js/vendor/jquery.bootstrap-touchspin.min.js' %}"></script>
+
+    <!-- Bootstrap Maxlength Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-maxlength.min.js' %}"></script>
+
+    <!-- Typehead Plugin js -->
+    <script src="{% static 'js/vendor/handlebars.min.js' %}"></script>
+    <script src="{% static 'js/vendor/typeahead.bundle.min.js' %}"></script>
+
+    <!-- Flatpickr Timepicker Plugin js -->
+    <script src="{% static 'js/vendor/flatpickr.min.js' %}"></script>
+
+    <!-- Typehead Demo js -->
+    <script src="{% static 'js/pages/typehead.init.j' %}s"></script>
+
+    <!-- Timepicker Demo js -->
+    <script src="{% static 'js/pages/timepicker.init.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,306 @@
+{% load static %}
+
+<!-- =============main.html======================== -->
+<!DOCTYPE html>
+<html lang="es">
+<!-- ============================================================== -->
+<head>
+    <title>{{ titulo_pagina }}</title>
+    
+    {% include 'partials/title_meta.html' %}
+
+    <!-- Daterangepicker css -->
+    <link rel="stylesheet" href="{% static 'css/vendor/daterangepicker.css' %}"/>
+
+    <!-- Vector Map css -->
+    <link rel="stylesheet"href="{% static 'css/vendor/jquery-jvectormap-1.2.2.css' %}"/>
+    
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_otros/pop-up.css' %}">
+    <!-- end css -->
+    
+    {% include 'partials/head-css.html' %}
+    <!-- Incluimos el archivo head-css usando Jinja2 -->
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div class="wrapper">
+      {% include 'partials/topbar.html' %} 
+      {% include 'partials/horizontal-nav.html' %} 
+      {% include 'partials/left-sidebar.html'%}
+      <!-- ============================================================== -->
+      <!-- Start Page Content here -->
+      <!-- ============================================================== -->
+      <div class="content-page">
+        <!-- Start Content-->
+        <div class="container condenedor-principal">
+          <!-- Mostrar el dashboard una vez seleccionados sede y periodo -->
+          {% include 'partials/page-title.html' %}
+          <div class="row mt-3 tarjetas">
+            <div class="col-xl-3 col-sm-6 tarjeta">
+                <div class="card">
+                    <div class="card-header bg-purple text-white">
+                        <h5 class="card-title mb-0">Retiros</h5>
+                    </div>
+                    <div id="card-collapse" class="collapse show">
+                        <div class="card-body">
+                            <p>En esta opción  podras registrar el motivo del retiro</p>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-soft-purple" data-popup="retiros_Popup">
+                                    <i class="bi bi-chat-right-text"></i> Retiros
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- end card-->
+            <div class="col-xl-3 col-sm-6 tarjeta">
+              <div class="card">
+                <div class="card-header bg-purple text-white">
+                  <h5 class="card-title mb-0">Grupos</h5>
+                </div>
+                <div id="card-collapse" class="collapse show">
+                  <div class="card-body">
+                    <p>
+                        En esta opción podras registrar el convenio grupal
+                    </p>
+                    <div class="text-center">
+                      <button type="button" class="btn btn-soft-purple" data-popup="grupos_Popup">
+                        <i class="bi bi-cash-coin"></i> Grupos
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end card-->
+            </div>
+            <div class="col-xl-3 col-sm-6 tarjeta">
+              <div class="card">
+                <div class="card-header bg-purple text-white">
+                  <h5 class="card-title mb-0">Semestres</h5>
+                </div>
+                <div id="card-collapse" class="collapse show">
+                  <div class="card-body">
+                    <p>
+                        En esta opción podras registrar el semestre
+                    </p>
+                    <br>
+                    <div class="text-center">
+                      <button
+                        type="button"
+                        class="btn btn-soft-purple"
+                        data-popup="semestre_Popup"
+                      >
+                        <i class="bi bi-graph-up-arrow"></i> Semestres
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end card-->
+            </div>
+
+            <div class="col-xl-3 col-sm-6 tarjeta">
+              <div class="card">
+                <div class="card-header bg-purple text-white">
+                  <h5 class="card-title mb-0">Prácticas</h5>
+                </div>
+                <div id="card-collapse1" class="collapse show">
+                  <div class="card-body">
+                    <p>
+                        En esta opción podras registrar el tipo de prácticas
+                    </p>
+                    <div class="text-center mt-1">
+                      <button type="button" class="btn btn-soft-purple" data-popup="practicas_Popup">
+                        <i class="bi bi-scissors"></i> Prácticas
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end card-->
+            <div class="col-xl-3 col-sm-6 tarjeta">
+              <div class="card">
+                <div class="card-header bg-purple text-white">
+                  <h5 class="card-title mb-0">Novedades</h5>
+                </div>
+                <div id="card-collapse1" class="collapse show">
+                  <div class="card-body">
+                    <p>
+                        En esta opción podras crear las novedades presentadas con el estudiante
+                    </p>
+                    <div class="text-center mt-1">
+                      <button type="button" class="btn btn-soft-purple" data-popup="novedades_Popup">
+                        <i class="bi bi-gear"></i> Novedades
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end card-->
+            </div>
+            <div class="col-xl-3 col-sm-6 tarjeta">
+              <div class="card">
+                <div class="card-header bg-purple text-white">
+                  <h5 class="card-title mb-0">Medio de inscripción</h5>
+                </div>
+                <div id="card-collapse1" class="collapse show">
+                  <div class="card-body">
+                    <p>
+                        En esta opción podras crear los medios de comunicación para las convocatorias
+                    </p>
+                    <div class="text-center mt-1">
+                      <button
+                        type="button"
+                        class="btn btn-soft-purple"
+                        data-popup="inscripcion_Popup"
+                      >
+                        <i class="bi bi-gear"></i> Medio de inscripción
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end card-->
+            </div>
+
+            <div class="col-xl-3 col-sm-6 tarjeta">
+              <div class="card">
+                <div class="card-header bg-purple text-white">
+                  <h5 class="card-title mb-0">No conforme</h5>
+                </div>
+                <div id="card-collapse2" class="collapse show">
+                  <div class="card-body">
+                    <p>
+                        En esta opción podras crear motivos no conformes dado por cualquier situacioón
+                    </p>
+                    <div class="text-center mt-1">
+                      <button
+                        type="button"
+                        class="btn btn-soft-purple"
+                        data-popup="no_conforme_Popup"
+                      >
+                        <i class="bi bi-gear"></i> No conforme
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end card-->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- content -->
+      {% include 'partials/footer.html' %}
+    </div>
+
+    <!-- Pop-up retiros -->
+<div id="retiros_Popup" class="popup" style="display: none">
+    <div class="popup-content">
+        <span data-close="retiros_Popup" class="close">&times;</span>
+        {% include 'modulos/administrar/p_academico/v_academico/otros_p/modal/retiros.html' %}
+    </div>
+</div>
+<!-- end retiros-->
+
+<!-- Pop-up retiros -->
+<div id="grupos_Popup" class="popup" style="display: none">
+    <div class="popup-content">
+        <span data-close="grupos_Popup" class="close">&times;</span>
+        {% include 'modulos/administrar/p_academico/v_academico/otros_p/modal/grupos.html' %}
+    </div>
+</div>
+<!-- end retiros-->
+
+<!-- Pop-up retiros -->
+<div id="semestre_Popup" class="popup" style="display: none">
+    <div class="popup-content">
+        <span data-close="semestre_Popup" class="close">&times;</span>
+        {% include 'modulos/administrar/p_academico/v_academico/otros_p/modal/semestres_p.html' %}
+    </div>
+</div>
+<!-- end retiros-->
+
+<!-- Pop-up retiros -->
+<div id="practicas_Popup" class="popup" style="display: none">
+    <div class="popup-content">
+        <span data-close="practicas_Popup" class="close">&times;</span>
+        {% include 'modulos/administrar/p_academico/v_academico/otros_p/modal/practicas.html' %}
+    </div>
+</div>
+<!-- end retiros-->
+
+<!-- Pop-up retiros -->
+<div id="inscripcion_Popup" class="popup" style="display: none">
+    <div class="popup-content">
+        <span data-close="inscripcion_Popup" class="close">&times;</span>
+        {% include 'modulos/administrar/p_academico/v_academico/otros_p/modal/medio.html' %}
+    </div>
+</div>v_academico
+<!-- end retiros-->
+
+<!-- Pop-up retiros -->
+<div id="novedades_Popup" class="popup" style="display: none">
+    <div class="popup-content">
+        <span data-close="novedades_Popup" class="close">&times;</span>
+        {% include 'modulos/administrar/p_academico/v_academico/otros_p/modal/novedades.html' %}
+        </div>
+    </div>
+    <!-- end retiros-->
+    
+    <!-- Pop-up retiros -->
+    <div id="no_conforme_Popup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="no_conforme_Popup" class="close">&times;</span>
+            {% include 'modulos/administrar/p_academico/v_academico/otros_p/modal/no_conforme.html' %}
+      </div>
+    </div>
+    <!-- end retiros-->
+
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
+
+    <!-- END wrapper -->
+
+    {% include 'partials/right-sidebar.html' %} 
+    {% include 'partials/footer-scripts.html' %}
+    <!-- Daterangepicker js -->
+    <script src="{% static 'js/vendor/moment.min.js' %}"></script>
+    <script src="{% static 'js/vendor/daterangepicker.js' %}"></script>
+
+    <!-- Bootstrap Datepicker Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- Apex Charts js -->
+    <script src="{% static 'js/vendor/apexcharts.min.js' %}"></script>
+
+    <!-- Vector Map js -->
+    <script src="{% static 'js/vendor/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+    <!-- Table Editable plugin-->
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <!-- Table editable init-->
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <!-- Dashboard App js -->
+    <script src="{% static 'js/pages/dashboard.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+    <!-- Po-put -->
+    <script src="{% static 'js/pop-pup.js' %}"></script>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<style>
+    .card-header.custom-border {
+        border-bottom: 3px solid #2263b8; 
+        padding-bottom: 10px; 
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin-top: -10px;
+        padding: 5px;
+        color: #2263b8;
+    }
+    .form-check-input {
+        margin-top: 10px;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center">Contratos laborales</h2>
+    </div>
+</div>
+<button class="btn btn-soft-success toggleBtn" data-target="CONTRATO">
+    <i class="bi bi-plus"></i> Crear
+</button>
+<div class="card" id="CONTRATO" style="display: none;">
+    <div class="container my-3">
+        <form class="row g-3" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="tipo" value="tipo_contrato">
+            <input type="hidden" id="idTipoContrato" name="id_tipo_contrato">
+        
+            <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input type="text" id="tipoContrato" name="nombre_tipo_contrato" class="form-control" style="text-transform: uppercase;">
+            </div>
+        
+            <div class="col-md-6">
+                <label class="form-label d-block">Asigna Rol</label>
+                <select name="id_rol" id="idRol" class="form-select">
+                    <option value="">SELECCIONE UN ROL</option>
+                    {% for roles in rol %} 
+                        <option value="{{ roles.id_rol }}">{{ roles.nombre_rol }}</option>
+                    {% endfor %}
+                </select>                
+            </div>
+        
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-soft-success">
+                    Guardar
+                </button>
+            </div>
+        </form>
+        
+        <br>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-centered mt-2">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Roles</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ctp in tipo_contrato %}
+            <tr>
+                <td>{{ ctp.nombre_tipo_contrato }}</td>
+                <td>{% if ctp.id_rol %}{{ ctp.id_rol.nombre_rol }}{% else %}<span class="text-muted">NO APLICA</span>{% endif %}</td>
+                <td>
+                    <button class="btn btn-soft-info btn-sm btnEditarContrato"
+                        data-id="{{ ctp.id_tipo_contrato }}"
+                        data-nombre="{{ ctp.nombre_tipo_contrato }}"
+                        data-rol="{{ ctp.id_rol.id_rol|default_if_none:'' }}">
+                        <i class="bi bi-pencil"></i> 
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+</div>
+{% if messages %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for message in messages %}
+            Swal.fire({
+                icon: 'success',
+                title: '{{ message }}',
+                timer: 2000,
+                position: 'top-end',
+                timerProgressBar: true,
+                toast: true,
+                showConfirmButton: false,
+            });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btnEditarContrato").forEach(button => {
+        button.addEventListener("click", function() {
+            let idContrato = this.getAttribute("data-id");
+            let nombreContrato = this.getAttribute("data-nombre");
+            let idRol = this.getAttribute("data-rol");
+
+            document.getElementById("idTipoContrato").value = idContrato;
+            document.getElementById("tipoContrato").value = nombreContrato;
+            document.getElementById("idRol").value = idRol || "";
+
+            document.getElementById("CONTRATO").style.display = "block";
+        });
+    });
+});
+</script>

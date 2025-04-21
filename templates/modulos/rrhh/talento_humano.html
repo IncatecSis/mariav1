@@ -1,0 +1,450 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>| {{ titulo_pagina }}</title>
+
+    {% include 'partials/title_meta.html' %}
+
+<!-- Daterangepicker css -->
+<link rel="stylesheet" href="{% static 'css/vendor/daterangepicker.css' %}">
+
+<!-- Vector Map css -->
+<link rel="stylesheet" href="{% static 'css/vendor/jquery-jvectormap-1.2.2.css' %}">
+
+<!-- estilo personalizado css -->
+<link rel="stylesheet" href="{% static 'css/style/style.css' %}">
+<link rel="stylesheet" href="{% static 'source/scss/new/pop-up.css' %}">
+<link rel="stylesheet" href="{% static 'source/scss/new/ventanas_modales/pop-up_ofertas.css' %}">
+
+    {% include 'partials/head-css.html' %}
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div class="wrapper">
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+        <div class="content-page">
+                <div class="container">
+                    {% include 'partials/page-title.html' %}
+                    <div class="row">
+                        <div class="col-xl-4 col-sm-6">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Área Laboral</h5>
+                                </div>
+                                <div id="card-collapse" class="collapse">
+                                    <img src="{% static 'img/rrhh/AREA-LABORAL.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                            En esta sección podras crear las diferentes áreas laborales que requiere el sistema.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2" data-popup="dptoPopup">
+                                                <i class="bi bi-person-circle me-1"></i> Área Laboral
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Tipos de Contrato</h5>
+                                </div>
+                                <div id="card-collapse" class="collapse">
+                                    <img src="{% static 'img/rrhh/TIPOS-DE-CONTRATO.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear los diferentes tipos de contratos.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="ContratoPopup">
+                                                <i class="bi bi-journal-bookmark-fill me-1"></i> Contrato
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Cargos</h5>
+                                </div>
+                                <div id="card-collapse" class="collapse">
+                                    <img src="{% static 'img/rrhh/CARGO.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear diferentes cargos para la asignación a nuevos usuarios.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success" data-popup="Popup">
+                                                <i class="bi bi-people me-1"></i> Cargos
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse1" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">EPS</h5>
+                                </div>
+                                <div id="card-collapse1" class="collapse">
+                                    <img src="{% static 'img/rrhh/EPS.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear los diferentes tipos de contratos.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="EpsPopup">
+                                                <i class="bi bi-universal-access-circle"></i> Eps
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse1" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Fondo de Pensión</h5>
+                                </div>
+                                <div id="card-collapse1" class="collapse">
+                                    <img src="{% static 'img/rrhh/PENSION.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear los diferentes tipos de contratos.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="PensionPopup">
+                                                <i class="bi bi-journal-bookmark-fill me-1"></i> Pensión
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse1" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">ARL</h5>
+                                </div>
+                                <div id="card-collapse1" class="collapse">
+                                    <img src="{% static 'img/rrhh/ARL.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras creaar los días festivos requeridos por el sistema.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success" data-popup="ArlPopup">
+                                                <i class="bi bi-building-add me-1"></i> ARL
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card-->
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse2" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Nivel de Riesgos Laboral</h5>
+                                </div>
+                                <div id="card-collapse2" class="collapse">
+                                    <img src="{% static 'img/rrhh/RIESGOS-LABORALES.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección puedes crear los diferentes niveles de riesgos laborales.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="RiesgoPopup">
+                                                <i class="bi bi-clipboard-data"></i> Riesgos Laborales
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse2" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Caja Compensacíon Familiar</h5>
+                                </div>
+                                <div id="card-collapse2" class="collapse">
+                                    <img src="{% static 'img/rrhh/CAJAS-DE-COMPENSACION.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección puedes crear las diferentes cjas de compensaciones.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="CajaPopup">
+                                                <i class="bi bi-cash-coin me-1"></i> Caja de compensacíon
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse2" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Bancos Asociados</h5>
+                                </div>
+                                <div id="card-collapse2" class="collapse">
+                                    <img src="{% static 'img/rrhh/BANCOS.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección encuentras los diferentes correos para algún requerimiento.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="BancosPopup">
+                                                <i class="bi bi-bank me-1"></i> Bancos
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse3" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Costos Horas Catedra</h5>
+                                </div>
+                                <div id="card-collapse3" class="collapse">
+                                    <img src="{% static 'img/rrhh/HONORARIOS.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear los diferentes tipos de contratos.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="HonorariosPopup">
+                                                <i class="bi bi-currency-dollar me-1"></i> Honorarios
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse3" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Parametros de Nomina</h5>
+                                </div>
+                                <div id="card-collapse3" class="collapse">
+                                    <img src="{% static 'img/rrhh/PARAMETRO-NOMINA.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear los diferentes tipos de contratos.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="NominaPopup">
+                                                <i class="bi bi-currency-dollar me-1"></i> Parametros
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse3" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Causales de Despido</h5>
+                                </div>
+                                <div id="card-collapse3" class="collapse">
+                                    <img src="{% static 'img/rrhh/CAUSALES-DE-DESPIDO.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear los diferentes tipos de contratos.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="DespidoPopup">
+                                                <i class="bi bi-currency-dollar me-1"></i> Despido
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse4" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Novedades</h5>
+                                </div>
+                                <div id="card-collapse4" class="collapse">
+                                    <img src="{% static 'img/rrhh/NOVEDADES.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear los diferentes tipos de contratos.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="DespidoPopup">
+                                                <i class="bi bi-currency-dollar me-1"></i> Novedades
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse4" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Liquidación de Nómina Colaboradores</h5>
+                                </div>
+                                <div id="card-collapse4" class="collapse">
+                                    <img src="{% static 'img/rrhh/NOMINA-COLABORADORES.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear los diferentes tipos de contratos.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="DespidoPopup">
+                                                <i class="bi bi-currency-dollar me-1"></i> Liquidación 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-success text-white" data-bs-toggle="collapse" href="#card-collapse4" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Liquidación de Nómina Docentes</h5>
+                                </div>
+                                <div id="card-collapse4" class="collapse">
+                                    <img src="{% static 'img/rrhh/NOMINA-DOCENTES.png' %}" class="card-img-top img-fluid" alt="Conceptos">
+                                    <div class="card-body">
+                                        En esta sección podras crear los diferentes tipos de contratos.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-success me-2 btn-block" data-popup="DespidoPopup">
+                                                <i class="bi bi-currency-dollar me-1"></i> Liquidación
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+        </div>
+            <!-- content -->
+            {% include 'partials/footer.html' %}
+
+    </div>
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- END wrapper -->
+    
+    <!-- ventana cartera -->
+    <div id="Popup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="Popup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/cargos.html' %}
+        </div>
+    </div>
+    <!-- end cartera -->
+    
+    <div id="dptoPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="dptoPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/dpto.html' %}
+        </div>
+    </div>
+
+    <!-- ventana gestion -->
+    <div id="ArlPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="ArlPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/arl.html' %}
+        </div>
+    </div>
+    <!-- end gestion -->
+    
+    <!-- ventana sistema -->
+    <div id="CajaPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="CajaPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/caja.html' %}
+        </div>
+    </div>
+    <!-- end sistema -->
+    
+
+    <!-- ventana encuestas -->
+    <div id="BancosPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="BancosPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/bancos.html' %}
+        </div>
+    </div>
+
+    <div id="EpsPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="EpsPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/eps.html' %}
+        </div>
+    </div>
+    
+    <div id="ContratoPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="ContratoPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/contrato.html' %}
+        </div>
+    </div>
+
+    <div id="PensionPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="PensionPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/pension.html' %}
+        </div>
+    </div>
+    <div id="HonorariosPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="HonorariosPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/honorarios.html' %}
+        </div>
+    </div>
+    <div id="NominaPopup" class="popup_o" style="display: none">
+        <div class="popup-content_o">
+            <span data-close="NominaPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/nomina.html' %}
+        </div>
+    </div>
+    
+    <div id="RiesgoPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="RiesgoPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/riesgo.html' %}
+        </div>
+    </div>
+
+    <div id="DespidoPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="DespidoPopup" class="close">&times;</span>
+            {% include 'modulos/rrhh/v_rrhh/despido.html' %}
+        </div>
+    </div>
+
+    {% include 'partials/right-sidebar.html' %}
+
+    {% include 'partials/footer-scripts.html' %}
+    <!-- Daterangepicker js -->
+    <script src="{% static 'js/vendor/moment.min.js' %}"></script>
+    <script src="{% static 'js/vendor/daterangepicker.js' %}"></script>
+
+    <!-- Bootstrap Datepicker Plugin js -->
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- Apex Charts js -->
+    <script src="{% static 'js/vendor/apexcharts.min.js' %}"></script>
+
+    <!-- Vector Map js -->
+    <script src="{% static 'js/vendor/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+    <!-- Table Editable plugin-->
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <!-- Table editable init-->
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <!-- Dashboard App js -->
+    <script src="{% static 'js/pages/dashboard.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+    <!-- Po-put -->
+    <script src="{% static 'js/pop-pup.js' %}"></script>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+
+</body>
+</html>

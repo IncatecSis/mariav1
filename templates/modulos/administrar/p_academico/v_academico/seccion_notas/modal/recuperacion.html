@@ -1,0 +1,47 @@
+<style>
+/* Clase personalizada para el borde inferior debajo del texto */
+.card-header.custom-border {
+    border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+    padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -10px; /* Elimina márgenes del título */
+    padding: 5px;
+}
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white ">
+        <h2 class="text-center text-purple">Tipos de Recuperación</h2>
+    </div>
+</div>
+<body>
+    <div class="container my-2">
+
+        <!-- Formulario de Registro -->
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" value="">
+                </div>
+                <div class="col-md-4">
+                    <label for="sigla" class="form-label">Sigla</label>
+                    <input type="text" class="form-control" id="sigla" value="">
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="habilitado" checked>
+                        <label for="habilitado" class="form-check-label">Habilitado</label>
+                    </div>
+                </div>
+            </div>
+            <!-- Botón para registrar -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-soft-purple">Registrar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

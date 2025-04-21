@@ -1,0 +1,254 @@
+{% load static %}
+<style>
+.card-header.custom-border {
+        border-bottom: 3px solid #2263b8; 
+        padding-bottom: 10px; 
+        position: relative;
+}
+
+.card-header.custom-border h2 {
+    margin-top: -10px;
+    padding: 5px;
+    color: #2263b8;
+}
+.accordion-button.custom-bg {
+        background-color:white;
+        transition: background-color 0.3s ease;
+    }
+.accordion-button.custom-bg:not(.collapsed) {
+        background-color: #2263b8;
+        color: white;
+    }
+.accordion-button.custom-bg.collapsed {
+    background-color: white;
+}
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center" id="titulo-principal">
+                Nuevo Contrato
+        </h2>        
+    </div>
+</div> 
+<div class="container mt-3">
+    <form method="POST">
+        <input type="hidden" name="tipo" value="registro_contratacion">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Usuarios</label>
+                <div class="input-group">
+                    <input type="text" name="numero_documento" id="numero_documento" class="form-control" placeholder="Ingresar número de documento" required>
+                    <button type="button" class="btn btn-soft-success" onclick="buscarUsuario()">Buscar</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Nombre Usuario</label>
+                <input type="text" id="nombre_usuario" class="form-control" readonly>
+            </div>
+            
+            <input type="hidden" name="usuario_id" id="usuario_id">
+        </div>
+        
+        <hr>
+        <div id="formularioContrato" style="display: none;">
+            <div class="row">
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Fecha de inicio</label>
+                    <input type="date" name="fecha_inicio" class="form-control">
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Fecha fin</label>
+                    <input type="date" name="fecha_fin" class="form-control">
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Área</label>
+                    <select name="departamento_laboral" class="form-select" required>
+                        <option value="">SELECCIONE</option>
+                        {% for dpto in departamento_laboral %}
+                        <option value="{{ dpto.id_departamento }}">
+                            {{ dpto.nombre }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Cargo</label>
+                    <select class="form-select" name="cargo" required>
+                        <option value="">SELECCIONE</option>
+                        {% for cargos in cargo %}
+                        <option value="{{ cargos.id_cargo }}">
+                            {{ cargos.nombre }}
+                        </option>
+                        {% endfor %}    
+                    </select>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">ARL</label>
+                    <select name="arl" class="form-select" required>
+                        <option value="">SELECCIONE</option>
+                        {% for arls in arl %}
+                        <option value="{{ arls.id_arl }}">
+                            {{ arls.nombre_arl }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Riesgo Laboral</label>
+                    <select name="riesgo" class="form-select" required>
+                        <option value="">SELECCIONE</option>
+                        {% for riesgo in riesgos %}
+                            <option value="{{ riesgo.id_riesgo_laboral }}">
+                            {{ riesgo.nivel_riesgo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Caja de compensación</label>
+                    <select name="caja_compensacion" class="form-select" required>
+                        <option value="">SELECCIONE</option>
+                        {% for cjp in caja_compensacion %}
+                        <option value="{{ cjp.id_caja_compensacion }}">
+                            {{ cjp.nombre_caja }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Salario</label>
+                    <input type="text" name="salario" class="form-control"  maxlength="8">
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Banco</label>
+                    <select name="banco" class="form-select" required>
+                        <option value="">SELECCIONE</option>
+                        {% for bancos in banco %}
+                        <option value="{{ bancos.id_banco }}">
+                            {{ bancos.nombre_banco }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">N° Cuenta</label>
+                    <input type="number" name="numero_cuenta" class="form-control" maxlength="20">
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Tipo de contrato</label>
+                    <select name="tipo_contrato" class="form-select" required>
+                        <option value="">SELECCIONE</option>
+                        {% for tpc in tipo_contrato %}
+                        <option value="{{ tpc.id_tipo_contrato }}">
+                            {{ tpc.nombre_tipo_contrato }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label class="form-label">Pensión</label>
+                    <select name="pension" class="form-select" required>
+                        <option value="">SELECCIONE</option>
+                        {% for pensiones in pension %}
+                        <option value="{{ pensiones.id_administradoras_pensiones }}">
+                            {{ pensiones.nombre_administradora }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-soft-success">
+                        <i class="bi bi-arrow-clockwise"></i> Contratar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if messages %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% for message in messages %}
+        Swal.fire({
+            icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+            title: "{{ message }}",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+<script>
+    function buscarUsuario() {
+    let numeroDocumento = document.getElementById('numero_documento').value;
+
+    if (numeroDocumento.trim() === '') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Opción invalida.',
+            text: 'Debe ingresar un número de documento.🙃',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        return;
+    }
+
+    fetch(`/incatec/usuarios_admin/${numeroDocumento}/`)
+    .then(response => {
+        let contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("La respuesta no es JSON válida. Posible error en el servidor.");
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            document.getElementById('nombre_usuario').value = `${data.nombres} ${data.apellidos}`;
+            document.getElementById('usuario_id').value = data.id_usuario;
+
+            let formularioContrato = document.getElementById('formularioContrato');
+            if (formularioContrato) { 
+                formularioContrato.style.display = 'block';
+            } else {
+                console.error("Elemento con id 'formularioContrato' no encontrado.");
+            }
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Usuario no encontrado.',
+                text: 'Verifique el número de documento e intente nuevamente.🙅‍♂️',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            let formularioContrato = document.getElementById('formularioContrato');
+            if (formularioContrato) {
+                formularioContrato.style.display = 'none';
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error en la búsqueda:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error en la búsqueda',
+            text: 'Hubo un problema con la búsqueda del usuario.❌',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    });
+}
+</script>

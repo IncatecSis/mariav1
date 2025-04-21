@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ titulo_pagina }}</title>
+    {% include 'partials/title_meta.html' %}
+    {% include 'partials/head-css.html' %}
+    <link rel="stylesheet" href="{% static 'css/vendor/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/jquery-jvectormap-1.2.2.css' %}">
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/topbar.html' %}
+        {% include 'partials/horizontal-nav.html' %}
+        {% include 'partials/left-sidebar.html' %}
+        <div class="content-page">
+            <div class="container">
+                {% include 'partials/page-title.html' %}
+                <h4 class="text-primary text-center mb-1">Control Administrativos</h4>
+
+                <div class="row mb-3">
+                    <label class="form-label">Escanee el código de barras o escriba el documento</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="busqueda"
+                            placeholder="Escanear o digitar número de documento" autofocus>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-center">
+                        <button class="btn btn-primary w-100" onclick="buscarUsuario()">Buscar</button>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <label class="form-label">Documento</label>
+                        <input type="text" class="form-control" id="documento" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Fecha y Hora</label>
+                        <input type="text" class="form-control" id="fecha_hora" readonly>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Nombres</label>
+                        <input type="text" class="form-control" id="nombres" readonly>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Cargo</label>
+                        <input type="text" class="form-control" id="cargo" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'partials/footer.html' %}
+    </div>
+    {% include 'partials/right-sidebar.html' %}
+    {% include 'partials/footer-scripts.html' %}
+    <script>
+        document.getElementById("busqueda").addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                buscarUsuario();
+            }
+        });
+
+        function buscarUsuario(codigo = null) {
+            const doc = codigo || document.getElementById("busqueda").value;
+
+            const data = {
+                documento: doc,
+                apellidos: "Pérez Manderano",
+                nombres: "Carlos Julian",
+                cargo: "Auxiliar Administrativo"
+            };
+
+            document.getElementById("documento").value = data.documento;
+            document.getElementById("apellidos").value = data.apellidos;
+            document.getElementById("nombres").value = data.nombres;
+            document.getElementById("cargo").value = data.cargo;
+
+            const now = new Date();
+            document.getElementById("fecha_hora").value =
+                now.toLocaleDateString('es-CO') + " - " + now.toLocaleTimeString('es-CO');
+
+            document.getElementById("busqueda").value = "";
+            document.getElementById("busqueda").focus();
+        }
+    </script>
+    <script src="{% static 'js/vendor/moment.min.js' %}"></script>
+    <script src="{% static 'js/vendor/daterangepicker.js' %}"></script>
+
+    <script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+    <script src="{% static 'js/vendor/apexcharts.min.js' %}"></script>
+
+    <script src="{% static 'js/vendor/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+    <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+    <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+    <script src="{% static 'js/pages/dashboard.js' %}"></script>
+
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+    <script src="{% static 'js/pop-pup.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+</html>

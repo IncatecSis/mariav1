@@ -1,0 +1,74 @@
+<style>
+    /* Clase personalizada para el borde inferior debajo del texto */
+    .card-header.custom-border {
+        border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
+        padding-bottom: 10px; /* Espacio entre el texto y el borde */
+        position: relative;
+    }
+    
+    .card-header.custom-border h2 {
+        margin-top: -10px; /* Elimina márgenes del título */
+        padding: 5px;
+    }
+</style>
+<div class="card">
+    <div class="card-header custom-border bg-white">
+        <h2 class="text-center text-purple">Registro de matrículas</h2>
+    </div>
+</div>
+<button class="btn btn-soft-purple toggleBtn" data-target="matricula">
+    <i class="bi bi-plus"></i> Crear
+</button>
+<div class="card" id="matricula" style="display: none;">
+    <div class="container my-3">
+        <form class="row g-3">
+            <div class="col-md-6">
+                <label for="periodo" class="form-label">Periodo</label>
+                <select id="periodo" class="form-select">
+                    <option selected>Seleccionar...</option>
+                    <option>2019</option>
+                    <option>2020</option>
+                    <!-- Otros valores opcionales -->
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="semestre" class="form-label">Semestre</label>
+                <select id="semestre" class="form-select">
+                    <option selected>Seleccionar..</option>
+                    <option>A</option>
+                    <option>B</option>
+                    <!-- Otros valores opcionales -->
+                </select>
+            </div>
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-soft-purple">
+                    Agregar
+                </button>
+            </div>
+        </form>
+        <br>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Periodo</th>
+                <th>Semestre</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2019</td>
+                <td>A</td>
+                <td>
+                    <button class="btn btn-soft-danger btn-sm">
+                        <i class="bi bi-x-circle"></i> 
+                    </button>
+                </td>
+            </tr>
+            <!-- Otras filas aquí -->
+        </tbody>
+    </table>
+</div>
