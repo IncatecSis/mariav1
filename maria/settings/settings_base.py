@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
     'apps.principal',
     'apps.docentes',
     'apps.estudiantes',
@@ -56,9 +58,20 @@ MIDDLEWARE = [
     'django.middleware.cache.FetchFromCacheMiddleware',
     'apps.principal.middleware.middleware.ClearSessionExpirationCookieMiddleware',
     'apps.principal.middleware.auth_middleware.AuthMiddleware',
+    'apps.principal.middleware.sesion_middleware.SessionUnicaMiddleware',
     'apps.principal.middleware.contrato_middleware.ContratoMiddleware',
-    #'apps.views.middleware.SedePeriodoMiddleware',
 ]
+
+
+# Configuración recomendada para el sistema de caché
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'sesion_unica',
+        'TIMEOUT': 43200,  # 12 horas
+    }
+}
+
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
@@ -70,6 +83,13 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
 
 
 TEMPLATES = [
@@ -84,6 +104,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.principal.context_proccessor.nombre_usuario',
+                'apps.views.permisos.context.menu_permissions',
             ],
         },
     },

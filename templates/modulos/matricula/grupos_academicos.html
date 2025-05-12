@@ -11,7 +11,183 @@
     <link rel="stylesheet" href="{% static 'css/vendor/daterangepicker.css' %}">
     <link rel="stylesheet" href="{% static 'css/vendor/jquery-jvectormap-1.2.2.css' %}">
 </head>
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto; 
+    background-color: rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.3s;
+    padding: 20px 0; 
+}
 
+.modal-content {
+    background-color: #fefefe;
+    margin: 0 auto;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 90%; 
+    max-width: 900px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s;
+    overflow: visible;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+    padding: 0 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: #333;
+    text-decoration: none;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #3498db;
+    font-weight: 500;
+    flex-grow: 1;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+    table-layout: fixed;
+}
+
+.detail-table th {
+    text-align: right;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    width: 25%;
+    color: #495057;
+    font-weight: 600;
+    word-wrap: break-word;
+}
+
+.detail-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    word-wrap: break-word; 
+}
+
+@media (max-width: 768px) {
+    .detail-table, 
+    .detail-table tbody, 
+    .detail-table tr, 
+    .detail-table th, 
+    .detail-table td {
+        display: block;
+        width: 100%;
+    }
+    
+    .detail-table th {
+        text-align: left;
+        border-bottom: none;
+    }
+    
+    .detail-table td {
+        border-top: none;
+        margin-bottom: 10px;
+    }
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.calendario-titulo {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #3498db;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendario-titulo h4 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.clases-lista {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.clase-item {
+    flex: 1 1 calc(33.333% - 10px);
+    min-width: 200px;
+    max-width: calc(33.333% - 10px);
+    padding: 12px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #3498db;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+
+.clase-festivo {
+    border-left-color: #e74c3c;
+    background-color: #fff3f3;
+    text-decoration: line-through;
+}
+
+@media (max-width: 768px) {
+    .clase-item {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+</style>
 <body>
     <div class="wrapper">
         {% include 'partials/topbar.html' %}
@@ -23,37 +199,36 @@
                 <div class="card p-4 mb-4 shadow-sm">
                     <h4 class="mb-4 text-primary">Crear Nuevo Grupo</h4>
                     <form id="grupoForm">
-                
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="modulo" class="form-label">Nombre Programa</label>
-                                <select id="modulo" name="programas" class="form-select" required>
+                                <select id="programa" name="programa" class="form-select" required>
                                     <option value="">SELECCIONE</option>
-                                    {% for pg in programas %}
-                                        <option value="{{ pg.id_programa }}">
-                                            {{ pg.nombre_programa }}
-                                        </option>
+                                    {% for programa in programas %}
+                                        <option value="{{ programa.id_programa }}">{{ programa.nombre_programa }}</option>
                                     {% endfor %}
                                 </select>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="nombre" class="form-label">Nombre del Grupo</label>
-                                <input type="text" id="nombre" name="nombre" class="form-control" required>
                             </div>
                 
                             <div class="col-md-6">
                                 <label for="modulo" class="form-label">Módulo Académico</label>
                                 <select id="modulo" name="modulo" class="form-select" required>
-                                    <option value="">Seleccione un módulo</option>
-                                    <option value="Matemáticas">Matemáticas</option>
-                                    <option value="Programación">Programación</option>
-                                    <option value="Base de Datos">Base de Datos</option>
-                                    <option value="Redes">Redes</option>
-                                    <option value="Diseño Gráfico">Diseño Gráfico</option>
+                                    <option value="">SELECCIONE</option>
+                                    {% for modulo in modulos %}
+                                        <option value="{{ modulo.id_modulo }}"
+                                                data-programa="{{ modulo.id_semestre__id_pensum__id_programa }}"
+                                                data-horas="{{ modulo.intensidad_horas }}">
+                                            {{ modulo.id_modulo__nombre_modulo }}
+                                        </option>
+                                    {% endfor %}
                                 </select>
                             </div>
-                
+                            
+                            <div class="col-md-6">
+                                <label for="nombre" class="form-label">Nombre del Grupo</label>
+                                <input type="text" id="nombre" name="nombre" class="form-control" required>
+                            </div>
+
                             <div class="col-md-6">
                                 <label for="profesor" class="form-label">Profesor</label>
                                 <select id="profesor" name="profesor" class="form-select" required>
@@ -137,8 +312,8 @@
                 
                             <div class="col-md-4">
                                 <label for="horasTotales" class="form-label">Horas Totales</label>
-                                <input type="number" id="horasTotales" name="horasTotales" class="form-control" min="1" required>
-                            </div>
+                                <input type="number" id="horasTotales" name="horasTotales" class="form-control" min="1" readonly>
+                            </div>                            
                 
                             <div class="col-md-4">
                                 <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
@@ -200,36 +375,13 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Detalle del Grupo: <span id="detalleNombre"></span></h2>
-
+            
             <div id="detalleInfo"></div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const selectTipoSalon = document.getElementById('tipo_salon');
-            const selectSalon = document.getElementById('salon');
-            const inputCapacidad = document.getElementById('capacidad');
-        
-            selectTipoSalon.addEventListener('change', function () {
-                const idAreaSeleccionada = this.value;
-        
-                Array.from(selectSalon.options).forEach(option => {
-                    const areaOption = option.getAttribute('data-area');
-                    option.hidden = !(option.value === "" || areaOption === idAreaSeleccionada);
-                });
-        
-                selectSalon.value = '';
-                inputCapacidad.value = '';
-            });
-        
-            selectSalon.addEventListener('change', function () {
-                const aforo = this.options[this.selectedIndex].getAttribute('data-aforo');
-                inputCapacidad.value = aforo || '';
-            });
-        });
-    </script>            
-    
+    <script src="{% static 'js/grupos_academicos.js' %}"></script>
+
     <script src="{% static 'js/vendor/moment.min.js' %}"></script>
     <script src="{% static 'js/vendor/daterangepicker.js' %}"></script>
 

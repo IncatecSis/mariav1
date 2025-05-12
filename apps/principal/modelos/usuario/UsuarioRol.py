@@ -10,7 +10,7 @@ class UsuarioRoles(models.Model):
     fecha_asignacion = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'usuario_roles'
         unique_together = (('id_usuario', 'id_rol'),)
 

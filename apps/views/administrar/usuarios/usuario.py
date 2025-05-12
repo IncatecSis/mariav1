@@ -30,10 +30,6 @@ def cambiar_contraseña(request):
         return redirect('Incatec:usuarios')
 '''
 
-
-def gestion_permisos(request):
-    return render(request, 'modulos/administrar/usuarios/permisos.html')
-
 '''
 def lista_permiso(permisos, permisos_asignados):
     permisos_organizados = []

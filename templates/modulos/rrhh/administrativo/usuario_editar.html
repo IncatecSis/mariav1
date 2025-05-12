@@ -346,17 +346,6 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 mt-2">
-                                    <label class="form-label">Sede Asociada</label>
-                                    <select class="form-select" name="sedes">
-                                        {% for sede in sedes %}
-                                            <option value="{{ sede.id_sede }}"
-                                            {% if contrato.id_usuario.id_sede and sede.id_sede == contrato.id_usuario.id_sede.id_sede %}
-                                                selected
-                                            {% endif %}>{{ sede.nombre_sede }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mt-2">
                                     <label class="form-label">Foto del Usuario</label>
                                     <input type="file" name="foto_perfil" class="form-control" accept="image/*">
                                 </div>

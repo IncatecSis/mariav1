@@ -24,19 +24,19 @@
 </button>
 <div class="card" id="CONTRATO" style="display: none;">
     <div class="container my-3">
-        <form class="row g-3" method="POST">
+        <form class="row g-3" method="POST" id="formTpc">
             {% csrf_token %}
             <input type="hidden" name="tipo" value="tipo_contrato">
             <input type="hidden" id="idTipoContrato" name="id_tipo_contrato">
         
             <div class="col-md-6">
                 <label class="form-label">Nombre</label>
-                <input type="text" id="tipoContrato" name="nombre_tipo_contrato" class="form-control" style="text-transform: uppercase;">
+                <input type="text" id="tipoContrato" name="nombre_tipo_contrato" class="form-control" style="text-transform: uppercase;" required>
             </div>
         
             <div class="col-md-6">
                 <label class="form-label d-block">Asigna Rol</label>
-                <select name="id_rol" id="idRol" class="form-select">
+                <select name="id_rol" id="idRol" class="form-select" required>
                     <option value="">SELECCIONE UN ROL</option>
                     {% for roles in rol %} 
                         <option value="{{ roles.id_rol }}">{{ roles.nombre_rol }}</option>
@@ -50,7 +50,6 @@
                 </button>
             </div>
         </form>
-        
         <br>
     </div>
 </div>
@@ -63,9 +62,9 @@
                 <th>Editar</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="table_tipo">
             {% for ctp in tipo_contrato %}
-            <tr>
+            <tr data-id="{{ ctp.id_tipo_contrato }}">
                 <td>{{ ctp.nombre_tipo_contrato }}</td>
                 <td>{% if ctp.id_rol %}{{ ctp.id_rol.nombre_rol }}{% else %}<span class="text-muted">NO APLICA</span>{% endif %}</td>
                 <td>
@@ -81,38 +80,111 @@
         </tbody>        
     </table>
 </div>
-{% if messages %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        {% for message in messages %}
-            Swal.fire({
-                icon: 'success',
-                title: '{{ message }}',
-                timer: 2000,
-                position: 'top-end',
-                timerProgressBar: true,
-                toast: true,
-                showConfirmButton: false,
-            });
-        {% endfor %}
-    });
-</script>
-{% endif %}
+        const form = document.getElementById('formTpc');
+        const tablaBody = document.getElementById('table_tipo');
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".btnEditarContrato").forEach(button => {
-        button.addEventListener("click", function() {
-            let idContrato = this.getAttribute("data-id");
-            let nombreContrato = this.getAttribute("data-nombre");
-            let idRol = this.getAttribute("data-rol");
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
 
-            document.getElementById("idTipoContrato").value = idContrato;
-            document.getElementById("tipoContrato").value = nombreContrato;
-            document.getElementById("idRol").value = idRol || "";
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-            document.getElementById("CONTRATO").style.display = "block";
+            const formData = new FormData(form);
+            const id = formData.get('id_tipo_contrato');
+
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: res.mensaje
+                    });
+
+                    if (res.nuevo) {
+                        const nombre = res.nuevo.nombre;
+                        const nombreRol = res.nuevo.nombre_rol || 'NO APLICA';
+                        const idRol = res.nuevo.id_rol || '';
+
+                        if (id) {
+                            const fila = tablaBody.querySelector(`tr[data-id="${res.nuevo.id}"]`);
+                            if (fila) {
+                                const celdas = fila.querySelectorAll('td');
+                                if (celdas.length >= 2) {
+                                    celdas[0].textContent = nombre;
+                                    celdas[1].textContent = nombreRol;
+                                }
+
+                                const btn = fila.querySelector('button');
+                                btn.setAttribute('data-nombre', nombre);
+                                btn.setAttribute('data-rol', idRol);
+                            }
+                        } else {
+                            const nuevaFila = `
+                                <tr data-id="${res.nuevo.id}">
+                                    <td>${nombre}</td>
+                                    <td>${nombreRol}</td>
+                                    <td>
+                                        <button class="btn btn-soft-info btn-sm btnEditarContrato"
+                                            data-id="${res.nuevo.id}"
+                                            data-nombre="${nombre}"
+                                            data-rol="${idRol}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            tablaBody.insertAdjacentHTML('beforeend', nuevaFila);
+                        }
+                    }
+
+                    form.reset();
+                    document.getElementById('idTipoContrato').value = '';
+                    document.getElementById('idRol').value = '';
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: res.mensaje || 'Algo salió mal 🫥'
+                    });
+                }
+
+            } catch (error) {
+                console.error(error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se pudo procesar la solicitud.'
+                });
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btnEditarContrato')) {
+                const btn = e.target.closest('.btnEditarContrato');
+                document.getElementById('idTipoContrato').value = btn.dataset.id;
+                document.getElementById('tipoContrato').value = btn.dataset.nombre;
+                document.getElementById('idRol').value = btn.dataset.rol || '';
+                document.getElementById('CONTRATO').style.display = 'block';
+            }
         });
     });
-});
 </script>

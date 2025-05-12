@@ -35,9 +35,54 @@
                     <span></span>
                 </div>
             </button>
+            <div class="topbar-item">
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button"
+                        aria-haspopup="false" aria-expanded="false">
+                        <i class="bi bi-geo-alt fs-22"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="sedeDropdown">
+                        {% if request.session.sede_id %}
+                            {% for sede in sedes %}
+                                {% if sede.id_sede|stringformat:"s" == request.session.sede_id %}
+                                    <p class="mb-0">
+                                        <i class="bi bi-building me-1 text-primary"></i>
+                                        <strong>{{ sede.nombre_sede }}</strong>
+                                    </p>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <p class="mb-0 text-danger"><i class="bi bi-exclamation-circle"></i> No has seleccionado una sede.</p>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <ul class="topbar-menu d-flex align-items-center gap-3">
+
+            <div class="topbar-item">
+                <div class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle arrow-none" id="periodoDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-calendar-date fs-22"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="periodoDropdown">
+                        {% if request.session.periodo_id %}
+                            {% for perido in periodos %}
+                                {% if periodo.id_periodo|stringformat:"s" == request.session.periodo_id %}
+                                    <p class="mb-0">
+                                        <i class="bi bi-building me-1 text-primary"></i>
+                                        <strong>{{ periodo.nombre }}</strong>
+                                    </p>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <p class="mb-0 text-danger"><i class="bi bi-exclamation-circle"></i> No has seleccionado un periodo.</p>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
 
             <li class="dropdown notification-list">
                 <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button"

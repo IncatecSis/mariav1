@@ -5,7 +5,7 @@
 <!-- ============================================================== -->
 
 <head>
-    <title>{{ titulo_pagina }}</title>
+    <title>| {{ titulo }}</title>
 
 	{% include 'partials/title_meta.html' %}
 
@@ -14,7 +14,7 @@
 
     <!-- css eliminar -->
     <link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/pop-up_eliminar.css' %}">
-    
+    <link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_administrar/pop-up_semestre.css' %}">
 </head>
 
 <body>
@@ -201,8 +201,8 @@
                 <!-- end row -->
 					
                 <!-- Pop-up crear programa -->
-                <div id="crear_modulo_Popup" class="popup_c_m" style="display:none;">
-                    <div class="popup-content_c_m">
+                <div id="crear_modulo_Popup" class="popup_se" style="display:none;">
+                    <div class="popup-content_se">
                         <span data-close="crear_modulo_Popup" class="close">&times;</span>
                         {% include 'modulos/administrar/p_academico/v_academico/seccion_modulo/crear_modulo.html' %}
                     </div>

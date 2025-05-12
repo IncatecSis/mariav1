@@ -5,191 +5,1041 @@
     {% include '../partials/title_meta.html' %}
     {% include '../partials/head-css.html' %}
     <style>
-        /* Estilo para el input con clase no-border */
-        .no-border {
-            font-size: inherit;
-            font-family: inherit;
-            font-weight: inherit;
-            color: inherit;
-            border: none;
-            outline: none;
-            background: transparent;
-            width: fit-content;
+        :root {
+            --primary-gradient: linear-gradient(45deg, #6C63FF, #5D54E0);
+            --secondary-gradient: linear-gradient(45deg, #FE3A7F, #FF556E);
+            --accent-gradient: linear-gradient(45deg, #32CCBC, #00B8A9);
+            --dark-color: #2F2E41;
+            --light-color: #FFFFFF;
+            --surface-color: #F7F7FD;
+            --shadow-color: rgba(47, 46, 65, 0.2);
+            --text-color: #2F2E41;
+            --text-secondary: #6F6C90;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
             padding: 0;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        .image-container {
+        
+        body {
+            min-height: 100vh;
+            background: #F7F7FD;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(254, 58, 127, 0.12) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(108, 99, 255, 0.12) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(50, 204, 188, 0.08) 0%, transparent 30%);
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100%;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            color: var(--text-color);
         }
-        .image-container img {
-            display: block;
-            max-width: 100%;
+        
+        .login-container {
+            width: 100%;
+            max-width: 1100px;
+            min-height: 600px;
+            display: flex;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(47, 46, 65, 0.1);
+            position: relative;
+            background-color: var(--light-color);
+        }
+        
+        /* Decorative shapes */
+        .decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.6;
+            z-index: -1;
+        }
+        
+        .decoration-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+            background: #6C63FF;
+        }
+        
+        .decoration-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            right: -50px;
+            background: #FE3A7F;
+        }
+        
+        /* Illustration section */
+        .illustration-section {
+            flex: 1;
+            background: var(--secondary-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .illustration-section:before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .illustration-section:after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: 40%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .brand-logo {
+            position: relative;
+            z-index: 1;
+            width: 150px;
             height: auto;
         }
-
-        /* Estilo para el pop-up */
-        .modal {
-            display: none;
-            position: fixed;
+        
+        .illustration {
+            position: relative;
             z-index: 1;
-            left: 0;
-            top: 0;
             width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
             max-width: 400px;
+            height: auto;
+        }
+        
+        .illustration-text {
+            position: relative;
+            z-index: 1;
+            color: white;
             text-align: center;
-            border-radius: 10px;
+            margin-top: 30px;
         }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+        
+        .illustration-text h2 {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
+        
+        .illustration-text p {
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 400px;
+        }
+        
+        /* Form section */
+        .form-section {
+            width: 450px;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .form-header {
+            margin-bottom: 40px;
+        }
+        
+        .form-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+        
+        .form-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control {
+            width: 100%;
+            height: 56px;
+            padding: 0 20px 0 50px;
+            border: 1px solid #E1E0E9;
+            border-radius: 16px;
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            font-size: 15px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #6C63FF;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+            background-color: #FFFFFF;
+        }
+        
+        .form-control:focus + .input-icon {
+            color: #6C63FF;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .password-toggle:hover {
+            color: #6C63FF;
+        }
+        .custom-control {
+            display: flex;
+            align-items: center;
             cursor: pointer;
         }
-
-        .countdown {
-            font-size: 1.5em;
-            color: #ff0000;
+        
+        .custom-control-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .custom-control-label {
+            position: relative;
+            margin-bottom: 0;
+            vertical-align: top;
+            padding-left: 30px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .custom-control-label::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #E1E0E9;
+            border-radius: 6px;
+            background-color: var(--surface-color);
+            content: "";
+            transition: all 0.3s ease;
+        }
+        
+        .custom-control-input:checked ~ .custom-control-label::before {
+            background: var(--primary-gradient);
+            border-color: #6C63FF;
+        }
+        
+        .custom-control-input:checked ~ .custom-control-label::after {
+            position: absolute;
+            top: 5px;
+            left: 7px;
+            display: block;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            content: "";
+        }
+        
+        .forgot-link {
+            color: #6C63FF;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+        
+        .btn-login {
+            width: 100%;
+            height: 56px;
+            border: none;
+            border-radius: 16px;
+            background: var(--secondary-gradient);
+            color: white;
+            font-size: 16px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.2);
+        }
+        
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            transition: all 0.6s ease;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(108, 99, 255, 0.3);
+        }
+        
+        .btn-login:hover::before {
+            left: 100%;
+        }
+        
+        .btn-login:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-icon {
+            margin-right: 8px;
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 400;
+        }
+        
+        /* Loader */
+        .loader {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Floating elements */
+        .floating-element {
+            position: absolute;
+            z-index: 0;
+        }
+        
+        .float-1 {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            background: var(--secondary-gradient);
+            top: 10%;
+            right: 3%;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .float-2 {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: purple;
+            bottom: 20%;
+            left: 10%;
+            animation: float 3s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+        
+        .float-3 {
+            width: 25px;
+            height: 25px;
+            border-radius: 8px;
+            background: #FFC75F;
+            top: 80%;
+            right: 25%;
+            animation: float 3.5s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+        
+        /* Notifications */
+        .custom-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(47, 46, 65, 0.1);
+            display: flex;
+            align-items: center;
+            max-width: 350px;
+            transform: translateX(400px);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 1000;
+        }
+        
+        .custom-notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-icon {
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 0;
+        }
+        
+        .notification-icon i {
+            font-size: 24px;
+        }
+        
+        .notification-success .notification-icon {
+            background: linear-gradient(45deg, #2ECC71, #1abc9c);
+            color: white;
+        }
+        
+        .notification-error .notification-icon {
+            background: linear-gradient(45deg, #E74C3C, #C0392B);
+            color: white;
+        }
+        
+        .notification-content {
+            padding: 15px 25px 15px 15px;
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+        
+        .notification-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Blocked access overlay */
+        .access-blocked {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(247, 247, 253, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .blocked-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(47, 46, 65, 0.1);
+            width: 90%;
+            max-width: 450px;
+            padding: 40px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .blocked-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(108, 99, 255, 0.1) 2px, transparent 2px);
+            background-size: 20px 20px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .blocked-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #E74C3C;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .blocked-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #E74C3C, #C0392B);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+        }
+        
+        .blocked-icon i {
+            font-size: 40px;
+        }
+        
+        .blocked-message {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .countdown-wrapper {
+            margin: 25px auto;
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+        
+        .countdown-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        
+        .circle-bg {
+            fill: none;
+            stroke: #F7F7FD;
+            stroke-width: 10;
+        }
+        
+        .circle-progress {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+            stroke: #E74C3C;
+            transition: stroke-dashoffset 1s linear, stroke 0.5s ease;
+        }
+        
+        .countdown-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        
+        .countdown-text {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* Animation for blocked access */
+        .blocked-decoration {
+            position: absolute;
+            border-radius: 50%;
+            background: #E74C3C;
+            filter: blur(40px);
+            opacity: 0.1;
+        }
+        
+        .block-dec1 {
+            width: 150px;
+            height: 150px;
+            top: -50px;
+            right: -50px;
+        }
+        
+        .block-dec2 {
+            width: 100px;
+            height: 100px;
+            bottom: -30px;
+            left: -30px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            
+            .illustration-section {
+                padding: 40px 20px;
+                max-height: 400px;
+            }
+            
+            .illustration-text {
+                margin-top: 20px;
+            }
+            
+            .illustration-text h2 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            
+            .illustration-text p {
+                font-size: 14px;
+            }
+            
+            .form-section {
+                width: 100%;
+                padding: 40px 30px;
+            }
+            
+            .brand-logo {
+                width: 130px;
+            }
+            
+            .form-title {
+                font-size: 24px;
+            }
+            
+            .float-1, .float-2, .float-3 {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .form-section {
+                padding: 30px 20px;
+            }
+            
+            .form-header {
+                margin-bottom: 30px;
+            }
+            .blocked-container {
+                padding: 30px 20px;
+            }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="authentication-bg position-relative">
-    <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 posición-relative">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-5">
-                    <div class="card overflow-hidden">
-                        <div class="row g-0">
-                            <div class="p-2 image-container">
-                                <h1>
-                                    PORTAL DOCENTES
-                                </h1>
-                            </div>
-                            <div class="">
-                                <div class="d-flex flex-column h-100">
-                                    <div class="p-4 my-auto">
-                                        <h4 class="fs-20" style="align-content: center;">Iniciar Sesión</h4><br>
-                                            {% if messages %}
-                                                {% for message in messages %}
-                                                    <div class="alert alert-danger" role="alert">
-                                                        {{ message }}
-                                                    </div>
-                                                {% endfor %}
-                                                {% elif remaining_time %}
-                                                <div class="alert alert-danger" role="alert">
-                                                    <p id="block-message">
-                                                        Debes esperar <span id="timer">{{ remaining_time }}</span> segundos para intentarlo de nuevo.
-                                                    </p>
-                                                </div>
-                                            {% endif %}
-                                        <!-- Formulario -->
-                                        <form method="POST">
-                                            {% csrf_token %}
-                                            <div class="mb-3">
-                                                <label for="username" class="form-label">Usuario</label><br>
-                                                <input class="form-control" type="text" id="username" name="username" placeholder="Ingresa tu Usuario" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="password" class="form-label">Contraseña</label><br>
-                                                <input class="form-control" type="password" id="password" name="password" placeholder="Ingresa tu Contraseña segura" required>
-                                            </div>
-                                            <div class="mb-0 text-start">
-                                                <button class="btn btn-soft-primary w-100" type="submit"><i class="ri-login-circle-fill me-1"></i> <span class="fw-bold">Iniciar</span></button>
-                                            </div>
-                                        </form>
-                                    </div>    
-                                </div>
-                            </div> <!-- end col -->
-                        </div>
+
+<body>
+    <!-- Background decorations -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <div class="login-container">
+        <!-- Illustration section -->
+        <div class="illustration-section">
+            <img src="{% static 'images/incatec3.png' %}" alt="Logo" class="brand-logo">
+            
+            <!-- Placeholder for an illustration - You can replace this with an actual SVG illustration -->
+            <svg class="illustration" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Definiciones para gradientes y efectos -->
+                <defs>
+                    <linearGradient id="backgroundGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#6a11cb;stop-opacity:0.8"/>
+                        <stop offset="100%" style="stop-color:#2575fc;stop-opacity:0.8"/>
+                    </linearGradient>
+                    <filter id="glow2" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="5" result="blur"/>
+                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                    </filter>
+                </defs>
+                
+                <!-- Pizarra central -->
+                <rect x="150" y="100" width="200" height="130" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                
+                <!-- Base de la pizarra -->
+                <line x1="240" y1="230" x2="240" y2="260" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+                <line x1="260" y1="230" x2="260" y2="260" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+                <path d="M220,260 L280,260" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+                
+                <!-- Contenido en la pizarra -->
+                <text x="250" y="140" fill="#FFFFFF" font-size="14" text-anchor="middle" font-family="Arial">A + B = C</text>
+                <path d="M170,160 L330,160" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round"/>
+                <circle cx="200" cy="190" r="15" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <line x1="220" y1="180" x2="300" y2="180" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round"/>
+                <line x1="220" y1="190" x2="280" y2="190" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round"/>
+                <line x1="220" y1="200" x2="290" y2="200" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round"/>
+                
+                <!-- Docente -->
+                <circle cx="250" cy="310" r="20" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+                <path d="M235,335 C235,335 240,360 250,380 C260,360 265,335 265,335" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="250" y1="330" x2="250" y2="350" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+                <line x1="235" y1="345" x2="265" y2="345" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+                
+                <!-- Libro en mano -->
+                <rect x="270" y="340" width="20" height="25" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <line x1="280" y1="340" x2="280" y2="365" stroke="#FFFFFF" stroke-width="1"/>
+                <line x1="275" y1="345" x2="285" y2="345" stroke="#FFFFFF" stroke-width="1"/>
+                <line x1="275" y1="350" x2="285" y2="350" stroke="#FFFFFF" stroke-width="1"/>
+                <line x1="275" y1="355" x2="285" y2="355" stroke="#FFFFFF" stroke-width="1"/>
+                <line x1="275" y1="360" x2="285" y2="360" stroke="#FFFFFF" stroke-width="1"/>
+                
+                <!-- Estudiantes -->
+                <!-- Estudiante 1 -->
+                <circle cx="150" cy="330" r="15" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M140,350 C140,350 145,365 150,375 C155,365 160,350 160,350" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                
+                <!-- Estudiante 2 -->
+                <circle cx="350" cy="330" r="15" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M340,350 C340,350 345,365 350,375 C355,365 360,350 360,350" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                
+                <!-- Manzana (símbolo clásico de enseñanza) -->
+                <path d="M80,120 C80,120 83,110 90,110 C97,110 100,120 100,120" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M90,140 C75,140 70,130 70,120 C70,110 75,100 90,100 C105,100 110,110 110,120 C110,130 105,140 90,140 Z" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                
+                <!-- Libros apilados -->
+                <rect x="410" y="180" width="40" height="10" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <rect x="405" y="190" width="50" height="10" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <rect x="400" y="200" width="60" height="10" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <rect x="395" y="210" width="70" height="10" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <rect x="390" y="220" width="80" height="10" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                
+                <!-- Birrete/gorro de graduación -->
+                <path d="M415,120 L445,120 L430,100 Z" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <rect x="425" y="120" width="10" height="5" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <path d="M430,125 L430,135" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                <path d="M425,135 L435,135" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                
+                <!-- Iconos de materias -->
+                <!-- Matemáticas -->
+                <rect x="70" y="210" width="20" height="20" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+                <path d="M70,210 L90,230" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+                <path d="M90,210 L70,230" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+                
+                <!-- Ciencias -->
+                <circle cx="80" cy="260" r="5" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+                <ellipse cx="80" cy="260" rx="10" ry="3" fill="none" stroke="#FFFFFF" stroke-width="1" transform="rotate(30 80 260)"/>
+                <ellipse cx="80" cy="260" rx="10" ry="3" fill="none" stroke="#FFFFFF" stroke-width="1" transform="rotate(90 80 260)"/>
+                <ellipse cx="80" cy="260" rx="10" ry="3" fill="none" stroke="#FFFFFF" stroke-width="1" transform="rotate(150 80 260)"/>
+                
+                <!-- Literatura -->
+                <path d="M70,280 L90,280 L90,310 L80,305 L70,310 Z" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+                <path d="M75,290 L85,290" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+                <path d="M75,295 L85,295" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+                <path d="M75,300 L80,300" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+                
+                
+                <!-- Círculos decorativos (efecto de burbujas) -->
+                <g opacity="0.5">
+                    <circle cx="100" cy="60" r="20" fill="#FFFFFF"/>
+                    <circle cx="370" cy="80" r="15" fill="#FFFFFF"/>
+                    <circle cx="430" cy="340" r="25" fill="#FFFFFF"/>
+                    <circle cx="60" cy="330" r="18" fill="#FFFFFF"/>
+                    <circle cx="200" cy="380" r="12" fill="#FFFFFF"/>
+                </g>
+                
+                <!-- Brillo en elementos clave -->
+                <circle cx="250" cy="170" r="120" fill="url(#backgroundGradient2)" opacity="0.2" filter="url(#glow2)"/>
+            </svg>
+            
+            <div class="illustration-text">
+                <h2>Bienvenido a <strong class="badge bg-success">María</strong></h2>
+                <p>Acceda a su cuenta para gestionar y administrar todos sus recursos empresariales.</p>
+            </div>
+        </div>
+        
+        <!-- Form section -->
+        <div class="form-section">
+            <!-- Floating elements -->
+            <div class="floating-element float-1"></div>
+            <div class="floating-element float-2"></div>
+            <div class="floating-element float-3"></div>
+            
+            <div class="form-header">
+                <h1 class="form-title">Iniciar Sesión</h1>
+                <p class="form-subtitle">Ingrese sus credenciales para continuar</p>
+            </div>
+            
+            <form method="POST" id="login-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="username" class="form-label">Nombre de Usuario</label>
+                    <div class="input-group">
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Ingrese su nombre de usuario" required>
+                        <i class="ri-user-line input-icon"></i>
                     </div>
                 </div>
-                <!-- end row -->
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Ingrese su contraseña" required>
+                        <i class="ri-lock-line input-icon"></i>
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <i class="ri-eye-line" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login" id="submit-btn">
+                    <i class="ri-login-circle-line btn-icon"></i>
+                    <span id="btn-text">Iniciar Sesión</span>
+                    <div class="loader" id="loader"></div>
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> María - Theme by Techzaa</p>
             </div>
-            <!-- end row -->
         </div>
-        <!-- end container -->
     </div>
-    <!-- end page -->
-
-    <footer class="footer footer-alt fw-medium">
-        <span class="text-dark">
-            <script>
-                document.write(new Date().getFullYear())
-            </script> © María - Theme by Techzaa
-        </span>
-    </footer>
-    {% if remaining_time %}
+    
+    <!-- Custom notification -->
+    <div class="custom-notification" id="custom-notification">
+        <div class="notification-icon">
+            <i id="notification-icon" class="ri-information-line"></i>
+        </div>
+        <div class="notification-content">
+            <div class="notification-title" id="notification-title">Notificación</div>
+            <div class="notification-message" id="notification-message"></div>
+        </div>
+    </div>
+    
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.querySelector("form");
-            const submitButton = form.querySelector("button[type='submit']");
-            const countdownElement = document.getElementById("timer");
-    
-            // Tiempo restante del backend o recuperado de localStorage
-            let remainingTime = localStorage.getItem("remainingTime")
-                ? parseInt(localStorage.getItem("remainingTime"), 10)
-                : {{ remaining_time }};
-    
-            // Sincronizar tiempo restante con el backend (evitar desincronización)
-            if (remainingTime > {{ remaining_time }}) {
-                remainingTime = {{ remaining_time }};
-                localStorage.setItem("remainingTime", remainingTime);
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.replace('ri-eye-line', 'ri-eye-off-line');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.replace('ri-eye-off-line', 'ri-eye-line');
             }
+        }
+        
+        // Show custom notification
+        function showNotification(message, type) {
+            const notification = document.getElementById('custom-notification');
+            const notificationIcon = document.getElementById('notification-icon');
+            const notificationTitle = document.getElementById('notification-title');
+            const notificationMessage = document.getElementById('notification-message');
+            
+            // Set notification type
+            notification.className = 'custom-notification notification-' + type;
+            
+            // Set icon based on type
+            if (type === 'success') {
+                notificationIcon.className = 'ri-check-line';
+                notificationTitle.textContent = '¡Éxito!';
+            } else {
+                notificationIcon.className = 'ri-error-warning-line';
+                notificationTitle.textContent = 'Error';
+            }
+            
+            notificationMessage.textContent = message;
+            
+            // Show notification
+            notification.classList.add('show');
+            
+            // Hide after 4 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+        
+        // Handle form submission
+        document.getElementById('login-form').addEventListener('submit', function() {
+            const btnText = document.getElementById('btn-text');
+            const loader = document.getElementById('loader');
+            
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            document.getElementById('submit-btn').disabled = true;
+        });
+    </script>
     
-            // Deshabilitar el formulario
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+        (function() {
+            const messageType = '{% if message.tags == "success" %}success{% else %}error{% endif %}';
+            showNotification('{{ message }}', messageType);
+        })();
+        {% endfor %}
+    </script>
+    {% endif %}
+    
+    {% if remaining_time > 0 %}
+    <div class="access-blocked" id="access-blocked">
+        <div class="blocked-container">
+            <div class="blocked-pattern"></div>
+            <div class="blocked-decoration block-dec1"></div>
+            <div class="blocked-decoration block-dec2"></div>
+            
+            <div class="blocked-icon">
+                <i class="ri-lock-2-line"></i>
+            </div>
+            
+            <h2 class="blocked-title">Acceso Temporal Bloqueado</h2>
+            <p class="blocked-message">Hemos detectado múltiples intentos de inicio de sesión fallidos. Por razones de seguridad, el acceso ha sido temporalmente restringido.</p>
+            
+            <div class="countdown-wrapper">
+                <svg class="countdown-svg" viewBox="0 0 100 100">
+                    <circle class="circle-bg" cx="50" cy="50" r="45"></circle>
+                    <circle class="circle-progress" id="countdown-circle" cx="50" cy="50" r="45" stroke-dasharray="283" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="countdown-number" id="countdown-number">{{ remaining_time }}</div>
+            </div>
+            
+            <p class="countdown-text">Por favor espere antes de volver a intentarlo</p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let remainingTime = {{ remaining_time }};
+            const inputs = document.querySelectorAll('#login-form input');
+            const submitBtn = document.getElementById('submit-btn');
+            const circle = document.getElementById('countdown-circle');
+            const countdownNumber = document.getElementById('countdown-number');
+            
             function disableForm() {
-                form.querySelectorAll("input").forEach(input => input.disabled = true);
-                submitButton.disabled = true;
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    input.style.opacity = '0.6';
+                });
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.6';
             }
-    
-            // Habilitar el formulario
+            
             function enableForm() {
-                form.querySelectorAll("input").forEach(input => input.disabled = false);
-                submitButton.disabled = false;
+                inputs.forEach(input => {
+                    input.disabled = false;
+                    input.style.opacity = '1';
+                });
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
             }
-    
-            // Iniciar el contador
+            
             disableForm();
+            
+            // Set up circle animation
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            
+            function setProgress(percent) {
+                const offset = circumference - (percent / 100 * circumference);
+                circle.style.strokeDashoffset = offset;
+            }
+            
+            const totalTime = remainingTime;
+            setProgress(0);
+            
             const countdown = setInterval(() => {
                 if (remainingTime > 0) {
-                    countdownElement.innerText = remainingTime;
-                    remainingTime -= 1;
-    
-                    // Guardar el tiempo restante en localStorage
-                    localStorage.setItem("remainingTime", remainingTime);
+                    remainingTime--;
+                    countdownNumber.textContent = remainingTime;
+                    
+                    // Calculate and update progress
+                    const progress = (1 - (remainingTime / totalTime)) * 100;
+                    setProgress(progress);
+                    
+                    // Change circle color as time progresses
+                    if (remainingTime <= totalTime * 0.3) {
+                        circle.style.stroke = '#2ECC71'; // Green - almost done
+                    } else if (remainingTime <= totalTime * 0.6) {
+                        circle.style.stroke = '#F39C12'; // Orange - halfway
+                    }
+                    
+                    // Add pulse animation to number
+                    countdownNumber.animate([
+                        { transform: 'scale(1)' },
+                        { transform: 'scale(1.15)' },
+                        { transform: 'scale(1)' }
+                    ], {
+                        duration: 600,
+                        easing: 'ease-in-out'
+                    });
+                    
                 } else {
-                    // Una vez que el contador termina, limpia el intervalo y recarga con GET
                     clearInterval(countdown);
-                    localStorage.removeItem("remainingTime");
-                    enableForm();
-                    window.location.href = window.location.pathname; // Recarga con GET
+                    
+                    // Complete animation
+                    circle.style.stroke = '#2ECC71';
+                    countdownNumber.innerHTML = '<i class="ri-check-line"></i>';
+                    countdownNumber.style.color = '#2ECC71';
+                    
+                    // Finish with fade out animation
+                    setTimeout(() => {
+                        document.getElementById('access-blocked').style.opacity = '0';
+                        document.getElementById('access-blocked').style.transition = 'opacity 0.5s ease';
+                        
+                        setTimeout(() => {
+                            enableForm();
+                            window.location.reload();
+                        }, 600);
+                    }, 1000);
                 }
             }, 1000);
         });
     </script>
-    {% endif %}     
-{% include 'partials/footer-scripts.html' %}
+    {% endif %}
+    
+    {% include 'partials/footer-scripts.html' %}
 </body>
 </html>

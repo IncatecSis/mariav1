@@ -1,76 +1,124 @@
 <style>
-/* Clase personalizada para el borde inferior debajo del texto */
-.card-header.custom-border {
-        border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
-        padding-bottom: 10px; /* Espacio entre el texto y el borde */
+    .card-header.custom-border {
+        border-bottom: 3px solid #5a42c1;
+        padding-bottom: 10px;
         position: relative;
     }
-    
-.card-header.custom-border h2 {
-        margin-top: -15px; /* Elimina márgenes del título */
+
+    .card-header.custom-border h2 {
+        margin-top: -15px;
         padding: 5px;
     }
 </style>
 <div class="card">
     <div class="card-header custom-border bg-white">
-        <h2 class="text-center text-purple">Asignar Módulos a Programa</h2>
+        <h2 class="text-center text-purple">Asignar módulos a programa</h2>
     </div>
 </div>
-        <!-- Formulario para asignar módulos -->
-        <form>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="programa" class="form-label">Programa</label>
-                    <select class="form-select" id="programa">
-                        <option selected>--------</option>
-                        <option selected>--------</option>
-                        <option selected>--------</option>
-                        <option selected>--------</option>
-                        <option selected>--------</option>
-                        <option selected>--------</option>
-                        <!-- Agrega más opciones si es necesario -->
-                    </select>
-                </div>
 
-                <div class="col-md-6">
-                    <label for="area" class="form-label">Área</label>
-                    <select class="form-select" id="area">
-                        <option selected>No Aplica</option>
-                        <!-- Agrega más opciones si es necesario -->
-                    </select>
-                </div>
-            </div>
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="tipo" value="asignar_modulo">
+    <div class="row">
+        <div class="col-md-12">
+            <label class="form-label">Programa</label>
+            <select class="form-select" name="programas" id="programa-select">
+                <option value="">SELECCIONE</option>
+                {% for pg in programas %}
+                    <option value="{{ pg.id_programa }}">{{ pg.nombre_programa }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-            <!-- Sección Seleccionar Módulo -->
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <label for="modulo" class="form-label">Seleccionar Módulo</label>
-                    <input type="text" class="form-control" id="modulo">
-                </div>
-            </div>
+        <div class="col-md-12 mt-3">
+            <label class="form-label">Pensum Programa</label>
+            <select class="form-select" name="pensum" id="pensum-select">
+                <option value="">SELECCIONE</option>
+                {% for pen in pensum %}
+                    <option value="{{ pen.id_pensum }}" data-programa="{{ pen.id_programa.id_programa }}">
+                        {{ pen.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-            <!-- Grupo de Calificación y Orden -->
-            <div class="row mb-3">
-                <div class="col-md-8">
-                    <label for="grupo_calificacion" class="form-label">Grupo % de Calificación del Programa</label>
-                    <select class="form-select" id="grupo_calificacion">
-                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
-                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
-                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
-                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
-                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
-                        <option selected>Grupo 1 - % Notas Promedios Teóricas</option>
-                        <!-- Agrega más opciones si es necesario -->
-                    </select>
-                </div>
+        <div class="col-md-12 mt-3">
+            <label class="form-label">Semestre Pensum</label>
+            <select class="form-select" name="semestres" id="semestre-select" required>
+                <option value="">SELECCIONE</option>
+                {% for s in semestre %}
+                    <option value="{{ s.id_semestre }}" data-pensum="{{ s.id_pensum.id_pensum }}">
+                        {{ s.nombre_semestre }} - {{ s.id_pensum.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-                <div class="col-md-4">
-                    <label for="orden" class="form-label">Orden Alfabetico</label>
-                    <input type="number" class="form-control" id="orden" value="0">
-                </div>
+        <div class="col-md-12 mt-3">
+            <label class="form-label">Modúlo</label>
+            <select class="form-select" name="modulos">
+                <option value="">SELECCIONE</option>
+                {% for modulo in modulos %}
+                    <option value="{{ modulo.id_modulo }}">{{ modulo.nombre_modulo }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-            </div>
-            <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-soft-purple">Agregar</button>
-            </div>
-        </form>
+        <div class="col-md-6 mt-3">
+            <label class="form-label">Intensidad Horaria</label>
+            <input type="number" class="form-control" name="intensidad">
+        </div>
+    </div>
+    <div class="col-md-12 text-center mt-2">
+        <button type="submit" class="btn btn-soft-purple">Agregar</button>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const programaSelect = document.getElementById('programa-select');
+        const pensumSelect = document.getElementById('pensum-select');
+        const semestreSelect = document.getElementById('semestre-select');
+
+        function filtrarPensum() {
+            const idPrograma = programaSelect.value;
+            for (let option of pensumSelect.options) {
+                const match = option.getAttribute('data-programa') === idPrograma;
+                option.hidden = !match && option.value !== "";
+            }
+            pensumSelect.value = "";
+            filtrarSemestres();
+        }
+
+        function filtrarSemestres() {
+            const idPensum = pensumSelect.value;
+            for (let option of semestreSelect.options) {
+                const match = option.getAttribute('data-pensum') === idPensum;
+                option.hidden = !match && option.value !== "";
+            }
+            semestreSelect.value = "";
+        }
+
+        programaSelect.addEventListener('change', filtrarPensum);
+        pensumSelect.addEventListener('change', filtrarSemestres);
+
+        filtrarPensum();
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{%  if messages %}
+<script>
+    {% for message in messages %}
+        Swal.fire({
+            icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+            text: '{{ message }}',
+            toast: true,
+            position: 'top-end',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+        })
+    {% endfor %}
+</script>
+{% endif %}

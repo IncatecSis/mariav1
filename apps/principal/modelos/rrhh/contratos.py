@@ -21,9 +21,10 @@ class Contrataciones(models.Model):
     id_riesgo_laboral = models.ForeignKey(RiesgoLaboral, on_delete=models.CASCADE, blank=True, null=True)
     estado = models.BooleanField(default=False)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    id_sede = models.ForeignKey(Sedes, on_delete=models.CASCADE, blank=True, null=True, db_column='id_sede')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'contrataciones'
 
     def __str__(self):
@@ -36,7 +37,7 @@ class TipoDespido(models.Model):
     descripcion = models.CharField(max_length=250)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'tipo_despido'
         ordering = ['nombre_despido']
 
@@ -58,7 +59,7 @@ class ContratoFin(models.Model):
     id_tipo_despido = models.ForeignKey(TipoDespido, on_delete=models.CASCADE, db_column='id_tipo_despido')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'contrato_fin'
 
     def __str__(self):
@@ -80,7 +81,7 @@ class DocumentosContrato(models.Model):
     resultados = models.ImageField(upload_to='anexos', null=True, blank=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'anexo_documentos'
 
     def __str__(self):

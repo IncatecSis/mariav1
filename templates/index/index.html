@@ -31,7 +31,7 @@
             <div class="content">
                 <!-- Start Content-->
                 <div class="container-fluid">
-                    {% if not request.session.sede_id or not request.session.periodo_id %}
+                    {% if not request.session.sede_id %}
                         {% include 'index/sedes.html' %}
                     {% else %}
                         {% include 'partials/page-title.html' %}
@@ -438,6 +438,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 	{% if messages %}
 	<script>
 		{% for message in messages %}

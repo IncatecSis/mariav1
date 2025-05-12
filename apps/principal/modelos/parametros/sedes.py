@@ -12,7 +12,7 @@ class Sedes(models.Model):
     updated_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'sedes'
 
     def __str__(self):
@@ -32,7 +32,7 @@ class Areas(models.Model):
     nombre_area = models.CharField(max_length=100)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'areas'
         ordering = ['id_area']
 
@@ -49,7 +49,7 @@ class Pisos(models.Model):
     nombre_piso = models.CharField(max_length=50)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'pisos'
         ordering = ['id_piso']
 
@@ -71,7 +71,7 @@ class Ubicaciones(models.Model):
     activo = models.BooleanField(default=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'ubicaciones'
         ordering=['nombre_ubicacion']
 

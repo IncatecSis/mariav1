@@ -5,11 +5,13 @@
 <!-- ============================================================== -->
 
 <head>
-    <title>{{ titulo_pagina }}</title>
+    <title>| {{ titulo }}</title>
 	{% include 'partials/title_meta.html' %}
 
 	{% include 'partials/head-css.html' %}
     <link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/pop-up_crear_p.css' %}">
+	<link rel="stylesheet" href="{% static 'source/scss/new/ventana_modal_a/v_administrar/pop-up_semestre.css' %}">
+
 </head>
 
 <body>
@@ -58,6 +60,9 @@
                                     <button type="button" class="btn btn-soft-purple" data-popup="crear_p_c_Popup">
                                         <i class="mdi mdi-calendar-edit align-text-bottom me-1 fs-16 lh-1"></i>Crear Programas
                                     </button>
+                                    <button type="button" class="btn btn-soft-purple" data-popup="PopuPensum">
+                                        <i class="mdi mdi-calendar-edit align-text-bottom me-1 fs-16 lh-1"></i>Asignacion de Pensum
+                                    </button>
                                     <button type="button" class="btn btn-soft-purple" onclick="location.href='{% url 'Incatec_administracion:modulos' %}'">
                                     <i class="mdi mdi-calendar-sync align-text-bottom me-1 fs-16 lh-1"></i>
                                         Crear Modúlos
@@ -88,6 +93,10 @@
 																data-bs-target="#aboutme3" type="button" role="tab"
 																aria-controls="user" aria-selected="true" href="#aboutme3">Cursos</a>
 														</li>
+														<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+																data-bs-target="#aboutme4" type="button" role="tab"
+																aria-controls="user" aria-selected="true" href="#aboutme4">Pensum</a>
+														</li>
 													</ul>
 
 													<div class="tab-content m-0 p-3">
@@ -99,53 +108,27 @@
 																		<table class="table table-striped table-centered mb-0">
                                                                             <thead>
                                                                                 <tr>
-                                                                                    <th class="text-purple">Nombre Programa</th>
-                                                                                    <th class="text-purple">Mostrar</th>
-                                                                                    <th class="text-purple">Programa</th>
-                                                                                    <th class="text-purple">Diplomado</th>
-                                                                                    <th class="text-purple">Curso</th>
-                                                                                    <th class="text-purple">Otro</th>
-                                                                                    <th class="text-purple">Inscripción Línea</th>
-                                                                                    <th class="text-purple">Matrícula Virtual</th>
-                                                                                    <th class="text-purple">Modalidad Hibrida</th>
-                                                                                    <th class="text-purple">Editar</th>
+                                                                                    <th>Nombre de Programa</th>
+                                                                                    <th>Estado</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        OPERACIÓN DE CAJA REGISTRADORA SISTEMATIZADA - MANIPULACION DE ALIMENTOS - ATENCIÓN Y SERVICIO AL CLIENTE
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <input class="form-check-input" type="checkbox" checked>
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <input class="form-check-input" type="checkbox">
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <input class="form-check-input" type="checkbox">
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <input class="form-check-input" type="checkbox">
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <input class="form-check-input" type="checkbox" checked>
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <input class="form-check-input" type="checkbox">
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <input class="form-check-input" type="checkbox">
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <input class="form-check-input" type="checkbox">
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <button class="btn btn-soft-info btn-sm">
-                                                                                            <i class="bi bi-pencil-square"></i>
-                                                                                        </button>
-                                                                                    </td>
-                                                                                </tr>
+                                                                                {% for pg in programas %}
+                                                                                    {% if pg.id_tipos_programas.nombre == 'Programas Técnicos' %}
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {{ pg.nombre_programa }}
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            {% if pg.estado %}
+                                                                                                <span class="badge bg-success">Activo</span>
+                                                                                            {% else %}
+                                                                                                <span class="badge bg-danger">Inactivo</span>
+                                                                                            {% endif %}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    {% endif %}
+                                                                                {% endfor %}
                                                                             </tbody>
 																		</table>
 																	</div> 
@@ -162,53 +145,27 @@
                                                                     <table class="table table-striped table-centered mb-0">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th class="text-purple">Nombre Programa</th>
-                                                                                <th class="text-purple">Mostrar</th>
-                                                                                <th class="text-purple">Programa</th>
-                                                                                <th class="text-purple">Diplomado</th>
-                                                                                <th class="text-purple">Curso</th>
-                                                                                <th class="text-purple">Otro</th>
-                                                                                <th class="text-purple">Inscripción Línea</th>
-                                                                                <th class="text-purple">Matrícula Virtual</th>
-                                                                                <th class="text-purple">Modalidad Hibrida</th>
-                                                                                <th class="text-purple">Editar</th>
+                                                                                <th>Nombre de Diplomado</th>
+                                                                                <th>Estado</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    ATENCIÓN Y SERVICIO AL CLIENTE
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <button class="btn btn-soft-info btn-sm">
-                                                                                        <i class="bi bi-pencil-square"></i>
-                                                                                    </button>
-                                                                                </td>
-                                                                            </tr>
+                                                                            {% for pg in programas %}
+                                                                                {% if pg.id_tipos_programas.nombre == 'Diplomados' %}
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        {{ pg.nombre_programa }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {% if pg.estado %}
+                                                                                            <span class="badge bg-success">Activo</span>
+                                                                                        {% else %}
+                                                                                            <span class="badge bg-danger">Inactivo</span>
+                                                                                        {% endif %}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                {% endif %}
+                                                                            {% endfor %}
                                                                         </tbody>
                                                                     </table>
                                                                 </div> 
@@ -224,53 +181,70 @@
                                                                     <table class="table table-striped table-centered mb-0">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th class="text-purple">Nombre Programa</th>
-                                                                                <th class="text-purple">Mostrar</th>
-                                                                                <th class="text-purple">Programa</th>
-                                                                                <th class="text-purple">Diplomado</th>
-                                                                                <th class="text-purple">Curso</th>
-                                                                                <th class="text-purple">Otro</th>
-                                                                                <th class="text-purple">Inscripción Línea</th>
-                                                                                <th class="text-purple">Matrícula Virtual</th>
-                                                                                <th class="text-purple">Modalidad Hibrida</th>
-                                                                                <th class="text-purple">Editar</th>
+                                                                                <th>Nombre de Cursos</th>
+                                                                                <th>Estado</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
+                                                                            {% for pg in programas %}
+                                                                                {% if pg.id_tipos_programas.nombre == 'Cursos' %}
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        {{ pg.nombre_programa }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {% if pg.estado %}
+                                                                                            <span class="badge bg-success">Activo</span>
+                                                                                        {% else %}
+                                                                                            <span class="badge bg-danger">Inactivo</span>
+                                                                                        {% endif %}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div> 
+                                                            <!-- end table-responsive-->
+                                                        </div> <!-- end profile-desk -->
+                                                        </div>
+                                                        <div class="tab-pane fade" id="aboutme4" role="tabpanel"
+                                                        aria-labelledby="home-tab" tabindex="0">													
+                                                        <div class="row">
+                                                            <!-- Lista de Matricula - Programas -->
+                                                                <div class="table-responsive-sm">
+                                                                    <table class="table table-striped table-centered mb-0">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Nombre de Programa</th>
+                                                                                <th>Nombre de Pensum</th>
+                                                                                <th class="text-center">Año de vigencia</th>
+                                                                                <th>Estado</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {% for pen in pensum %}
                                                                             <tr>
                                                                                 <td>
-                                                                                    MANIPULACION DE ALIMENTOS - ATENCIÓN Y SERVICIO AL CLIENTE
+                                                                                    {{ pen.id_programa.nombre_programa }}
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input class="form-check-input" type="checkbox">
+                                                                                    {{ pen.nombre }}
                                                                                 </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
+                                                                                <td class="text-center">
+                                                                                    {{ pen.anio_vigencia }} 
                                                                                 </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input class="form-check-input" type="checkbox">
-                                                                                </td>
-                                                                                <td>
-                                                                                    <button class="btn btn-soft-info btn-sm">
-                                                                                        <i class="bi bi-pencil-square"></i>
-                                                                                    </button>
+                                                                                <td class="text-center">
+                                                                                    {% if pen.activo %}
+                                                                                    <input type="checkbox" class="form-check-input bg-success border-success desactivar" 
+                                                                                        data-id="{{ pen.id_pensum }}"
+                                                                                        checked>
+                                                                                    {% else %}
+                                                                                        <input type="checkbox" disabled class="form-check-input">
+                                                                                    {% endif %}
                                                                                 </td>
                                                                             </tr>
+                                                                            {% endfor %}
                                                                         </tbody>
                                                                     </table>
                                                                 </div> 
@@ -298,6 +272,12 @@
                         {% include 'modulos/administrar/p_academico/v_academico/crear_programa.html' %}
                     </div>
                 </div>
+                <div id="PopuPensum" class="popup_se" style="display:none;">
+                    <div class="popup-content_se">
+                        <span data-close="PopuPensum" class="close">&times;</span>
+                        {% include 'modulos/administrar/p_academico/v_academico/crear_pensum.html' %}
+                    </div>
+                </div>
                 <!-- end crear programa-->
             </div>
                 <!-- end Permisos-->
@@ -320,7 +300,61 @@
 
     <!-- Table Editable plugin-->
     <script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.desactivar').forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    const idPensum = this.getAttribute('data-id');
+        
+                    if (!this.checked) {
+                        Swal.fire({
+                            title: '¿Desactivar Pensum?',
+                            text: "Esta acción no se puede deshacer 🛑",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Sí, desactivar',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch("{% url 'Incatec_administracion:programas' %}", {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRFToken': '{{ csrf_token }}',
+                                        'Content-Type': 'application/x-www-form-urlencoded'
+                                    },
+                                    body: `tipo=desactivar_pensum&id_pensum=${idPensum}`
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire('✅ Desactivado', data.message, 'success')
+                                        .then(() => location.reload());
+                                    } else {
+                                        Swal.fire('🚫 Error', data.message, 'error');
+                                        this.checked = true; 
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    Swal.fire('🚨 Error', 'No se pudo completar la acción.', 'error');
+                                    this.checked = true;
+                                });
+                            } else {
+                                this.checked = true; 
+                            }
+                        });
+                    } else {
+                        Swal.fire('Acción no permitida 🚫', 'No puedes volver a activar un Pensum.', 'warning');
+                        this.checked = false; 
+                    }
+                });
+            });
+        });
+    </script>
+        
+        
     <!-- Table editable init-->
     <script src="{% static 'js/pages/tabledit.init.js' %}"></script>
 

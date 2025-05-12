@@ -21,21 +21,32 @@
 </button>
 <div class="card" id="semestre" style="display: none;">
     <div class="container my-3">
-        <form>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" value="semestres" name="tipo">
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="codigo" class="form-label">Código</label>
-                    <input type="text" class="form-control" id="codigo">
+                    <label for="nombre" class="form-label">Nombre Semestre</label>
+                    <input type="text" class="form-control" name="nombre_semestre">
                 </div>
                 <div class="col-md-6">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" value="">
+                    <label for="codigo" class="form-label">Número de Semestre</label>
+                    <input type="number" class="form-control" name="numero_semestre">
                 </div>
+                <div class="col-md-12 mt-2">
+                    <label for="codigo" class="form-label">Pensum</label>
+                    <select name="pensum" class="form-select">
+                        <option value="">SELECCIONE</option>
+                        {% for pn in pensum %}
+                            <option value="{{ pn.id_pensum }}">
+                                {{ pn.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div> 
             </div>
-    
-            <!-- Botón Actualizar -->
             <div class="text-center">
-                <button type="submit" class="btn btn-soft-purple">Agregar</button>
+                <button type="submit" class="btn btn-soft-purple">Crear</button>
             </div>
             <br>
         </form>
@@ -45,27 +56,41 @@
     <table class="table table-striped table-centered mb-0">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Código</th>
+                <th>Nombre Semestre</th>
+                <th>Número de Semestre</th>
+                <th>Pensum</th>
                 <th>Editar</th>
-                <th>Eliminar</th>
             </tr>
         </thead>
         <tbody>
+            {% for semestre in semestres %}
             <tr>
-                <td>1er Semestre</td>
-                <td>1</td>
+                <td>{{ semestre.nombre_semestre }}</td>
+                <td>{{ semestre.numero_semestre }}</td>
+                <td>{{ semestre.id_pensum.nombre }}</td>
                 <td>
                     <button class="btn btn-sm btn-soft-info">
                         <i class="bi bi-pencil-square"></i>
                     </button>
                 </td>
-                <td>
-                    <button class="btn btn-sm btn-soft-danger">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{%  if messages %}
+<script>
+    {% for message in messages %}
+        Swal.fire({
+            icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+            text: '{{ message }}',
+            toast: true,
+            position: 'top-end',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+        })
+    {% endfor %}
+</script>
+{% endif %}

@@ -5,7 +5,7 @@ class Departamentos(models.Model):
     departamento = models.CharField(max_length=100)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'departamentos'
         ordering = ['departamento']
 
@@ -17,7 +17,7 @@ class Eps(models.Model):
     nombre = models.CharField(max_length=100)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'eps'
         ordering = ['nombre']
 
@@ -34,7 +34,7 @@ class EstadoCivil(models.Model):
     nombre = models.CharField(max_length=50)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'estado_civil'
         ordering = ['nombre']
     
@@ -51,7 +51,7 @@ class EstratoSocioeconomico(models.Model):
     estrato = models.CharField(max_length=20)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'estrato_socioeconomico'
         ordering = ['estrato']
 
@@ -68,7 +68,7 @@ class Etnia(models.Model):
     nombre = models.CharField(max_length=50)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'etnia'
         ordering = ['nombre']
 
@@ -87,7 +87,7 @@ class Municipios(models.Model):
     departamento = models.ForeignKey(Departamentos, on_delete=models.CASCADE, related_name='municipios')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'municipios'
         ordering =['municipio']
 
@@ -99,7 +99,7 @@ class Sexo(models.Model):
     sexo = models.CharField(max_length=50)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'sexo'
         ordering = ['sexo']
 
@@ -116,7 +116,7 @@ class Sisben(models.Model):
     sisben = models.CharField(max_length=50)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'sisben'
         ordering = ['sisben']
 
@@ -133,7 +133,7 @@ class TipoDiscapacidad(models.Model):
     nombre = models.CharField(max_length=100)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'tipo_discapacidad'
         ordering = ['nombre']
 
@@ -151,7 +151,7 @@ class TipoIdentificacion(models.Model):
     descripcion = models.TextField(blank=False, null=False)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'tipo_identificacion'
         ordering = ['nombre']
     
@@ -169,7 +169,7 @@ class TipoSangre(models.Model):
     nombre = models.CharField(max_length=10)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'tipo_sangre'
         ordering = ['id_tipo_sangre']
 
@@ -186,7 +186,7 @@ class ZonaResidencial(models.Model):
     zona_residencial = models.CharField(max_length=100)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'zona_residencial'
         ordering = ['zona_residencial']
 

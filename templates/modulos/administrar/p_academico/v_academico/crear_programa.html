@@ -1,133 +1,157 @@
 <style>
-  /* Clase personalizada para el borde inferior debajo del texto */
-  .card-header.custom-border {
-    border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
-    padding-bottom: 10px; /* Espacio entre el texto y el borde */
-    position: relative;
-  }
+    /* Clase personalizada para el borde inferior debajo del texto */
+    .card-header.custom-border {
+        border-bottom: 3px solid #5a42c1;
+        /* Color del borde y grosor */
+        padding-bottom: 10px;
+        /* Espacio entre el texto y el borde */
+        position: relative;
+    }
 
-  .card-header.custom-border h2 {
-    margin-top: -10px; /* Elimina márgenes del título */
-    padding: 5px;
-  }
+    .card-header.custom-border h2 {
+        margin-top: -10px;
+        /* Elimina márgenes del título */
+        padding: 5px;
+    }
 </style>
 <div class="container mt-2">
-  <div class="card">
-    <div class="card-header custom-border bg-white">
-      <h2 class="text-center text-purple">Creación de Programas</h2>
-    </div>
-  </div>
-  <form>
-    <!-- Primera fila: Código, Tipo, Nombre del Programa -->
-    <div class="row mb-3">
-      <div class="col-md-3">
-        <label for="codigo" class="form-label">Código</label>
-        <input type="text" class="form-control" id="codigo" />
-      </div>
-      <div class="col-md-3">
-        <label for="tipo" class="form-label">Tipo</label>
-        <select class="form-select" id="tipo">
-          <option selected>Seleccione</option>
-          <option value="Tecnicos">Tecnicós</option>
-          <option value="Diplomados">Diplomados</option>
-          <option value="Cursos">Cursos</option>
-          <option value="Otro">Otro</option>
-          <!-- Opciones -->
-        </select>
-      </div>
-      <div class="col-md-6">
-        <label for="nombrePrograma" class="form-label"
-          >Nombre Completo del Programa</label
-        >
-        <input type="text" class="form-control" id="nombrePrograma" />
-      </div>
-    </div>
-
-    <!-- Segunda fila: Tipo de Calificación, Escuela, Centro de Costo -->
-    <div class="row mb-3">
-      <div class="col-md-4">
-        <label for="calificacion" class="form-label"
-          >Tipo de Calificación</label
-        >
-        <select id="calificacion" class="form-select">
-          <option selected>Notas Educación Continua</option>
-          <!-- Opciones -->
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="escuela" class="form-label">Escuela</label>
-        <select id="escuela" class="form-select">
-          <option selected>Seleccione</option>
-          <!-- Opciones -->
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="centroCosto" class="form-label">Centro de Costo</label>
-        <select id="centroCosto" class="form-select">
-          <option selected>Seleccione</option>
-          <!-- Opciones -->
-        </select>
-      </div>
-    </div>
-
-    <!-- Tercera fila: Fechas de inicio y vencimiento -->
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <label for="inicio" class="form-label">Inicio</label>
-        <input type="date" class="form-control" id="inicio" />
-      </div>
-      <div class="col-md-6">
-        <label for="vencimiento" class="form-label">Vencimiento</label>
-        <input type="date" class="form-control" id="vencimiento" />
-      </div>
-    </div>
-
-    <!-- Quinta fila: Opciones de mostrar inscripción, matrícula, modalidad -->
-    <div class="col mb-3">
-      <div class="card p-2">
-        <label class="form-label">Opciones</label>
-        <div class="d-flex flex-wrap">
-          <div class="form-check me-3">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="mostrarInscripcion"
-              value="mostrarInscripcion"
-            />
-            <label class="form-check-label" for="mostrarInscripcion"
-              >Inscripción en Línea</label
-            >
-          </div>
-          <div class="form-check me-3">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="mostrarMatricula"
-              value="mostrarMatricula"
-            />
-            <label class="form-check-label" for="mostrarMatricula"
-              >Matrícula Virtual</label
-            >
-          </div>
-          <div class="form-check me-3">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="modalidadPresencial"
-              value="modalidadPresencial"
-            />
-            <label class="form-check-label" for="modalidadPresencial"
-              >Modalidad Híbrida</label
-            >
-          </div>
+    <div class="card">
+        <div class="card-header custom-border bg-white">
+            <h2 class="text-center text-purple">Creación de Programas</h2>
         </div>
-      </div>
     </div>
-    <!-- Botón de envío -->
-    <div class="row mb-3">
-      <div class="col-md-12 text-center">
-        <button type="submit" class="btn btn-soft-purple">Crear</button>
-      </div>
-    </div>
-  </form>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="tipo" value="programas">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="codigo" class="form-label">Código Siet</label>
+                <input type="text" class="form-control" id="codigo" name="codigo_siet" />
+            </div>
+            <div class="col-md-3">
+                <label for="tipo" class="form-label">Tipo de Programa</label>
+                <select class="form-select" id="tipo" name="tipo_programa">
+                    <option value=''>SELECCIONE</option>
+                    {% for tipo in tipos_programas %}
+                    <option value="{{ tipo.id_tipos_programas }}">{{ tipo.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="nombrePrograma" class="form-label">Nombre Completo del Programa</label>
+                <input type="text" class="form-control" id="nombrePrograma" name="nombre_programa" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="escuela" class="form-label">Escuela</label>
+                <select id="escuela" name="escuelas" class="form-select">
+                    <option value=''>Seleccione</option>
+                    {% for escuela in escuelas %}
+                    <option value="{{ escuela.id_escuelas }}">{{ escuela.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="centroCosto" class="form-label">Centro de Costos</label>
+                <input type="text" class="form-control" id="centroCosto" name="centro_costo">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="sede" class="form-label">Sede</label>
+                <select id="sede" name="sedess" class="form-select">
+                    <option value=''>Seleccione</option>
+                    {% for sede in sedes %}
+                    <option value="{{ sede.id_sede }}">{{ sede.nombre_sede }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="duracion" class="form-label">Duración</label>
+                <input type="number" class="form-control" name="duracion">
+            </div>
+            <div class="col-md-4">
+                <label for="periodo" class="form-label">Periodo</label>
+                <input type="number" class="form-control" name="periodo">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="4"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="inicio" class="form-label">Inicio</label>
+                <input type="date" class="form-control" id="inicio" name="fecha_inicio" />
+            </div>
+            <div class="col-md-6">
+                <label for="vencimiento" class="form-label">Vencimiento</label>
+                <input type="date" class="form-control" id="vencimiento" name="fecha_vencimiento" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="numero_registro" class="form-label">Número de Registro</label>
+                <input type="text" class="form-control" id="numero_registro" name="numero_registro" />
+            </div>
+            <div class="col-md-4">
+                <label for="certificacion" class="form-label">Certificación</label>
+                <input type="text" class="form-control" id="certificacion" name="certificacion" />
+            </div>
+            <div class="col-md-4">
+                <label for="acto_admi" class="form-label">Acto Administrativo (PDF o Imagen)</label>
+                <input type="file" class="form-control" id="acto_admi" name="acto_admi" accept="image/*,.pdf" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-soft-purple">Crear</button>
+            </div>
+        </div>
+    </form>
 </div>
+<!--
+          <div class="col mb-3">
+              <div class="card p-2">
+                  <label class="form-label">Opciones</label>
+                  <div class="d-flex flex-wrap">
+                      <div class="form-check me-3">
+                          <input class="form-check-input" type="checkbox" id="mostrarInscripcion" name="mostrarInscripcion" />
+                          <label class="form-check-label" for="mostrarInscripcion">Inscripción en Línea</label>
+                      </div>
+                      <div class="form-check me-3">
+                          <input class="form-check-input" type="checkbox" id="mostrarMatricula" name="mostrarMatricula" />
+                          <label class="form-check-label" for="mostrarMatricula">Matrícula Virtual</label>
+                      </div>
+                      <div class="form-check me-3">
+                          <input class="form-check-input" type="checkbox" id="modalidadPresencial" name="modalidadPresencial" />
+                          <label class="form-check-label" for="modalidadPresencial">Modalidad Híbrida</label>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% if messages %}
+<script>
+    {% for message in messages %}
+    Swal.fire({
+        icon: "{% if message.tags == 'success' %}success{% else %}warning{% endif %}",
+        text: '{{ message }}',
+        toast: true,
+        position: 'top-end',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+    })
+    {% endfor %}
+</script>
+{% endif %}

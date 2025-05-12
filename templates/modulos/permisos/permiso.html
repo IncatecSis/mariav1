@@ -1,0 +1,217 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<title>| {{ titulo }}</title>
+
+	{% include 'partials/title_meta.html' %}
+
+	{% include 'partials/head-css.html' %}
+	<link rel="stylesheet" href="{% static 'source/scss/new/pop-up.css' %}">
+</head>
+<body>
+	<div class="wrapper">
+
+		{% include 'partials/topbar.html' %}
+		{% include 'partials/horizontal-nav.html' %}
+		{% include 'partials/left-sidebar.html' %}
+
+		<div class="content-page">
+			<div class="content">
+				<div class="container-fluid">
+					{% include 'partials/page-title.html' %}
+				</div>
+				<div class="row">
+                    <div class="container mt-4">
+                        <!-- Sección de búsqueda de usuarios -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Buscar Usuario</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form method="GET" action="{% url 'Incatec:permisos' usuario_id=0 %}">
+                                            <div class="input-group">
+                                                <input type="text" name="q" id="searchUserInput" class="form-control" placeholder="Buscar por documento, nombre o apellido...">
+                                                <button class="btn btn-primary" type="submit">
+                                                    <i class="mdi mdi-magnify"></i> Buscar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                {% if usuarios_busqueda %}
+                                <div class="mt-3">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-centered mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Documento</th>
+                                                    <th>Nombres</th>
+                                                    <th>Apellidos</th>
+                                                    <th>Correo</th>
+                                                    <th>Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for user in usuarios_busqueda %}
+                                                <tr>
+                                                    <td>{{ user.numero_documento|default:"-" }}</td>
+                                                    <td>{{ user.nombres|default:"-" }}</td>
+                                                    <td>{{ user.apellidos|default:"-" }}</td>
+                                                    <td>{{ user.correo_electronico|default:"-" }}</td>
+                                                    <td>
+                                                        <a href="{% url 'Incatec:permisos' usuario_id=user.id_usuario %}" class="btn btn-sm btn-primary">
+                                                            Seleccionar
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                {% empty %}
+                                                <tr>
+                                                    <td colspan="5" class="text-center">No se encontraron usuarios</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if not mostrar_solo_busqueda %}
+                        <!-- Sección de gestión de permisos -->
+                        <h4>Gestión de Permisos para: <strong class="badge bg-primary" id="selectedUserName">{{ usuario.nombres }} {{ usuario.apellidos }}</strong></h4>
+                    
+                        <form method="POST" id="permissionsForm">
+                            {% csrf_token %}
+                    
+                            <div class="accordion" id="accordionPermisos">
+                                {% for modulo, permisos in permisos_por_modulo.items %}
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading-{{ forloop.counter }}">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ forloop.counter }}" aria-expanded="false">
+                                                {{ modulo|default:"Sin módulo" }}
+                                            </button>
+                                        </h2>
+                                        <div id="collapse-{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ forloop.counter }}">
+                                            <div class="accordion-body">
+                                                <!-- Select All checkbox -->
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input select-all-checkbox" type="checkbox" 
+                                                        id="selectAll-{{ forloop.counter }}" 
+                                                        data-module="{{ forloop.counter }}">
+                                                    <label class="form-check-label fw-bold" for="selectAll-{{ forloop.counter }}">
+                                                        Seleccionar Todos
+                                                    </label>
+                                                </div>
+                                                <hr>
+                                                <div class="form-check module-permissions" data-module="{{ forloop.counter }}">
+                                                    {% for permiso in permisos %}
+                                                        <div class="form-check mb-1">
+                                                            <input class="form-check-input permission-checkbox" type="checkbox" 
+                                                                name="permisos" value="{{ permiso.id_permiso }}"
+                                                                id="permiso_{{ permiso.id_permiso }}"
+                                                                data-module="{{ forloop.parentloop.counter }}"
+                                                                {% if permiso.id_permiso in permisos_usuario %}checked{% endif %}>
+                                                            <label class="form-check-label" for="permiso_{{ permiso.id_permiso }}">
+                                                                {{ permiso.nombre }} <small class="text-muted">({{ permiso.codigo }})</small>
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                    
+                            <div class="py-2">
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                <a href="{% url 'Incatec:permisos' usuario_id=0 %}" class="btn btn-secondary">Cancelar</a>
+                            </div>
+                        </form>
+                        {% endif %}
+                    </div>
+				</div>
+		    </div>
+        </div>
+	</div>
+
+	{% include 'partials/footer.html' %}
+
+	{% include 'partials/right-sidebar.html' %}
+
+	{% include 'partials/footer-scripts.html' %}
+
+	<!-- Table Editable plugin-->
+	<script src="{% static 'js/vendor/jquery.tabledit.min.js' %}"></script>
+
+	<!-- Table editable init-->
+	<script src="{% static 'js/pages/tabledit.init.js' %}"></script>
+
+	<!-- Bootstrap Datepicker Plugin js -->
+	<script src="{% static 'js/vendor/bootstrap-datepicker.min.js' %}"></script>
+
+	<!-- App js -->
+	<script src="{% static 'js/app.min.js' %}"></script>
+
+	<!-- Po-put -->
+	<script src="{% static 'js/pop-pup.js' %}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Permissions Script -->
+    <script>
+        $(document).ready(function() {
+            // Manejar clic en checkbox "Seleccionar Todos"
+            $('.select-all-checkbox').on('change', function() {
+                const moduleId = $(this).data('module');
+                const isChecked = $(this).prop('checked');
+                
+                // Seleccionar o deseleccionar todos los checkboxes en este módulo
+                $(`.permission-checkbox[data-module="${moduleId}"]`).prop('checked', isChecked);
+            });
+            
+            // Actualizar checkbox "Seleccionar Todos" cuando cambian los permisos individuales
+            $('.permission-checkbox').on('change', function() {
+                const moduleId = $(this).data('module');
+                const totalCheckboxes = $(`.permission-checkbox[data-module="${moduleId}"]`).length;
+                const checkedCheckboxes = $(`.permission-checkbox[data-module="${moduleId}"]:checked`).length;
+                
+                // Actualizar el checkbox "Seleccionar Todos" según si todos los permisos están marcados
+                $(`#selectAll-${moduleId}`).prop('checked', totalCheckboxes === checkedCheckboxes);
+            });
+            
+            // Inicializar checkboxes "Seleccionar Todos" al cargar la página
+            $('.select-all-checkbox').each(function() {
+                const moduleId = $(this).data('module');
+                const totalCheckboxes = $(`.permission-checkbox[data-module="${moduleId}"]`).length;
+                const checkedCheckboxes = $(`.permission-checkbox[data-module="${moduleId}"]:checked`).length;
+                
+                $(this).prop('checked', totalCheckboxes === checkedCheckboxes && totalCheckboxes > 0);
+            });
+        });
+    </script>
+
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+        Swal.fire({
+            icon: '{% if message.tags == "success" %}success{% else %}error{% endif %}',
+            title: '{{ message }}',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+        {% endfor %}
+    </script>
+    {% endif %}
+</body>
+</html>

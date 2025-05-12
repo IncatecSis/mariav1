@@ -21,13 +21,13 @@
 </button>
 <div class="card" id="pension" style="display: none;">
     <div class="container my-3">
-        <form class="row g-3" method="POST">
+        <form class="row g-3" method="POST" id="formPension">
             {% csrf_token %}
             <input type="hidden" name="tipo" value="pension">
             <input type="hidden" name="id_administradoras_pensiones" id="idPension">
             <div class="col-md-12">
                 <label class="form-label">Nombre</label>
-                <input type="text" id="Npension" name="nombre_administradora" class="form-control" style="text-transform: uppercase;">
+                <input type="text" id="Npension" name="nombre_administradora" class="form-control" style="text-transform: uppercase;" required>
             </div>
             <div class="col-md-12 text-center">
                 <button type="submit" class="btn btn-soft-success">
@@ -46,9 +46,9 @@
                 <th>Editar</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tabla_pension">
             {% for pensiones in pension %}
-            <tr>
+            <tr data-id="{{ pensiones.id_administradoras_pensiones }}">
                 <td>{{ pensiones.nombre_administradora }}</td>
                 <td>
                     <button class="btn btn-soft-info btn-sm btnPension"
@@ -62,36 +62,96 @@
         </tbody>
     </table>
 </div>
-{% if messages %}
-<script>
-    document.addEventListener('DOMContentLoaded', function(){
-        {% for message in messages %}
-            Swal.fire({
-                icon:'{% if message.tags == "success" %}success{% else %}warning{% endif %}',
-                title: '{{ message }}',
-                toast: true,
-                position: 'top-end',
-                timer: 2000,
-                showConfirmButton: false,
-                timerProgressBar: true,
-            });
-        {% endfor %}
-    });
-</script>
-{% endif %}
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.btnPension').forEach(button => {
-            button.addEventListener('click', function() {
-                let idPension = this.getAttribute('data-id');
-                let nombre = this.getAttribute('data-nombre');
-
-                document.getElementById('idPension').value = idPension;
-                document.getElementById('Npension').value = nombre;
-
+        const form = document.getElementById('formPension');
+        const tablaBody = document.getElementById('tabla_pension');
+    
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+    
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+    
+            const formData = new FormData(form);
+            const id = formData.get('id_administradoras_pensiones');
+    
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+    
+                const res = await response.json();
+    
+                if (res.status === 'success') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: res.mensaje
+                    });
+    
+                    if (res.nuevo) {
+                        if (id) {
+                            const fila = tablaBody.querySelector(`tr[data-id="${res.nuevo.id}"]`);
+                            if (fila) {
+                                fila.querySelector('td').textContent = res.nuevo.nombre;
+                                fila.querySelector('button').setAttribute('data-nombre', res.nuevo.nombre);
+                            }
+                        } else {
+                            const nuevaFila = `
+                                <tr data-id="${res.nuevo.id}">
+                                    <td>${res.nuevo.nombre}</td>
+                                    <td>
+                                        <button class="btn btn-soft-info btn-sm btnPension"
+                                            data-id="${res.nuevo.id}"
+                                            data-nombre="${res.nuevo.nombre}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            tablaBody.insertAdjacentHTML('beforeend', nuevaFila);
+                        }
+                    }
+    
+                    form.reset();
+                    document.getElementById('idPension').value = '';
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: res.mensaje || 'Algo salió mal 🫥'
+                    });
+                }
+    
+            } catch (error) {
+                console.error(error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se pudo procesar la solicitud.'
+                });
+            }
+        });
+    
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btnPension')) {
+                const btn = e.target.closest('.btnPension');
+                document.getElementById('idPension').value = btn.dataset.id;
+                document.getElementById('Npension').value = btn.dataset.nombre;
                 document.getElementById('pension').style.display = 'block';
-            })
-        })
-    })
+            }
+        });
+    });
 </script>

@@ -37,8 +37,11 @@ def clear_session_expiration_cookie(request, response):
     if '/admin' in request.path:
         return response
     
-    if request.COOKIES.get('session_expired') == 'true' or request.session.get('session_expired'):
+    if request.COOKIES.get('session_expired') == 'true':
         response.delete_cookie('session_expired')
+        messages.warning(request, 'Se cerró la sesión por inactividad...😕')
+    elif request.session.get('session_expired'):
         request.session.pop('session_expired', None)
         messages.warning(request, 'Se cerró la sesión por inactividad...😕')
+    
     return response

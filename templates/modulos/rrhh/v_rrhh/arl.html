@@ -21,7 +21,7 @@
 </button>
 <div class="card" id="arl" style="display: none;">
     <div class="container my-3">
-        <form class="row g-3" method="POST">
+        <form class="row g-3" id="formArl" method="POST">
             {% csrf_token %}
             <input type="hidden" name="tipo" value="arl">
             <input type="hidden" id="idArl" name="id_arl">
@@ -46,9 +46,9 @@
                 <th>Editar</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tabla_arl">
             {% for arls in arl %}
-            <tr>
+            <tr data-id="{{ arls.id_arl }}">
                 <td>{{ arls.nombre_arl }}</td>
                 <td>
                     <button class="btn btn-soft-info btn-sm btnArl"
@@ -62,37 +62,96 @@
         </tbody>        
     </table>
 </div>
-{% if messages %}
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        {% for message in messages %}
-        Swal.fire({
-            icon: '{% if message.tags == "success" %}success{% else %}warning{% endif %}',
-            title: "{{ message }}",
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-        });
-        {% endfor %}
-    });
-</script>
-{% endif %}
-
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.btnArl').forEach(button => {
-            button.addEventListener('click', function () {
-                let idArl = this.getAttribute('data-id');
-                let nombreArl = this.getAttribute('data-nombre');
-
-                document.getElementById('idArl').value = idArl;
-                document.getElementById('nombreArl').value = nombreArl;
-
+        const form = document.getElementById('formArl');
+        const tablaBody = document.getElementById('tabla_arl');
+    
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+    
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+    
+            const formData = new FormData(form);
+            const id = formData.get('id_arl');
+    
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+    
+                const res = await response.json();
+    
+                if (res.status === 'success') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: res.mensaje
+                    });
+    
+                    if (res.nuevo) {
+                        if (id) {
+                            const fila = tablaBody.querySelector(`tr[data-id="${res.nuevo.id}"]`);
+                            if (fila) {
+                                fila.querySelector('td').textContent = res.nuevo.nombre;
+                                fila.querySelector('button').setAttribute('data-nombre', res.nuevo.nombre);
+                            }
+                        } else {
+                            const nuevaFila = `
+                                <tr data-id="${res.nuevo.id}">
+                                    <td>${res.nuevo.nombre}</td>
+                                    <td>
+                                        <button class="btn btn-soft-info btn-sm btnArl"
+                                            data-id="${res.nuevo.id}"
+                                            data-nombre="${res.nuevo.nombre}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            tablaBody.insertAdjacentHTML('beforeend', nuevaFila);
+                        }
+                    }
+    
+                    form.reset();
+                    document.getElementById('idArl').value = '';
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: res.mensaje || 'Algo salió mal 🫥'
+                    });
+                }
+    
+            } catch (error) {
+                console.error(error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se pudo procesar la solicitud.'
+                });
+            }
+        });
+    
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btnArl')) {
+                const btn = e.target.closest('.btnArl');
+                document.getElementById('idArl').value = btn.dataset.id;
+                document.getElementById('nombreArl').value = btn.dataset.nombre;
                 document.getElementById('arl').style.display = 'block';
-            })
-        })
-    })
+            }
+        });
+    });
 </script>

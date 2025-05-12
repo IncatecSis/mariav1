@@ -1,24 +1,18 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <title>Registros Módulos</title>
-</head>
 <style>
-/* Clase personalizada para el borde inferior debajo del texto */
-.card-header.custom-border {
-    border-bottom: 3px solid #5a42c1; /* Color del borde y grosor */
-    padding-bottom: 10px; /* Espacio entre el texto y el borde */
-    position: relative;
-}
+    .card-header.custom-border {
+        border-bottom: 3px solid #5a42c1;
+        padding-bottom: 10px;
+        position: relative;
+    }
 
-.card-header.custom-border h2 {
-    margin-top: -35px; /* Elimina márgenes del título */
-    padding: 5px;
-}
+    .card-header.custom-border h2 {
+        margin-top: -35px;
+        padding: 5px;
+    }
 </style>
-<body>
+
+
 <div class="container mt-4">
-    <!-- Título -->
     <div class="card">
         <div class="card-header custom-border bg-white">
             <h2 class="text-center text-purple">Registros de Módulos</h2>
@@ -26,34 +20,51 @@
     </div>
 
     <!-- Formulario de módulos -->
-<form>
+    <form method="POST">
+        {% csrf_token %}
         <div class="card p-3 mb-4">
-        <div class="row">
-            <div class="col-md-3 mb-3">
-                <label for="codigoCNO" class="form-label">Código C.N.O.</label>
-                <input type="text" class="form-control" id="codigoCNO" value="">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label for="nombreModuloAbreviado" class="form-label">Nombre Módulo</label>
+                    <input type="text" class="form-control" name="modulo_nombre" style="text-transform: uppercase;">
+                </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="nombreModuloAbreviado" class="form-label">Nombre Módulo Abreviado</label>
-                <input type="text" class="form-control" id="nombreModuloAbreviado" value="">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label for="codigoCNO" class="form-label">Descripción</label>
+                    <textarea class="form-control" name="descripcion_modulo" style="text-transform: uppercase;" rows="4"></textarea>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="nombreModulo" class="form-label">Nombre Módulo</label>
-                <input type="text" class="form-control" id="nombreModulo" value="">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="nombreModulo" class="form-label">Sede</label>
+                    <select name="sedes" class="form-select">
+                        <option value="">SELECCIONE</option>
+                        {% for sede in sedes %}
+                        <option value="{{ sede.id_sede }}">
+                            {{ sede.nombre_sede }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="normaCNO" class="form-label">Tipo de Modulo</label>
+                    <select name="tipo_modulo" class="form-select">
+                        <option value="">SELECCIONE</option>
+                        {% for modulo in tipo_modulos %}
+                        <option value="{{ modulo.id_tipo_modulo }}">
+                            {{ modulo.nombre_tipo }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <label for="normaCNO" class="form-label">Norma Según C.N.O.</label>
-                <input type="text" class="form-control" id="normaCNO" value="">
-            </div>
-        </div>
 
-        <!-- Checkbox de requisitos -->
+            <!-- Checkbox de requisitos 
         <div class="row mb-3 mt-3">
             <div class="col-md-12">
-                <label class="form-label">Requisito</label>
+                <label class="form-label">Requisitos</label>
                 <div class="d-flex flex-wrap">
                     <div class="form-check me-3">
                         <input class="form-check-input" type="checkbox" id="requisitoAcademico">
@@ -70,18 +81,32 @@
                 </div>
             </div>
         </div>
-
-        <!-- Botón de agregar -->
-        <div class="row mb-3">
-            <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-soft-purple">
-                    <i class="bi bi-file-earmark-check-fill"></i> Crear
-                </button>
+-->
+            <!-- Botón de agregar -->
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-soft-purple">
+                        <i class="bi bi-file-earmark-check-fill"></i> Crear
+                    </button>
+                </div>
             </div>
         </div>
-    </div>   
-</form>
-
+    </form>
 </div>
-</body>
-</html>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if messages %}
+<script>
+    {% for message in messages %}
+    Swal.fire({
+        icon: "{% if message.tags == 'success' %}success{% else %}warning{% endif %}",
+        text: '{{ message }}',
+        toast: true,
+        timerProgressBar: true,
+        timer: 2000,
+        showConfirmButton: false,
+        position: 'top-end',
+    })
+    {% endfor %}
+</script>
+{% endif %}

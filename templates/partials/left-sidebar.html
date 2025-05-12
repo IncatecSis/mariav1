@@ -1,199 +1,324 @@
 {% load static %}
 <!-- ========== Left Sidebar Start ========== -->
 <div class="leftside-menu">
-
     <!-- Brand Logo Light -->
     <a href="{% url 'Incatec:index' %}" class="logo logo-light">
         <span class="logo-lg">
-            <img src="{% static 'images/logo.png' %}" style="width: 90px; height: auto;" alt="logo">
+            <img src="{% static 'images/logo-maria.png' %}" style="width: 50%; height: auto" alt="logo" />
         </span>
         <span class="logo-sm">
-            <img src="{% static 'images/maria-iso.png' %}" alt="small logo">
+            <img src="{% static 'images/maria-iso.png' %}" alt="small logo" />
         </span>
     </a>
 
     <!-- Sidebar -left -->
     <div class="h-100" id="leftside-menu-container" data-simplebar>
-		
-		<!-- Incatec -->
-		<ul class="side-nav">
-
+        <!-- Incatec -->
+        <ul class="side-nav">
             <li class="side-nav-item">
                 <a href="{% url 'Incatec:index' %}" class="side-nav-link">
                     <i class="ri-home-3-line"></i>
                     <span class="badge bg-success float-end">9+</span>
-                    <span> Inicio </span>
+                    <span>Inicio</span>
                 </a>
             </li>
-
+                
+            {% if 'MENU_ACADEMICA' in usuarios_permisos %}
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebaracademica" aria-expanded="false" aria-controls="sidebaracademica" class="side-nav-link">
-                    <i class="ri-graduation-cap-line"></i>
-                    <span> Academica </span>
-                    <span class="menu-arrow"></span>
+                <a data-bs-toggle="collapse" href="#sidebaracademica" aria-expanded="false"
+                aria-controls="sidebaracademica" class="side-nav-link">
+                <i class="ri-graduation-cap-line"></i>
+                <span> Academica </span>
+                <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="sidebaracademica">
                     <ul class="side-nav-second-level">
+                        {% if 'REGISTRO_MATRICULA' in usuarios_permisos %}
                         <li>
                             <a href="{% url 'Incatec:matricula' %}">Registro y Matricula</a>
                         </li>
+                        {% endif %}
+
+                        {% if 'GRUPOS_ACADEMICOS' in usuarios_permisos %}
                         <li>
                             <a href="{% url 'Incatec:grupos_academicos' %}">Grupos Académicos</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </li>
+            {% endif %}
 
+            {% if 'MENU_FINANCIERA' in usuarios_permisos %}
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarfinanciera" aria-expanded="false" aria-controls="sidebarfinanciera" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarfinanciera" aria-expanded="false"
+                    aria-controls="sidebarfinanciera" class="side-nav-link">
                     <i class="ri-money-dollar-circle-line"></i>
                     <span> Financiera </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="sidebarfinanciera">
                     <ul class="side-nav-second-level">
+                        {% if 'FINANCIACION' in usuarios_permisos %}
                         <li>
                             <a href="{% url 'Incatec:finanzas' %}">Financiación</a>
                         </li>
+                        {% endif %}
+
+                        {% if 'PAGOS' in usuarios_permisos %}
                         <li>
                             <a href="{% url 'Incatec:pagos' %}">Pagos</a>
                         </li>
-						<li>
+                        {% endif %}
+
+                        {% if 'NOTAS_DYC' in usuarios_permisos %}
+                        <li>
                             <a href="{% url 'Incatec:notas' %}">Notas D y C</a>
                         </li>
-						<li>
+                        {% endif %}
+
+                        {% if 'INFORMES_PAGOS' in usuarios_permisos %}
+                        <li>
                             <a href="{% url 'Incatec:informes' %}">Informes Pagos</a>
                         </li>
-						<li>
+                        {% endif %}
+
+                        {% if 'PERMISOS_CARTERA' in usuarios_permisos %}
+                        <li>
                             <a href="#">Permisos de Cartera</a>
                         </li>
-						<li>
+                        {% endif %}
+
+                        {% if 'SEGUIMIENTO_CARTERA' in usuarios_permisos %}
+                        <li>
                             <a href="#">Seguimiento de Cartera</a>
                         </li>
-						<li>
+                        {% endif %}
+
+                        {% if 'AUDITORIA_FINANCIERA' in usuarios_permisos %}
+                        <li>
                             <a href="#">Auditoria Financiera</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </li>
+            {% endif %}
 
+            {% if 'MENU_CONTROL_INGRESO' in usuarios_permisos %}
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarcontrol" aria-expanded="false" aria-controls="sidebarcontrol" class="side-nav-link">
+                <a data-bs-toggle="collapse" href="#sidebarcontrol" aria-expanded="false" aria-controls="sidebarcontrol"
+                    class="side-nav-link">
                     <i class="ri-door-open-line"></i>
                     <span> Control de Ingreso </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="sidebarcontrol">
                     <ul class="side-nav-second-level">
+                        {% if 'CONTROL_ADMINISTRATIVO' in usuarios_permisos %}
                         <li>
-							<a href="{% url 'Incatec:control_ingreso' %}">Control Administrativo</a>
+                            <a href="{% url 'Incatec:control_ingreso' %}">Control Administrativo</a>
                         </li>
+                        {% endif %}
+
+                        {% if 'CONTROL_DOCENTE' in usuarios_permisos %}
                         <li>
-							<a href="{% url 'Incatec:control_docente' %}">Control Docente</a>
+                            <a href="{% url 'Incatec:control_docente' %}">Control Docente</a>
                         </li>
+                        {% endif %}
+
+                        {%  if 'CONTROL_ESTUDIANTE' in usuarios_permisos %}
                         <li>
-							<a href="{% url 'Incatec:control_estudiante' %}">Control Estudiante</a>
+                            <a href="{% url 'Incatec:control_estudiante' %}">Control Estudiante</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </li>
-		
-			<li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebartalentoh" aria-expanded="false" aria-controls="sidebartalentoh" class="side-nav-link">
+            {% endif %}
+
+            {% if 'MENU_TALENTO_HUMANO' in usuarios_permisos %}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebartalentoh" aria-expanded="false"
+                    aria-controls="sidebartalentoh" class="side-nav-link">
                     <i class="ri-team-line"></i>
                     <span> Talento Humano </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="sidebartalentoh">
                     <ul class="side-nav-second-level">
+                        {% if 'TALENTO_HUMANO_GENERAL' in usuarios_permisos %}
                         <li>
-							<a href="{% url 'Incatec:talento_humano' %}">Parametros</a>
+                            <a href="{% url 'Incatec:talento_humano' %}">Parametros</a>
                         </li>
+                        {% endif %}
+
+                        {% if 'ADMINISTRATIVOS' in usuarios_permisos %}
                         <li>
-							<a href="{% url 'Incatec:administrativos' %}">Administrativos</a>
+                            <a href="{% url 'Incatec:administrativos' %}">Administrativos</a>
                         </li>
+                        {% endif %}
+
+                        {% if 'NOMINA' in usuarios_permisos %}
                         <li>
-							<a href="#">Nomina</a>
+                            <a href="#">Nomina</a>
                         </li>
+                        {% endif %}
+
+                        {% if 'PARAMETROS_NOMINA' in usuarios_permisos %}
                         <li>
-							<a href="#">Parametros Nomina</a>
+                            <a href="#">Parametros Nomina</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </li>
-			
-			<li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarsgc" aria-expanded="false" aria-controls="sidebarsgc" class="side-nav-link">
+            {% endif %}
+
+            {% if 'MENU_SGC' in usuarios_permisos %}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarsgc" aria-expanded="false" aria-controls="sidebarsgc"
+                    class="side-nav-link">
                     <i class="ri-medal-2-line"></i>
                     <span> SGC </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="sidebarsgc">
                     <ul class="side-nav-second-level">
+                        {% if 'SISTEMA_GC' in usuarios_permisos %}
                         <li>
+                            <a href="#">Sistema de Gestión</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </li>
-			
-			<li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarutilidades" aria-expanded="false" aria-controls="sidebarutilidades" class="side-nav-link">
+            {% endif %}
+
+            {% if 'MENU_UTILIDADES' in usuarios_permisos %}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarutilidades" aria-expanded="false"
+                    aria-controls="sidebarutilidades" class="side-nav-link">
                     <i class="ri-tools-fill"></i>
                     <span> Utilidades </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="sidebarutilidades">
                     <ul class="side-nav-second-level">
+                        {% if 'F_MASIVAS' in usuarios_permisos %}
                         <li>
-							<a href="#">Financiaciones Masivas</a>
+                            <a href="#">Financiaciones Masivas</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </li>
-			<li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebaradministrar" aria-expanded="false" aria-controls="sidebaradministrar" class="side-nav-link">
+            {% endif %}
+
+            {% if 'MENU_ADMINISTRACION' in usuarios_permisos %}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebaradministrar" aria-expanded="false"
+                    aria-controls="sidebaradministrar" class="side-nav-link">
                     <i class="ri-settings-4-line"></i>
                     <span> Administrar </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="sidebaradministrar">
                     <ul class="side-nav-second-level">
+                        {% if 'GESTION_USUARIOS' in usuarios_permisos %}
                         <li>
-                            <a href="{% url 'Incatec:usuarios' %}">Usuarios</a>                                       
+                            <a href="{% url 'Incatec:usuarios' %}">Usuarios</a>
                         </li>
+                        {% endif %}
+                        
+                        {% if 'PARAMETROS_FINANCIEROS' in usuarios_permisos %}
                         <li>
                             <a href="{% url 'Incatec:parametros_financieros' %}">Parametros Financieros</a>
                         </li>
+                        {% endif %}
+
+                        {% if 'PARAMETROS_ACADEMICOS' in usuarios_permisos %}
                         <li>
                             <a href="{% url 'Incatec:parametros_academicos' %}">Parametros Academicos</a>
                         </li>
+                        {% endif %}
+
+                        {% if 'OTROS_PARAMETROS' in usuarios_permisos %}
                         <li>
                             <a href="{% url 'Incatec:parametros_externos' %}">Otros Parametros</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </li>
-			<li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarDirectivo" aria-expanded="false" aria-controls="sidebarDirectivo" class="side-nav-link">
+            {% endif %}
+
+            {% if 'MENU_DIRECTIVOS' in usuarios_permisos %}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarDirectivo" aria-expanded="false"
+                    aria-controls="sidebarDirectivo" class="side-nav-link">
                     <i class="bi bi-person-lock"></i>
                     <span> Directivos </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="sidebarDirectivo">
                     <ul class="side-nav-second-level">
+                        {% if 'DIRECTIVOS' in usuarios_permisos %}
                         <li>
-                            <a href="{% url 'Incatec:directivos' %}">Usuario Directivo</a>                                       
+                            <a href="{% url 'Incatec:directivos' %}">Usuario Directivo</a>
                         </li>
+                        {% endif %}
                         <li>
-                            <a href="#">Usuario Academico</a>                                       
+                            <a href="#">Usuario Academico</a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {% endif %}
+
+            {% if 'MENU_CHAT' in usuarios_permisos %}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarChat" aria-expanded="false"
+                    aria-controls="sidebarChat" class="side-nav-link">
+                    <i class="bi bi-telegram"></i>
+                    <span> Chats </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarChat">
+                    <ul class="side-nav-second-level">
+                        {% if 'CHAT' in usuarios_permisos %}
+                        <li>
+                            <a href="{% url 'Incatec:chat' %}">Mis Chats</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </li>
+            {% endif %}
+            
+            {% if 'MENU_PERMISOS' in usuarios_permisos %}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidePermiso"  aria-expanded="false"
+                    aria-controls="sidePermiso" class="side-nav-link">
+                    <i class="bi bi-key"></i>
+                    <span> Permisos </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidePermiso">
+                    <ul class="side-nav-second-level">
+                        {% if 'GESTION_PERMISOS' in usuarios_permisos %}
+                        <li>
+                            <a href="{% url 'Incatec:permisos' request.user.id_usuario.id_usuario %}">Gestión Permisos</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </li>
+            {% endif %}
         </ul>
         <div class="clearfix"></div>
         <div class="text-center py-3 mt-5">
-            <img src="{% static 'images/logo-color1.png' %}" style="width: 50%;">
+            <img src="{% static 'images/logo-color1.png' %}" style="width: 50%" />
         </div>
     </div>
 </div>

@@ -124,6 +124,31 @@
                             </div>
                             <!-- end card-->
                         </div>
+                        <div class="col-xl-4 col-sm-6 ">
+                            <div class="card">
+                                <div class="card-header bg-info text-white" data-bs-toggle="collapse" href="#card-collapse1" role="button" aria-expanded="false" aria-controls="card-collapse">
+                                    <h5 class="card-title mb-0">Gestión de Infraestructura</h5>
+                                </div>
+                                <div id="card-collapse1" class="collapse">
+                                    <img src="{% static 'img/confi.png' %}" class="card-img-top img-fluid" alt="Configuracion">
+                                    <div class="card-body">
+                                        En esta sección encuentras los diferentes correos para algún requerimiento.
+                                        <div class="text-center mt-1">
+                                            <button type="button" class="btn btn-soft-info me-2 btn-block" data-popup="PisoPopup">
+                                                <i class="bi bi-building-fill-add me-1"></i>Piso
+                                            </button>
+                                            <button type="button" class="btn btn-soft-info me-2 btn-block" data-popup="AreaPopup">
+                                                <i class="bi bi-building-add me-1"></i>Área
+                                            </button>
+                                            <button type="button" class="btn btn-soft-info btn-block" data-popup="UbiPopup">
+                                                <i class="bi bi-building-check me-1"></i>Ubicacion 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card-->
+                        </div>
                     </div>
                 </div>
         </div>
@@ -193,6 +218,26 @@
         </div>
     </div>
     <!-- end encuestas -->
+    <div id="PisoPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="PisoPopup" class="close">&times;</span>
+            {% include 'modulos/administrar/p_otros/v_otros/piso.html' %}
+        </div>
+    </div>
+
+    <div id="AreaPopup" class="popup" style="display: none">
+        <div class="popup-content">
+            <span data-close="AreaPopup" class="close">&times;</span>
+            {% include 'modulos/administrar/p_otros/v_otros/area.html' %}
+        </div>
+    </div>
+
+    <div id="UbiPopup" class="popup_o" style="display: none">
+        <div class="popup-content_o">
+            <span data-close="UbiPopup" class="close">&times;</span>
+            {% include 'modulos/administrar/p_otros/v_otros/ubicacion.html' %}
+        </div>
+    </div>
 
     {% include 'partials/right-sidebar.html' %}
 

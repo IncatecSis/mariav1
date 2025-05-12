@@ -8,12 +8,11 @@ from django.contrib import messages
 from datetime import timedelta, date
 from django.utils.timezone import now
 from decimal import Decimal
-#from apps.views.topbar import topbar_general
+from apps.principal.middleware.auditoria import context_usuario
 from apps.principal.modelos.usuario.Usuarios import Usuarios
 from apps.principal.modelos.matricula.modelos_matriculas.generales import *
 from apps.principal.modelos.rrhh.contratos import *
 from apps.principal.modelos.rrhh.datos_adicionales import *
-from apps.principal.modelos.parametros.sedes import *
 from apps.views.rrhh.contrato_fin import contrato_finalizado
 
 
@@ -21,6 +20,7 @@ from apps.views.rrhh.contrato_fin import contrato_finalizado
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def talento_humano(request):
     if request.method == 'POST':
+        context_usuario(request)
         tipo = request.POST.get('tipo')
 
         if tipo == 'arl':
@@ -28,42 +28,61 @@ def talento_humano(request):
             nombre = request.POST.get('nombre_arl')
 
             if id_arl:
-                nombre = Arl.objects.filter(nombre_arl=nombre).exclude(id_arl=id_arl).exists()
-                if nombre:
-                    messages.warning(request, 'La Arl ya existe.🫥')
+                existe = Arl.objects.filter(nombre_arl=nombre).exclude(id_arl=id_arl).exists()
+                if existe:
+                    return JsonResponse({'status': 'error',
+                                        'mensaje':'La Arl ya existe.🫥'})
                 else:
                     arl = get_object_or_404(Arl, id_arl=id_arl)
                     arl.nombre_arl = nombre
                     arl.save()
-                    messages.success(request, '¡Arl actualizada.!🎉')
+                    return JsonResponse({'status': 'success',
+                                        'mensaje': '¡Arl actualizada.!🎉',
+                                        'nuevo': {
+                                            'id': arl.id_arl,
+                                            'nombre': arl.nombre_arl,
+                                        }})
             else:
-                nombre = Arl.objects.filter(nombre_arl=nombre).exists()
-                if nombre:
-                    messages.warning(request, 'La Arl ya existe.🫥')
+                existe = Arl.objects.filter(nombre_arl=nombre).exists()
+                if existe:
+                    return JsonResponse({'status': 'error',
+                                        'mensaje': 'La Arl ya existe.🫥'})
                 else:
-                    Arl.objects.create(nombre_arl=nombre)
-                    messages.success(request, 'Arl creada.🤩')
+                    nuevo = Arl.objects.create(nombre_arl=nombre)
+                    return JsonResponse({'status': 'success',
+                                        'mensaje': 'Arl creada.🤩',
+                                        'nuevo': {
+                                            'id': nuevo.id_arl,
+                                            'nombre': nuevo.nombre_arl
+                                        }})
 
         elif tipo == 'departamento_laboral':
             id_departamento = request.POST.get('id_departamento')
-            nombre_laboral = request.POST.get('nombre')
+            nombre = request.POST.get('nombre')
 
             if id_departamento:
-                nombre = DepartamentoLaboral.objects.filter(nombre=nombre_laboral).exclude(id_departamento=id_departamento).exists()
-                if nombre:
-                    messages.warning(request, 'El área laboral ya existe.🫥')
+                existe = DepartamentoLaboral.objects.filter(nombre=nombre).exclude(id_departamento=id_departamento).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 
+                                        'mensaje': 'El Área Laboral ya existe.🫥'})
                 else:
-                    dpto = get_object_or_404(DepartamentoLaboral, id_departamento=id_departamento)
-                    dpto.nombre = nombre_laboral
-                    dpto.save()
-                    messages.success(request, 'Área Laboral actualizado.!🎉')
+                    dep = get_object_or_404(DepartamentoLaboral, id_departamento=id_departamento)
+                    dep.nombre = nombre
+                    dep.save()
+                    return JsonResponse({'status': 'success', 'mensaje': 'Área Laboral actualizado.!🎉', 'nuevo': {
+                        'id': dep.id_departamento,
+                        'nombre': dep.nombre
+                    }})
             else:
-                nombre = DepartamentoLaboral.objects.filter(nombre=nombre_laboral).exists()
-                if nombre:
-                    messages.warning(request, 'El área laboral ya existe.🫥')
+                existe = DepartamentoLaboral.objects.filter(nombre=nombre).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 'mensaje': 'El Área Laboral ya existe.🫥'})
                 else:
-                    DepartamentoLaboral.objects.create(nombre=nombre_laboral, estado=True)
-                    messages.success(request, 'Área Laboral creada.🤩')
+                    nuevo = DepartamentoLaboral.objects.create(nombre=nombre)
+                    return JsonResponse({'status': 'success', 'mensaje': 'Área Laboral creada.🤩', 'nuevo': {
+                        'id': nuevo.id_departamento,
+                        'nombre': nuevo.nombre
+                    }})
 
         elif tipo == 'cargo':
             id_cargo = request.POST.get('id_cargo')
@@ -71,129 +90,222 @@ def talento_humano(request):
             nombre_cargo = request.POST.get('nombre')
 
             if id_cargo:
-                cargo = get_object_or_404(Cargo, id_cargo=id_cargo)
-                cargo.nombre = nombre_cargo
-                cargo.id_departamento = get_object_or_404(DepartamentoLaboral, id_departamento=id_departamento)
-                cargo.save()
-                messages.success(request, '¡Cargo actualizado.!🎉')
+                existe = Cargo.objects.filter(nombre=nombre_cargo).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 'mensaje': 'El cargo ya existe.🫥'})
+                else:
+                    cargo = get_object_or_404(Cargo, id_cargo=id_cargo)
+                    cargo.nombre = nombre_cargo
+                    cargo.id_departamento = get_object_or_404(DepartamentoLaboral, id_departamento=id_departamento)
+                    cargo.save()
+                    return JsonResponse({
+                        'status': 'success',
+                        'mensaje': '¡Cargo actualizado.! 🎉',
+                        'nuevo': {
+                            'id': cargo.id_cargo,
+                            'nombre': cargo.nombre,
+                            'departamento': cargo.id_departamento.nombre,
+                            'id_departamento': cargo.id_departamento.id_departamento
+                        }
+                    })
             else:
-                departamento = get_object_or_404(DepartamentoLaboral, id_departamento=id_departamento)
-                Cargo.objects.create(nombre=nombre_cargo, id_departamento=departamento, estado=True)
-                messages.success(request, 'Cargo creado.🤩')
+                existe = Cargo.objects.filter(nombre=nombre_cargo).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 'mensaje': 'El cargo ya existe.🫥'})
+                else:
+                    departamento = get_object_or_404(DepartamentoLaboral, id_departamento=id_departamento)
+                    nuevo = Cargo.objects.create(nombre=nombre_cargo, id_departamento=departamento, estado=True)
+                    return JsonResponse({
+                        'status': 'success',
+                        'mensaje': 'Cargo creado. 🤩',
+                        'nuevo': {
+                            'id': nuevo.id_cargo,
+                            'nombre': nuevo.nombre,
+                            'departamento': nuevo.id_departamento.nombre,
+                            'id_departamento': nuevo.id_departamento.id_departamento
+                        }
+                    })
         
         elif tipo == 'caja_compensacion':
             id_caja_compensacion = request.POST.get('id_caja_compensacion')
             nombre = request.POST.get('nombre_caja')
 
             if id_caja_compensacion:
-                nombre = CajasCompensacion.objects.filter(nombre_caja=nombre).exclude(id_caja_compensacion=id_caja_compensacion).exists()
-                if nombre:
-                    messages.warning(request, 'La Caja Compensación ya existe.🫥')
+                existe = CajasCompensacion.objects.filter(nombre_caja=nombre).exclude(id_caja_compensacion=id_caja_compensacion).exists()
+                if existe:
+                    return JsonResponse({'status': 'error',
+                                        'mensaje': 'La Caja Compensación ya existe.🫥'})
                 else:
                     cjp = get_object_or_404(CajasCompensacion, id_caja_compensacion=id_caja_compensacion)
                     cjp.nombre_caja = nombre
                     cjp.save()
-                    messages.success(request, '!Caja Compensación actualizada.!🎉')
+                    return JsonResponse({'status': 'success',
+                                        'mensaje':'!Caja Compensación actualizada.!🎉',
+                                        'nuevo': {
+                                            'id' :cjp.id_caja_compensacion,
+                                            'nombre' :cjp.nombre_caja
+                                        }})
             else:
-                nombre = CajasCompensacion.objects.filter(nombre_caja=nombre).exists()
-                if nombre:
-                    messages.warning(request, 'La Caja Compensación ya existe.🫥')
+                existe = CajasCompensacion.objects.filter(nombre_caja=nombre).exists()
+                if existe:
+                    return JsonResponse({'status': 'error',
+                                        'mensaje': 'La Caja Compensación ya existe.🫥'})
                 else:
-                    CajasCompensacion.objects.create(nombre_caja=nombre)
-                    messages.success(request, 'Caja Compensacion creada.🤩')
+                    nuevo = CajasCompensacion.objects.create(nombre_caja=nombre)
+                    return JsonResponse({'status': 'success',
+                                        'mensaje': 'Caja Compensacion creada.🤩',
+                                        'nuevo': {
+                                            'id':nuevo.id_caja_compensacion,
+                                            'nombre': nuevo.nombre_caja
+                                        }})
 
         elif tipo == 'banco':
             id_banco = request.POST.get('id_banco')
             nombre = request.POST.get('nombre_banco')
 
             if id_banco:
-                nombre = Bancos.objects.filter(nombre_banco=nombre).exclude(id_banco=id_banco).exists()
-                if nombre:
-                    messages.warning(request, 'El Banco ya existe.🫥')
+                existe = Bancos.objects.filter(nombre_banco=nombre).exclude(id_banco=id_banco).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 
+                                        'mensaje': 'El Banco ya existe.🫥'})
                 else:
                     bancos = get_object_or_404(Bancos, id_banco=id_banco)
                     bancos.nombre_banco = nombre
                     bancos.save()
-                    messages.success(request, '¡Bancos Asociados actualizado.!🎉')
+                    return JsonResponse({'status': 'success',
+                                        'mensaje': '¡Bancos Asociados actualizado.!🎉', 
+                                        'nuevo': {
+                                            'id': bancos.id_banco,
+                                            'nombre': bancos.nombre_banco
+                                        }})
             else:
-                nombre = Bancos.objects.filter(nombre_banco=nombre).exists()
-                if nombre:
-                    messages.warning(request, 'El Banco ya existe.🫥')
+                existe = Bancos.objects.filter(nombre_banco=nombre).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 
+                                        'mensaje': 'El Banco ya existe.🫥'})
                 else:
-                    Bancos.objects.create(nombre_banco=nombre)
-                    messages.success(request, 'Bancos Asociados creado.🤩')
+                    nuevo = Bancos.objects.create(nombre_banco=nombre)
+                    return JsonResponse({'status': 'success', 
+                                        'mensaje': 'Bancos Asociados creado.🤩', 
+                                        'nuevo': {
+                                            'id': nuevo.id_banco,
+                                            'nombre': nuevo.nombre_banco,
+                                        }})
 
         elif tipo == 'eps':
             id_eps = request.POST.get('id_eps')
             nombre_eps = request.POST.get('nombre')
 
             if id_eps:
-                nombre = Eps.objects.filter(nombre=nombre_eps).exclude(id_eps=id_eps).exists()
-                if nombre:
-                    messages.warning(request, 'La Eps ya existe.🫥')
+                existe = Eps.objects.filter(nombre=nombre_eps).exclude(id_eps=id_eps).exists()
+                if existe:
+                    return JsonResponse({'status': 'error',
+                                        'mensaje':'La Eps ya existe.🫥'})
                 else:
                     eps = get_object_or_404(Eps, id_eps=id_eps)
                     eps.nombre = nombre_eps
                     eps.save()
-                    messages.success(request, '¡Eps actualizada.!🎉')
+                    return JsonResponse({'status': 'success',
+                                        'mensaje': '¡Eps actualizada.!🎉',
+                                        'nuevo': {
+                                            'id': eps.id_eps,
+                                            'nombre': eps.nombre
+                                        }})
             else:
-                nombre = Eps.objects.filter(nombre=nombre_eps).exists()
-                if nombre:
-                    messages.warning(request, 'La Eps ya existe.🫥')
+                existe = Eps.objects.filter(nombre=nombre_eps).exists()
+                if existe:
+                    return JsonResponse({'status': 'error',
+                                        'mensaje':'La Eps ya existe.🫥'})
                 else:
-                    Eps.objects.create(nombre=nombre_eps)
-                    messages.success(request, 'Eps creada.🤩')
+                    nuevo=Eps.objects.create(nombre=nombre_eps)
+                    return JsonResponse({'status': 'success',
+                                        'mensaje': 'Eps creada.🤩',
+                                        'nuevo': {
+                                            'id':nuevo.id_eps,
+                                            'nombre':nuevo.nombre,
+                                        }})
         
         elif tipo == 'pension':
             id_pension = request.POST.get('id_administradoras_pensiones')
             nombre_pension = request.POST.get('nombre_administradora')
 
             if id_pension:
-                nombre = AdministradorasPensiones.objects.filter(nombre_administradora=nombre_pension).exclude(id_administradoras_pensiones=id_pension).exists()
-                if nombre:
-                    messages.warning(request, 'El fondo de pensión ya existe.🫥')
+                existe = AdministradorasPensiones.objects.filter(nombre_administradora=nombre_pension).exclude(id_administradoras_pensiones=id_pension).exists()
+                if existe:
+                    return JsonResponse({'status': 'error',
+                                        'mensaje':'El fondo de pensión ya existe.🫥'})
                 else:
                     pension = get_object_or_404(AdministradorasPensiones, id_administradoras_pensiones=id_pension)
                     pension.nombre_administradora = nombre_pension
                     pension.save()
-                    messages.success(request, '¡Fondo de Pensión actualizada.!🎉')
+                    return JsonResponse({'status': 'success',
+                                        'mensaje': '¡Fondo de Pensión actualizada.!🎉',
+                                        'nuevo': {
+                                            'id': pension.id_administradoras_pensiones,
+                                            'nombre': pension.nombre_administradora
+                                        }})
             else:
-                nombre = AdministradorasPensiones.objects.filter(nombre_administradora=nombre_pension).exists()
-                if nombre:
-                    messages.warning(request, 'El fondo de pensión ya existe.🫥')
+                existe = AdministradorasPensiones.objects.filter(nombre_administradora=nombre_pension).exists()
+                if existe:
+                    return JsonResponse({'status': 'error',
+                                        'mensaje':'El fondo de pensión ya existe.🫥'})
                 else:
-                    AdministradorasPensiones.objects.create(nombre_administradora=nombre_pension)
-                    messages.success(request, 'Fondo de Pensión creada.🤩')
+                    nuevo = AdministradorasPensiones.objects.create(nombre_administradora=nombre_pension)
+                    return JsonResponse({'status': 'success',
+                                        'mensaje': 'Fondo de Pensión creada.🤩',
+                                        'nuevo': {
+                                            'id': nuevo.id_administradoras_pensiones,
+                                            'nombre': nuevo.nombre_administradora
+                                        }})
 
         elif tipo == 'tipo_contrato':
             id_tipo = request.POST.get('id_tipo_contrato')
             nombre_contrato = request.POST.get('nombre_tipo_contrato')
-            id_rol = request.POST.get('id_rol', None)
+            id_rol = request.POST.get('id_rol') or None
+            if id_rol == '4':
+                id_rol = None
             asigna_rol = bool(id_rol)
 
             if id_tipo:
-                nombre = TiposDeContrato.objects.filter(nombre_tipo_contrato=nombre_contrato).exclude(id_tipo_contrato=id_tipo).exists()
-                if nombre:
-                    messages.warning(request, 'El tipo de contrato ya existe.🫥')
+                existe = TiposDeContrato.objects.filter(nombre_tipo_contrato=nombre_contrato).exclude(id_tipo_contrato=id_tipo).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 'mensaje': 'El tipo de contrato ya existe.🫥'})
                 else:
                     contrato = get_object_or_404(TiposDeContrato, id_tipo_contrato=id_tipo)
                     contrato.nombre_tipo_contrato = nombre_contrato
                     contrato.asigna_rol = asigna_rol
                     contrato.id_rol = Roles.objects.get(id_rol=id_rol) if id_rol else None
                     contrato.save()
-                    messages.success(request, '¡Contrato Laboral actualizado.! 🎉')
+                    return JsonResponse({
+                        'status': 'success',
+                        'mensaje': 'Tipo de contrato actualizado!',
+                        'nuevo': {
+                            'id': contrato.id_tipo_contrato,
+                            'nombre': contrato.nombre_tipo_contrato,
+                            'id_rol': contrato.id_rol.id_rol if contrato.id_rol else '',
+                            'nombre_rol': contrato.id_rol.nombre_rol if contrato.id_rol else 'NO APLICA'
+                        }
+                    })
             else:
-                nombre = TiposDeContrato.objects.filter(nombre_tipo_contrato=nombre_contrato).exists()
-                if nombre:
-                    messages.warning(request, 'El tipo de contrato ya existe.🫥')
+                existe = TiposDeContrato.objects.filter(nombre_tipo_contrato=nombre_contrato).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 'mensaje': 'El tipo de contrato ya existe.🫥'})
                 else:
-                    TiposDeContrato.objects.create(
+                    nuevo = TiposDeContrato.objects.create(
                         nombre_tipo_contrato=nombre_contrato,
                         asigna_rol=asigna_rol,
                         id_rol=Roles.objects.get(id_rol=id_rol) if id_rol else None
                     )
-                    messages.success(request, 'Contrato creado. 🤩')
-
+                    return JsonResponse({
+                        'status': 'success',
+                        'mensaje': 'Contrato creado. 🤩',
+                        'nuevo': {
+                            'id': nuevo.id_tipo_contrato,
+                            'nombre': nuevo.nombre_tipo_contrato,
+                            'id_rol': nuevo.id_rol.id_rol if nuevo.id_rol else '',
+                            'nombre_rol': nuevo.id_rol.nombre_rol if nuevo.id_rol else 'NO APLICA'
+                        }
+                    })
 
         elif tipo == 'riesgo':
             id_riesgo = request.POST.get('id_riesgo_laboral')
@@ -201,48 +313,85 @@ def talento_humano(request):
             porcentajes = request.POST.get('porcentaje')
 
             if id_riesgo:
-                nombre = RiesgoLaboral.objects.filter(nivel_riesgo=nivel_riesgos).exclude(id_riesgo_laboral=id_riesgo).exists()
-                if nombre:
-                    messages.warning(request, 'El riesgo laboral ya existe.🫥')
+                existe = RiesgoLaboral.objects.filter(nivel_riesgo=nivel_riesgos).exclude(id_riesgo_laboral=id_riesgo).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 'mensaje': 'El riesgo laboral ya existe.🫥'})
                 else:
                     riesgo = get_object_or_404(RiesgoLaboral, id_riesgo_laboral=id_riesgo)
                     riesgo.nivel_riesgo = nivel_riesgos
                     riesgo.porcentaje = porcentajes
                     riesgo.save()
-                    messages.success(request, '¡Riesgo Laboral actualizado.!🎉')
+                    return JsonResponse({
+                        'status': 'success',
+                        'mensaje': '¡Riesgo Laboral actualizado.! 🎉',
+                        'nuevo': {
+                            'id': riesgo.id_riesgo_laboral,
+                            'nivel': riesgo.nivel_riesgo,
+                            'porcentaje': riesgo.porcentaje
+                        }
+                    })
             else:
-                nombre = RiesgoLaboral.objects.filter(nivel_riesgo=nivel_riesgos).exists()
-                if nombre:
-                    messages.warning(request, 'El riesgo laboral ya existe.🫥')
+                existe = RiesgoLaboral.objects.filter(nivel_riesgo=nivel_riesgos).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 'mensaje': 'El riesgo laboral ya existe.🫥'})
                 else:
-                    RiesgoLaboral.objects.create(nivel_riesgo=nivel_riesgos, porcentaje=porcentajes)
-                    messages.success(request, 'Riesgo Laboral creado.🤩')
-        
+                    nuevo = RiesgoLaboral.objects.create(
+                        nivel_riesgo=nivel_riesgos,
+                        porcentaje=porcentajes
+                    )
+                    return JsonResponse({
+                        'status': 'success',
+                        'mensaje': 'Riesgo Laboral creado. 🤩',
+                        'nuevo': {
+                            'id': nuevo.id_riesgo_laboral,
+                            'nivel': nuevo.nivel_riesgo,
+                            'porcentaje': nuevo.porcentaje
+                        }
+                    })
+
         elif tipo == 'despidos':
             id_despido = request.POST.get('id_tipo_despido')
             nombre_despido = request.POST.get('nombre_despido')
             descripcion = request.POST.get('descripcion')
 
             if id_despido:
-                nombre = TipoDespido.objects.filter(nombre_despido=nombre_despido).exclude(id_tipo_despido=id_despido).exists()
-                if nombre:
-                    messages.warning(request, 'El tipo de despido ya existe.🫥')
+                existe = TipoDespido.objects.filter(nombre_despido=nombre_despido).exclude(id_tipo_despido=id_despido).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 'mensaje': 'El tipo de despido ya existe.🫥'})
                 else:
                     despido = get_object_or_404(TipoDespido, id_tipo_despido=id_despido)
                     despido.nombre_despido = nombre_despido
                     despido.descripcion = descripcion
                     despido.save()
-                    messages.success(request, '¡Tipo de despido actualizado! 🎉')
+                    return JsonResponse({
+                        'status': 'success',
+                        'mensaje': '¡Tipo de despido actualizado! 🎉',
+                        'nuevo': {
+                            'id': despido.id_tipo_despido,
+                            'nombre': despido.nombre_despido,
+                            'descripcion': despido.descripcion
+                        }
+                    })
             else:
-                nombre = TipoDespido.objects.filter(nombre_despido=nombre_despido).exists()
-                if nombre:
-                    messages.warning(request, 'El tipo de despido ya existe.🫥')
+                existe = TipoDespido.objects.filter(nombre_despido=nombre_despido).exists()
+                if existe:
+                    return JsonResponse({'status': 'error', 'mensaje': 'El tipo de despido ya existe.🫥'})
                 else:
-                    TipoDespido.objects.create(nombre_despido=nombre_despido, descripcion=descripcion)
-                    messages.success(request, 'Tipo de despido creado. 🤩')
+                    nuevo = TipoDespido.objects.create(
+                        nombre_despido=nombre_despido,
+                        descripcion=descripcion
+                    )
+                    return JsonResponse({
+                        'status': 'success',
+                        'mensaje': 'Tipo de despido creado. 🤩',
+                        'nuevo': {
+                            'id': nuevo.id_tipo_despido,
+                            'nombre': nuevo.nombre_despido,
+                            'descripcion': nuevo.descripcion
+                        }
+                    })
 
-
-        return redirect('Incatec:talento_humano')       
+        #return redirect('Incatec:talento_humano')       
     contexto = {
         'rol': Roles.objects.all(),
         'despido': TipoDespido.objects.all(),
@@ -255,7 +404,7 @@ def talento_humano(request):
         'pension': AdministradorasPensiones.objects.all(),
         'epss': Eps.objects.all(),
         'riesgos': RiesgoLaboral.objects.all(),
-        'titulo_pagina': 'Parámetros Talento Humano',
+        'titulo': 'Parámetros Talento Humano',
     }
     return render(request, 'modulos/rrhh/talento_humano.html', contexto)
 
@@ -263,6 +412,7 @@ def talento_humano(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) 
 def usuarios_admi(request):
     if request.method == 'POST' and request.POST.get('tipo') == 'registro_contratacion':
+        context_usuario(request)
         print('Datos recibidos', request.POST)
         
         usuario_id = request.POST.get('usuario_id')
@@ -352,6 +502,7 @@ def usuarios_admi(request):
         return redirect('Incatec:administrativos')
 
     if request.method == 'POST' and request.POST.get('tipo') == 'anexar_documentos':
+        context_usuario(request)
         contrato_id = request.POST.get('contrato_id', None)
         print(f'ID Contrato recibido: {contrato_id}')
 
@@ -423,21 +574,21 @@ def usuarios_admi(request):
     documento_contrato = DocumentosContrato.objects.select_related('id_contratacion')
 
     if request.method == 'POST' and request.POST.get('tipo') == 'actualizacion_usuario':
-            usuario_id = request.POST.get('usuario_id', None)
-            print(f"🛠️ ID Usuario recibido en POST: {usuario_id}") 
-            usuario = Usuarios.objects.get(id_usuario=usuario_id)
+        context_usuario(request)
+        usuario_id = request.POST.get('usuario_id', None)
+        print(f"🛠️ ID Usuario recibido en POST: {usuario_id}") 
+        usuario = Usuarios.objects.get(id_usuario=usuario_id)
         
-            try:
-                usuario.id_sede = Sedes.objects.get(id_sede=request.POST.get('sedes'))
-                usuario.id_tipo_identificacion = TipoIdentificacion.objects.get(id_tipo_identificacion=request.POST.get('tipo_identificacion'))
-                usuario.numero_documento = request.POST.get('numero_documento')
-                usuario.nombres = request.POST.get('nombres')
-                usuario.apellidos = request.POST.get('apellidos')
-                usuario.fecha_nacimiento = request.POST.get('fecha_nacimiento')
+        try:
+            usuario.id_tipo_identificacion = TipoIdentificacion.objects.get(id_tipo_identificacion=request.POST.get('tipo_identificacion'))
+            usuario.numero_documento = request.POST.get('numero_documento')
+            usuario.nombres = request.POST.get('nombres')
+            usuario.apellidos = request.POST.get('apellidos')
+            usuario.fecha_nacimiento = request.POST.get('fecha_nacimiento')
                 
-                nueva_foto = request.FILES.get('foto_perfil')
-                if nueva_foto:
-                    usuario.foto_perfil = nueva_foto
+            nueva_foto = request.FILES.get('foto_perfil')
+            if nueva_foto:
+                usuario.foto_perfil = nueva_foto
                 usuario.id_pais = Paises.objects.get(id_pais=request.POST.get('pais'))
                 usuario.id_sexo = Sexo.objects.get(id_sexo=request.POST.get('sexo'))
                 usuario.id_departamento_expedicion = Departamentos.objects.get(id_departamento=request.POST.get('id_departamento_expedicion'))
@@ -465,11 +616,12 @@ def usuarios_admi(request):
                 usuario.save()
                 messages.success(request, 'Usuario actualizado.🤩')
                 return redirect('Incatec:administrativos')
-            except Exception as e:
-                messages.error(request, 'Error al actualizar el usuario.🫤')
-                return redirect('Incatec:administrativos')
+        except Exception as e:
+            messages.error(request, 'Error al actualizar el usuario.🫤')
+            return redirect('Incatec:administrativos')
 
     if request.method == 'POST' and not request.POST.get('tipo'):
+        context_usuario(request)
         numero_documento = request.POST.get('numero_documento')
         usuario_existente = Usuarios.objects.filter(numero_documento=numero_documento).first()
         if usuario_existente:
@@ -477,7 +629,6 @@ def usuarios_admi(request):
             return redirect('Incatec:administrativos')
 
         try:
-            id_sede = Sedes.objects.get(id_sede=request.POST.get('sedes'))
             id_pais = Paises.objects.get(id_pais=request.POST.get('pais'))
             id_tipo_identificacion = TipoIdentificacion.objects.get(id_tipo_identificacion=request.POST.get('tipo_identificacion'))
             id_sexo = Sexo.objects.get(id_sexo=request.POST.get('sexo'))
@@ -500,7 +651,6 @@ def usuarios_admi(request):
             foto_perfil = request.FILES.get('foto_perfil', None)
 
             Usuarios.objects.create(
-                id_sede=id_sede,
                 id_pais=id_pais,
                 id_tipo_identificacion=id_tipo_identificacion,
                 numero_documento=numero_documento,
@@ -535,8 +685,7 @@ def usuarios_admi(request):
             messages.success(request, 'El usuario fué creado exitosamente.🤩')
             return redirect('Incatec:administrativos')
 
-        except (Sedes.DoesNotExist, TipoIdentificacion.DoesNotExist, Sexo.DoesNotExist,
-                Departamentos.DoesNotExist, Municipios.DoesNotExist,
+        except (Sexo.DoesNotExist, Departamentos.DoesNotExist, Municipios.DoesNotExist,
                 TipoSangre.DoesNotExist, EstadoCivil.DoesNotExist,
                 Sisben.DoesNotExist, EstratoSocioeconomico.DoesNotExist,
                 Etnia.DoesNotExist, ZonaResidencial.DoesNotExist,
@@ -588,18 +737,16 @@ def usuarios_admi(request):
         'zonas_residenciales': ZonaResidencial.objects.all(),
         'epss': Eps.objects.all(),
         'tipos_discapacidad': TipoDiscapacidad.objects.all(),
-        'sedes': Sedes.objects.all(),
         'departamento_laboral': DepartamentoLaboral.objects.all(),
         'cargo': Cargo.objects.all(),
         'arl': Arl.objects.all(),
         'caja_compensacion': CajasCompensacion.objects.all(),
         'tipo_contrato': TiposDeContrato.objects.all(),
         'banco': Bancos.objects.all(),
-        'sedes': Sedes.objects.all(),
         'pension': AdministradorasPensiones.objects.all(),
         'riesgos': RiesgoLaboral.objects.all(),
         'paises': Paises.objects.all(),
-        'titulo_pagina': 'Usuarios Administrativos',
+        'titulo': 'Usuarios Administrativos',
     }
 
     return render(request, 'modulos/rrhh/usuario_admi.html', contexto)
@@ -633,6 +780,7 @@ def estado(request):
         return JsonResponse({'success': True, 'tipos': tipos})
 
     if request.method == 'POST':
+        context_usuario(request)
         try:
             data = json.loads(request.body)
             contrato_id = data.get('contrato_id')

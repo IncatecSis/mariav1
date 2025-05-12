@@ -21,13 +21,13 @@
 </button>
 <div class="card" id="bancos" style="display: none;">
     <div class="container my-3">
-        <form class="row g-3" method="POST">
+        <form class="row g-3" method="POST" id="formBanco">
             {% csrf_token %}
             <input type="hidden" value="banco" name="tipo">
             <input type="hidden" name="id_banco" id="idBanco">
             <div class="col-md-12">
                 <label class="form-label">Nombre</label>
-                <input type="text" id="nombre_bancos" name="nombre_banco" class="form-control" style="text-transform: uppercase;">
+                <input type="text" id="nombre_bancos" name="nombre_banco" class="form-control" style="text-transform: uppercase;" required>
             </div>
             <div class="col-md-12 text-center">
                 <button type="submit" class="btn btn-soft-success">
@@ -46,9 +46,9 @@
                 <th>Editar</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tabla_banco">
             {% for bancos in banco %}
-            <tr>
+            <tr data-id="{{ bancos.id_banco }}">
                 <td>{{ bancos.nombre_banco }}</td>
                 <td>
                     <button class="btn btn-soft-info btn-sm btnBancos"
@@ -62,36 +62,96 @@
         </tbody>
     </table>
 </div>
-{% if messages %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        {% for message in messages %}
-        Swal.fire({
-            icon: 'success',
-            title: '{{ message }}',
+        const form = document.getElementById('formBanco');
+        const tablaBody = document.getElementById('tabla_banco');
+    
+        const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar:true,
+            timer: 2500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
         });
-        {% endfor %}
-    });
-</script>
-{% endif %}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.btnBancos').forEach(btn => {
-            btn.addEventListener('click', function () {
-                let idBanco = this.getAttribute('data-id');
-                let nombre = this.getAttribute('data-nombre');
-
-                document.getElementById('idBanco').value = idBanco;
-                document.getElementById('nombre_bancos').value = nombre;
-
+    
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+    
+            const formData = new FormData(form);
+            const id = formData.get('id_banco');
+    
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+    
+                const res = await response.json();
+    
+                if (res.status === 'success') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: res.mensaje
+                    });
+    
+                    if (res.nuevo) {
+                        if (id) {
+                            const fila = tablaBody.querySelector(`tr[data-id="${res.nuevo.id}"]`);
+                            if (fila) {
+                                fila.querySelector('td').textContent = res.nuevo.nombre;
+                                fila.querySelector('button').setAttribute('data-nombre', res.nuevo.nombre);
+                            }
+                        } else {
+                            const nuevaFila = `
+                                <tr data-id="${res.nuevo.id}">
+                                    <td>${res.nuevo.nombre}</td>
+                                    <td>
+                                        <button class="btn btn-soft-info btn-sm btnBancos"
+                                            data-id="${res.nuevo.id}"
+                                            data-nombre="${res.nuevo.nombre}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            tablaBody.insertAdjacentHTML('beforeend', nuevaFila);
+                        }
+                    }
+    
+                    form.reset();
+                    document.getElementById('idBanco').value = '';
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: res.mensaje || 'Algo salió mal 🫥'
+                    });
+                }
+    
+            } catch (error) {
+                console.error(error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se pudo procesar la solicitud.'
+                });
+            }
+        });
+    
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btnBancos')) {
+                const btn = e.target.closest('.btnBancos');
+                document.getElementById('idBanco').value = btn.dataset.id;
+                document.getElementById('nombre_bancos').value = btn.dataset.nombre;
                 document.getElementById('bancos').style.display = 'block';
-            })
-        })
-    })
+            }
+        });
+    });
 </script>

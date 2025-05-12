@@ -8,7 +8,7 @@ class Paises(models.Model):
     nombre = models.CharField(max_length=100)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'paises'
         ordering = ['nombre']
 
@@ -23,7 +23,6 @@ class Paises(models.Model):
 class Usuarios(models.Model):
     id_usuario = models.AutoField(primary_key=True)
     foto_perfil = models.ImageField(upload_to='foto_usuarios/', null=True, blank=True, default='usuario.png')
-    id_sede = models.ForeignKey(Sedes, on_delete=models.CASCADE, db_column='id_sede')
     id_tipo_identificacion = models.ForeignKey(TipoIdentificacion, on_delete=models.CASCADE, db_column='id_tipo_identificacion')
     numero_documento = models.CharField(unique=True, max_length=20)
     id_pais = models.ForeignKey(Paises, on_delete=models.CASCADE, db_column='id_pais', blank=True, null=True)
@@ -57,7 +56,7 @@ class Usuarios(models.Model):
     estado = models.CharField(max_length=50, default='pre_registro')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'usuarios'
         ordering = ['nombres']
 

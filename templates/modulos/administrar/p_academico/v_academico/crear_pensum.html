@@ -1,0 +1,68 @@
+<style>
+    /* Clase personalizada para el borde inferior debajo del texto */
+    .card-header.custom-border {
+        border-bottom: 3px solid #5a42c1;
+        /* Color del borde y grosor */
+        padding-bottom: 10px;
+        /* Espacio entre el texto y el borde */
+        position: relative;
+    }
+
+    .card-header.custom-border h2 {
+        margin-top: -10px;
+        /* Elimina márgenes del título */
+        padding: 5px;
+    }
+</style>
+<div class="container mt-2">
+    <div class="card">
+        <div class="card-header custom-border bg-white">
+            <h2 class="text-center text-purple">Creación de Pensum</h2>
+        </div>
+    </div>
+    <form method="POST">
+        <input type="hidden" name="tipo" value="pensum">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="codigo" class="form-label">Programa</label>
+                <select class="form-select" name="programas">
+                    <option value=''>SELECCIONE</option>
+                    {% for programa in programas %}
+                        <option value="{{ programa.id_programa }}">{{ programa.nombre_programa }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label" for="anioVigencia">Año de vigencia</label>
+                <input type="number" class="form-control" name="anio_vigencia" min="2020" max="2100">
+            </div>
+            <div class="col-md-9">
+                <label class="form-label">Nombre de Pensum</label>
+                <input type="text" class="form-control" name="nombre_pensum"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-soft-purple">Crear</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% if messages %}
+<script>
+    {% for message in messages %}
+    Swal.fire({
+        icon: "{% if message.tags == 'success' %}success{% else %}warning{% endif %}",
+        text: '{{ message }}',
+        toast: true,
+        position: 'top-end',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+    })
+    {% endfor %}
+</script>
+{% endif %}

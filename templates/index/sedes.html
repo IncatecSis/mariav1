@@ -76,34 +76,25 @@ body {
     <div class="col-md-6 offset-md-3">
         <div class="card">
             <div class="card-body">
-                <form method="POST" action="" id="sede-periodo-form">
+                <form method="POST" id="sede-form">
                     {% csrf_token %}
+                    <input type="hidden" name="seleccionar_sede" value="true">
+                    
                     <div class="mb-3">
-                        <input type="hidden" name="seleccionar_sede_periodo" value="true">
                         <label for="sede_id" class="form-label">Selecciona la Sede</label>
                         <select class="form-select" id="sede_id" name="sede" required>
-                            <option value="" disabled selected>Seleccione una sede</option>
-                            {% for id, nombre_sede in sede_choices %}
-                                <option value="{{ id }}" {% if request.session.sede_id == id %}selected{% endif %}>{{ nombre_sede }}</option>
+                            <option value="" selected>SELECCIONE</option>
+                            {% for sede in sedes %}
+                                <option value="{{ sede.id_sede }}">{{ sede.nombre_sede }}</option>
                             {% endfor %}
                         </select>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="periodo_id" class="form-label">Selecciona el Periodo</label>
-                        <select class="form-select" id="periodo_id" name="periodo" required>
-                            <option value="" disabled selected>Seleccione un periodo</option>
-                            {% for id, nombre_periodo in periodo_choices %}
-                                <option value="{{ id }}" {% if request.session.periodo_id == id %}selected{% endif %}>{{ nombre_periodo }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    {% if request.user.is_superuser or request.user.roles_id == 2 %}
+                
+                    {% if 'CREACION_SEDE_PERIODO' in usuarios_permisos %}
                         <button type="button" class="btn btn-soft-primary" onclick="toggleModal('modalSede')">Crear sede</button>
                         <button type="button" class="btn btn-soft-primary" onclick="toggleModal('modalPeriodo')">Crear periodo</button>
                     {% endif %}
-                </form>
+                </form>                
             </div>
         </div>
     </div>
@@ -115,13 +106,15 @@ body {
         <form method="POST" action="{% url 'Incatec:index' %}">
             {% csrf_token %}
             <input type="hidden" name="crear_sede" value="1">
-            <div class="mb-3 d-flex align-items-center justify-content-between">
-                <label class="form-label mb-0 me-2" style="width: 50%;" for="nombre_sede">Nombre de la sede: </label>
-                <input type="text" class="form-control" name="nombre" id="nombre" required>
-            </div>    
-            <div class="mb-3 d-flex align-items-center justify-content-between">
-                <label class="form-label mb-0 me-2" style="width: 50%;" for="direccion_sede">Direccion de la sede: </label>
-                <input type="text" class="form-control" name="direccion" id="direccion" required>
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">Nombre de la sede: </label>
+                    <input type="text" class="form-control" name="nombre" id="nombre" required>
+                </div>    
+                <div class="mb-3 col-md-6">
+                    <label class="form-label">Direccion de la sede: </label>
+                    <input type="text" class="form-control" name="direccion" id="direccion" required>
+                </div>
             </div>
             <button type="submit" class="btn btn-soft-primary form-control text-center">
                 Crear sede
@@ -136,16 +129,13 @@ body {
         <form method="POST" action="{% url 'Incatec:index' %}">
             {% csrf_token %}
             <input type="hidden" name="crear_periodo" value="1">
-
-            <div class="row mb-3">
-                <label for="anio-select" class="col-sm-4 col-form-label">Año:</label>
-                <div class="col-sm-8">
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label for="anio-select" class="form-label">Año:</label>
                     <select name="anio" id="anio-select" class="form-select" required></select>
                 </div>
-            </div>  
-            <div class="row mb-3">
-                <label for="semestre" class="col-sm-4 col-form-label">Semestre:</label>
-                <div class="col-sm-8">
+                <div class="mb-3 col-md-6">
+                    <label for="semestre" class="form-label">Semestre:</label>
                     <select class="form-select" name="semestre" id="semestre" required>
                         <option value="1">A</option>
                         <option value="2">B</option>
@@ -161,39 +151,28 @@ body {
 
 <script>
     function toggleModal(modalId) {
-        var modal = document.getElementById(modalId);
+        const modal = document.getElementById(modalId);
         modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
     }
 
     window.onclick = function(event) {
-        var modals = document.getElementsByClassName('modal');
-        for (var c = 0; c < modals.length; c++) {
-            if (event.target === modals[c]) {
-                modals[c].style.display = 'none';
+        const modals = document.getElementsByClassName('modal');
+        for (let i = 0; i < modals.length; i++) {
+            if (event.target === modals[i]) {
+                modals[i].style.display = 'none';
             }
         }
-    }
+    };
 
     document.addEventListener('DOMContentLoaded', function () {
         const sedeField = document.getElementById('sede_id');
-        const periodoField = document.getElementById('periodo_id');
-        const form = document.getElementById('sede-periodo-form');
+        const form = document.getElementById('sede-form');
 
-        function checkAndSubmitForm() {
-            if (sedeField.value && periodoField.value) {
+        sedeField.addEventListener('change', function () {
+            if (sedeField.value) {
                 form.submit();
             }
-        }
-        sedeField.addEventListener('change', checkAndSubmitForm);
-        periodoField.addEventListener('change', checkAndSubmitForm);
+        });
     });
-
-    const Selectyear = document.getElementById('anio-select');
-    for (let year = 2020; year <= 2040; year++) {
-        const option = document.createElement('option');
-        option.value = year;
-        option.textContent = year;
-        Selectyear.appendChild(option);
-    }
 </script>
 <script src="{% static 'js/pop-pup.js' %}"></script>

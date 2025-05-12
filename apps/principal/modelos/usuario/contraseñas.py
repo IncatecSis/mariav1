@@ -10,7 +10,7 @@ class Credenciales(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'credenciales'
 
     def __str__(self):

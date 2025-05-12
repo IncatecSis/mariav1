@@ -21,13 +21,13 @@
 </button>
 <div class="card" id="cargos" style="display: none;">
     <div class="container my-3">
-        <form class="row g-3" method="POST">
+        <form class="row g-3" method="POST" id="formCargo">
             {% csrf_token %}
             <input type="hidden" value="cargo" name="tipo">
             <input type="hidden" id="idCargo" name="id_cargo">
             <div class="col-md-6">
                 <label for="inputCargo" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="NombreCargo" name="nombre" style="text-transform: uppercase;">
+                <input type="text" class="form-control" id="NombreCargo" name="nombre" style="text-transform: uppercase;" required>
             </div>
             <div class="col-md-6">
                 <label for="inputCargo" class="form-label"><span class="badge bg-success">Área Laboral</span></label>
@@ -55,9 +55,9 @@
                 <th>Editar</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="table_cargos">
             {% for cargos in cargo %}
-            <tr>
+            <tr data-id="{{ cargos.id_cargo }}">
                 <td>{{ cargos.nombre }}</td>
                 <td>{{ cargos.id_departamento.nombre }}</td>
                 <td>
@@ -73,21 +73,104 @@
         </tbody>
     </table>
 </div>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function (){
-        document.querySelectorAll('.btnCargo').forEach(btn => {
-            btn.addEventListener('click', function () {
-                let idCargo = this.getAttribute('data-id');
-                let nombre = this.getAttribute('data-nombre');
-                let area = this.getAttribute('data-area');
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('formCargo');
+        const tablaBody = document.getElementById('table_cargos');
 
-                document.getElementById('idCargo').value = idCargo;
-                document.getElementById('NombreCargo').value = nombre;
-                document.getElementById('idArea').value = area;
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
 
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const id = formData.get('id_cargo');
+
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: res.mensaje
+                    });
+
+                    if (res.nuevo) {
+                        if (id) {
+                            const fila = tablaBody.querySelector(`tr[data-id="${res.nuevo.id}"]`);
+                            if (fila) {
+                                const celdas = fila.querySelectorAll('td');
+                                celdas[0].textContent = res.nuevo.nombre;
+                                celdas[1].textContent = res.nuevo.departamento;
+
+                                const btn = fila.querySelector('button');
+                                btn.setAttribute('data-nombre', res.nuevo.nombre);
+                                btn.setAttribute('data-area', res.nuevo.id_departamento);
+                            }
+                        } else {
+                            const nuevaFila = `
+                                <tr data-id="${res.nuevo.id}">
+                                    <td>${res.nuevo.nombre}</td>
+                                    <td>${res.nuevo.departamento}</td>
+                                    <td>
+                                        <button class="btn btn-soft-info btn-sm btnCargo"
+                                            data-id="${res.nuevo.id}"
+                                            data-nombre="${res.nuevo.nombre}"
+                                            data-area="${res.nuevo.id_departamento}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            tablaBody.insertAdjacentHTML('beforeend', nuevaFila);
+                        }
+                    }
+
+                    form.reset();
+                    document.getElementById('idCargo').value = '';
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: res.mensaje || 'Algo salió mal 🫥'
+                    });
+                }
+
+            } catch (error) {
+                console.error(error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se pudo procesar la solicitud.'
+                });
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btnCargo')) {
+                const btn = e.target.closest('.btnCargo');
+                document.getElementById('idCargo').value = btn.dataset.id;
+                document.getElementById('NombreCargo').value = btn.dataset.nombre;
+                document.getElementById('idArea').value = btn.dataset.area;
                 document.getElementById('cargos').style.display = 'block';
-            })
-        })
-    })
+            }
+        });
+    });
 </script>

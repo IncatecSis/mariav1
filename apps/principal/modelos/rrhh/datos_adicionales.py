@@ -1,11 +1,12 @@
 from django.db import models
+from apps.principal.modelos.parametros.sedes import Sedes
 
 class Arl(models.Model):
     id_arl = models.AutoField(primary_key=True)
     nombre_arl = models.CharField(max_length=50, blank=True, null=True)
     
     class Meta:
-        managed = True
+        managed = False
         db_table = 'arl'
         ordering = ['nombre_arl']
 
@@ -23,7 +24,7 @@ class RiesgoLaboral(models.Model):
     porcentaje = models.DecimalField(max_digits=5, decimal_places=3, blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'riesgo_laboral'
         ordering = ['nivel_riesgo']
 
@@ -40,7 +41,7 @@ class Bancos(models.Model):
     nombre_banco = models.CharField(max_length=100)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'bancos'
         ordering = ['nombre_banco']
 
@@ -57,7 +58,7 @@ class CajasCompensacion(models.Model):
     nombre_caja = models.CharField(max_length=100)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'cajas_compensacion'
         ordering = ['nombre_caja']
 
@@ -74,7 +75,7 @@ class AdministradorasPensiones(models.Model):
     nombre_administradora = models.CharField(max_length=100)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'administradoras_pensiones'
         ordering = ['nombre_administradora']
 
@@ -90,9 +91,10 @@ class DepartamentoLaboral(models.Model):
     id_departamento = models.AutoField(primary_key=True)
     nombre = models.CharField(unique=True, max_length=100)
     estado = models.BooleanField(blank=True, null=True, default=True)
+    id_sede = models.ForeignKey(Sedes, on_delete=models.CASCADE, db_column='id_sede', blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'departamento_laboral'
         ordering = ['nombre']
         
@@ -109,9 +111,10 @@ class Cargo(models.Model):
     id_departamento = models.ForeignKey(DepartamentoLaboral, on_delete=models.CASCADE, db_column='id_departamento')
     nombre = models.CharField(unique=True, max_length=100)
     estado = models.BooleanField(blank=True, null=True, default=True)
+    id_sede = models.ForeignKey(Sedes, on_delete=models.CASCADE, db_column='id_sede', blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'cargo'
         ordering = ['nombre']
 

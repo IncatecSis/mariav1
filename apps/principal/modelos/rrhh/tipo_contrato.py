@@ -10,7 +10,7 @@ class TiposDeContrato(models.Model):
     id_rol = models.ForeignKey(Roles, on_delete=models.CASCADE, db_column='id_rol', blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'tipos_de_contrato'
         ordering = ['nombre_tipo_contrato']
 

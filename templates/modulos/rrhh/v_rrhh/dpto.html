@@ -21,20 +21,18 @@
 </button>
 <div class="card" id="dpto" style="display: none;">
     <div class="container my-3">
-        <form class="row g-3" method="POST">
+        <form id="formDpto" class="row g-3" method="POST">
             {% csrf_token %}
             <input type="hidden" name="tipo" value="departamento_laboral">
             <input type="hidden" name="id_departamento" id="idDpto">
             <div class="col-md-12">
                 <label class="form-label">Nombre</label>
-                <input type="text" id="nombre_area" name="nombre" class="form-control" style="text-transform: uppercase;">
+                <input type="text" id="nombre_area" name="nombre" class="form-control" style="text-transform: uppercase;" required>
             </div>
             <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-soft-success">
-                    Agregar
-                </button>
+                <button type="submit" class="btn btn-soft-success">Agregar</button>
             </div>
-        </form>
+        </form>        
         <br>
     </div>
 </div>
@@ -46,15 +44,15 @@
                 <th>Editar</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tabla_dptos">
             {% for dpto in departamento_laboral %}
-            <tr>
+            <tr data-id="{{ dpto.id_departamento }}">
                 <td>{{ dpto.nombre }}</td>
                 <td>
                     <button class="btn btn-soft-info btn-sm btnDpto"
-                        data-id="{{ dpto.id_departamento}}"
+                        data-id="{{ dpto.id_departamento }}"
                         data-nombre="{{ dpto.nombre }}">
-                        <i class="bi bi-pencil-square"></i> 
+                        <i class="bi bi-pencil-square"></i>
                     </button>
                 </td>
             </tr>
@@ -63,36 +61,96 @@
     </table>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-{% if messages %}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        {% for message in messages %}
-        Swal.fire({
-            icon: "success",
-            title: "{{ message }}",
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('formDpto');
+        const tablaBody = document.getElementById('tabla_dptos');
+    
+        const Toast = Swal.mixin({
             toast: true,
-            position: "top-end",
+            position: 'top-end',
             showConfirmButton: false,
-            timer: 2000,
+            timer: 2500,
             timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
         });
-        {% endfor %}
-    });
-</script>
-{% endif %}
-
-<script>
-    document.addEventListener('DOMContentLoaded' , function () {
-        document.querySelectorAll('.btnDpto').forEach(button => {
-            button.addEventListener('click', function () {
-                let idDpto = this.getAttribute('data-id');
-                let nombreDpto = this.getAttribute('data-nombre');
-
-                document.getElementById('idDpto').value = idDpto;
-                document.getElementById('nombre_area').value = nombreDpto;
-
+    
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+    
+            const formData = new FormData(form);
+            const id = formData.get('id_departamento');
+    
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+    
+                const res = await response.json();
+    
+                if (res.status === 'success') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: res.mensaje
+                    });
+    
+                    if (res.nuevo) {
+                        if (id) {
+                            const fila = tablaBody.querySelector(`tr[data-id="${res.nuevo.id}"]`);
+                            if (fila) {
+                                fila.querySelector('td').textContent = res.nuevo.nombre;
+                                fila.querySelector('button').setAttribute('data-nombre', res.nuevo.nombre);
+                            }
+                        } else {
+                            const nuevaFila = `
+                                <tr data-id="${res.nuevo.id}">
+                                    <td>${res.nuevo.nombre}</td>
+                                    <td>
+                                        <button class="btn btn-soft-info btn-sm btnDpto"
+                                            data-id="${res.nuevo.id}"
+                                            data-nombre="${res.nuevo.nombre}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            tablaBody.insertAdjacentHTML('beforeend', nuevaFila);
+                        }
+                    }
+    
+                    form.reset();
+                    document.getElementById('idDpto').value = '';
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: res.mensaje || 'Algo salió mal 🫥'
+                    });
+                }
+    
+            } catch (error) {
+                console.error(error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se pudo procesar la solicitud.'
+                });
+            }
+        });
+    
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btnDpto')) {
+                const btn = e.target.closest('.btnDpto');
+                document.getElementById('idDpto').value = btn.dataset.id;
+                document.getElementById('nombre_area').value = btn.dataset.nombre;
                 document.getElementById('dpto').style.display = 'block';
-            })
-        })
-    })
+            }
+        });
+    });
 </script>

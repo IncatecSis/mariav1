@@ -1,9 +1,10 @@
 from django.db import models
-from apps.principal.modelos.parametros.años import Anios
 from apps.principal.modelos.academico.jornadas import *
 from apps.principal.modelos.academico.programa import *
 from apps.principal.modelos.usuario.Usuarios import *
 from apps.principal.modelos.parametros.sedes import Sedes
+from apps.principal.modelos.parametros.años import Anio
+
 
 
 
@@ -13,22 +14,23 @@ class Convenios(models.Model):
     descripcion = models.TextField(blank=True, null=True)
     estado = models.BooleanField(blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    id_sede = models.ForeignKey(Sedes, on_delete=models.CASCADE, db_column='id_sede')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'convenios'
 
 
 class CostosProgramas(models.Model):
     id_costo = models.AutoField(primary_key=True)
     id_programa = models.ForeignKey(ProgramasAcademicos, on_delete=models.CASCADE, db_column='id_programa')
-    id_anio = models.ForeignKey(Anios, on_delete=models.CASCADE, db_column='id_anio')
+    id_anio = models.ForeignKey(Anio, on_delete=models.CASCADE, db_column='id_anio')
     costo = models.DecimalField(max_digits=10, decimal_places=2)
     estado = models.BooleanField(blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'costos_programas'
 
 
@@ -42,9 +44,10 @@ class Descuentos(models.Model):
     fecha_fin = models.DateField()
     estado = models.BooleanField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    id_sede = models.ForeignKey(Sedes, on_delete=models.CASCADE, db_column='id_sede')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'descuentos'
 
 
@@ -61,22 +64,50 @@ class Incrementos(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'incrementos'
+
+
+class TipoIngresoEstudiante(models.Model):
+    nombre = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_ingreso_estudiante'
+
+
+class TipoMatriculaFin(models.Model):
+    nombre = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_matricula_fin'
+
+
+class SemestresProgramas(models.Model):
+    nombre = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'semestres_programas'
+
 
 class MatriculasFinancieras(models.Model):
     id_matricula = models.AutoField(primary_key=True)
-    id_usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, db_column='id_usuario')
-    id_programa = models.ForeignKey(ProgramasAcademicos, on_delete=models.CASCADE, db_column='id_programa')
-    id_anio = models.ForeignKey(Anios, on_delete=models.CASCADE, db_column='id_anio')
-    id_convenio = models.ForeignKey(Convenios, on_delete=models.CASCADE, db_column='id_convenio', blank=True, null=True)
     estado = models.BooleanField(blank=True, null=True)
-    fecha_matricula = models.DateTimeField(auto_now_add=True)
-    id_jornada = models.ForeignKey(Jornadas, on_delete=models.CASCADE, db_column='id_jornada')
+    fecha_matricula = models.DateTimeField()
+    id_anio = models.ForeignKey(Anio, on_delete=models.CASCADE, db_column='id_anio')
+    id_convenio = models.ForeignKey(Convenios, on_delete=models.CASCADE, db_column='id_convenio', blank=True, null=True)
     id_costo = models.ForeignKey(CostosProgramas, on_delete=models.CASCADE, db_column='id_costo')
+    id_jornada = models.ForeignKey(Jornadas, on_delete=models.CASCADE, db_column='id_jornada')
+    id_programa = models.ForeignKey(ProgramasAcademicos, on_delete=models.CASCADE, db_column='id_programa')
+    id_usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, db_column='id_usuario')
+    id_tipo_matricula_fin = models.ForeignKey(TipoMatriculaFin, on_delete=models.CASCADE, db_column='id_tipo_matricula_fin', blank=True, null=True)
+    id_semestre = models.ForeignKey(SemestresProgramas, on_delete=models.CASCADE, db_column='id_semestre', blank=True, null=True)
+    id_tipo_ingreso = models.ForeignKey(TipoIngresoEstudiante, on_delete=models.CASCADE, db_column='id_tipo_ingreso', blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'matriculas_financieras'
 
 class FormaPago(models.Model):
@@ -84,7 +115,7 @@ class FormaPago(models.Model):
     nombre = models.CharField(unique=True, max_length=20)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'forma_pago'
 
 class Financiaciones(models.Model):
@@ -103,7 +134,7 @@ class Financiaciones(models.Model):
     estado_financiacion = models.CharField(max_length=20, default='Pendiente')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'financiaciones'
 
 class Cuotas(models.Model):
@@ -116,7 +147,7 @@ class Cuotas(models.Model):
     estado_cuota = models.CharField(max_length=20, default='Pendiente')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'cuotas'
 
 class MediosPago(models.Model):
@@ -125,7 +156,7 @@ class MediosPago(models.Model):
     prefijo = models.CharField(max_length=5)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'medios_pago'
 
 class Cartera(models.Model):
@@ -137,9 +168,10 @@ class Cartera(models.Model):
     saldo = models.DecimalField(max_digits=10, decimal_places=2)
     estado = models.CharField(max_length=20, default='Pendiente')
     saldo_a_favor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    id_sede = models.ForeignKey(Sedes, on_delete=models.CASCADE, db_column='id_sede')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'cartera'
 
 class ConceptosPago(models.Model):
@@ -148,23 +180,24 @@ class ConceptosPago(models.Model):
     descripcion = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'conceptos_pago'
 
 class Pagos(models.Model):
     id_pago = models.AutoField(primary_key=True)
-    id_usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, db_column='id_usuario')
-    id_cartera = models.ForeignKey(Cartera, on_delete=models.CASCADE, db_column='id_cartera', blank=True, null=True)
-    id_concepto = models.ForeignKey(ConceptosPago, on_delete=models.CASCADE, db_column='id_concepto', blank=True, null=True)
     monto = models.DecimalField(max_digits=10, decimal_places=2)
-    id_medio_pago = models.ForeignKey(MediosPago, on_delete=models.CASCADE, db_column='id_medio_pago')
     referencia_pago = models.CharField(unique=True, max_length=20)
     estado = models.CharField(max_length=20)
-    fecha_pago = models.DateTimeField(auto_now_add=True)
+    fecha_pago = models.DateTimeField()
     rc_numero = models.CharField(unique=True, max_length=10)
+    id_cartera = models.ForeignKey(Cartera, on_delete=models.CASCADE, db_column='id_cartera', blank=True, null=True)
+    id_concepto = models.ForeignKey(ConceptosPago, on_delete=models.CASCADE, db_column='id_concepto', blank=True, null=True)
+    id_medio_pago = models.ForeignKey(MediosPago, on_delete=models.CASCADE, db_column='id_medio_pago')
+    id_usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, db_column='id_usuario')
+    id_sede = models.ForeignKey(Sedes, on_delete=models.CASCADE, db_column='id_sede')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'pagos'
 
 
@@ -175,7 +208,7 @@ class PagosCuotas(models.Model):
     monto_abonado = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'pagos_cuotas'
 
 
@@ -186,11 +219,17 @@ class Conciliaciones(models.Model):
     fecha_conciliacion = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'conciliaciones'
 
 
 
+class ConsecutivosTipoPago(models.Model):
+    tipo_pago = models.CharField(primary_key=True, max_length=10)
+    ultimo_numero = models.IntegerField(blank=True, null=True)
 
+    class Meta:
+        managed = False
+        db_table = 'consecutivos_tipo_pago'
 
 

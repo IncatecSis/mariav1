@@ -1,4 +1,5 @@
 from django.db import models
+from apps.principal.modelos.parametros.años import Anio
 from apps.principal.modelos.parametros.sedes import Sedes
 
 
@@ -12,7 +13,7 @@ class Escuelas(models.Model):
     estado = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'escuelas'
         ordering = ['id_escuelas']
 
@@ -29,9 +30,9 @@ class TiposProgramas(models.Model):
     estado = models.BooleanField(blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'tipos_programas'
-        ordering=['id_tipos_programas']
+        ordering=['nombre']
 
     def save(self, *args, **kwargs):
         if self.nombre:
@@ -51,9 +52,15 @@ class ProgramasAcademicos(models.Model):
     id_escuelas = models.ForeignKey(Escuelas, on_delete=models.CASCADE, db_column='id_escuelas', blank=True, null=True)
     id_tipos_programas = models.ForeignKey(TiposProgramas, on_delete=models.CASCADE, db_column='id_tipos_programas', blank=True, null=True)
     codigo_centro_costo = models.IntegerField(blank=True, null=True)
+    codigo_siet = models.CharField(max_length=50, blank=True, null=True)
+    numero_registro = models.CharField(max_length=50, blank=True, null=True)
+    numero_certificacion = models.CharField(max_length=50, blank=True, null=True)
+    acto_administrativo_pdf = models.ImageField(upload_to='anexos/gestion_academica/', blank=True, null=True)
+    fecha_inicio = models.DateField(null=True, blank=True)
+    fecha_fin = models.DateField(null=True, blank=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'programas_academicos'
         ordering = ['id_programa']
 
@@ -70,8 +77,16 @@ class Pensum(models.Model):
     id_programa = models.ForeignKey(ProgramasAcademicos, on_delete=models.CASCADE, db_column='id_programa')
     anio_vigencia = models.IntegerField()
     activo = models.BooleanField(blank=True, null=True)
+    nombre = models.CharField(max_length=100, blank=True, null=True)
+    id_anio = models.ForeignKey(Anio, models.DO_NOTHING, db_column='id_anio', blank=True, null=True)
+
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'pensum'
-        ordering = ['id_pensum']
+        ordering = ['anio_vigencia']
+
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.upper()
+        super(Pensum, self).save(*args, **kwargs)

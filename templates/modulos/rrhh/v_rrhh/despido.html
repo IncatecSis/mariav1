@@ -24,14 +24,14 @@
 </button>
 <div class="card" id="despido" style="display: none;">
     <div class="container my-3">
-        <form class="row g-3" method="POST">
+        <form class="row g-3" method="POST" id="formDespido">
             {% csrf_token %}
             <input type="hidden" name="tipo" value="despidos">
             <input type="hidden" name="id_tipo_despido" id="idDespido">
 
             <div class="col-md-6">
                 <label class="form-label">Nombre</label>
-                <input type="text" id="nombre_tipo_despido" name="nombre_despido" class="form-control" style="text-transform: uppercase;">
+                <input type="text" id="nombre_tipo_despido" name="nombre_despido" class="form-control" style="text-transform: uppercase;" required>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Descripción</label>
@@ -55,9 +55,9 @@
                 <th>Editar</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tabla_despido">
             {% for despidos in despido %}
-            <tr>
+            <tr data-id="{{ despidos.id_tipo_despido }}">
                 <td>{{ despidos.nombre_despido }}</td>
                 <td>{{ despidos.descripcion }}</td>
                 <td>
@@ -73,38 +73,105 @@
         </tbody>
     </table>
 </div>
-{% if messages %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        {% for message in messages %}
-            Swal.fire({
-                icon: '{% if message.tags == "success" %}success{% else %}warning{% endif %}',
-                title: '{{ message }}',
-                timer: 2000,
-                position: 'top-end',
-                timerProgressBar: true,
-                toast: true,
-                showConfirmButton: false,
-            });
-        {% endfor %}
-    });
-</script>
-{% endif %}
+        const form = document.getElementById('formDespido');
+        const tablaBody = document.getElementById('tabla_despido');
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.btnDespido').forEach(btn => {
-            btn.addEventListener('click', function () {
-                let idDespido = this.getAttribute('data-id');
-                let nombre = this.getAttribute('data-nombre');
-                let descripcion = this.getAttribute('data-descripcion');
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
 
-                document.getElementById('idDespido').value = idDespido;
-                document.getElementById('nombre_tipo_despido').value = nombre;
-                document.getElementById('descripcion_despido').value = descripcion;
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
+            const formData = new FormData(form);
+            const id = formData.get('id_tipo_despido');
+
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+
+                const res = await response.json();
+                console.log(res);
+
+                if (res.status === 'success') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: res.mensaje
+                    });
+
+                    if (res.nuevo) {
+                        if (id) {
+                            const fila = tablaBody.querySelector(`tr[data-id="${res.nuevo.id}"]`);
+                            if (fila) {
+                                const celdas = fila.querySelectorAll('td');
+                                celdas[0].textContent = res.nuevo.nombre;
+                                celdas[1].textContent = res.nuevo.descripcion;
+
+                                const btn = fila.querySelector('button');
+                                btn.setAttribute('data-nombre', res.nuevo.nombre);
+                                btn.setAttribute('data-descripcion', res.nuevo.descripcion);
+                            }
+                        } else {
+                            const nuevaFila = `
+                                <tr data-id="${res.nuevo.id}">
+                                    <td>${res.nuevo.nombre}</td>
+                                    <td>${res.nuevo.descripcion}</td>
+                                    <td>
+                                        <button class="btn btn-soft-info btn-sm btnDespido"
+                                            data-id="${res.nuevo.id}"
+                                            data-nombre="${res.nuevo.nombre}"
+                                            data-descripcion="${res.nuevo.descripcion}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            tablaBody.insertAdjacentHTML('beforeend', nuevaFila);
+                        }
+                    }
+
+                    form.reset();
+                    document.getElementById('idDespido').value = '';
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: res.mensaje || 'Algo salió mal 🫥'
+                    });
+                }
+
+            } catch (error) {
+                console.error(error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se pudo procesar la solicitud.'
+                });
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btnDespido')) {
+                const btn = e.target.closest('.btnDespido');
+                document.getElementById('idDespido').value = btn.dataset.id;
+                document.getElementById('nombre_tipo_despido').value = btn.dataset.nombre;
+                document.getElementById('descripcion_despido').value = btn.dataset.descripcion;
                 document.getElementById('despido').style.display = 'block';
-            })
-        })
-    })
+            }
+        });
+    });
 </script>

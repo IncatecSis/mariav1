@@ -7,7 +7,7 @@ class Roles(models.Model):
     descripcion = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'roles'
 
     def __str__(self):

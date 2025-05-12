@@ -21,13 +21,13 @@
 </button>
 <div class="card" id="riesgo" style="display: none;">
     <div class="container my-3">
-        <form class="row g-3" method="POST">
+        <form class="row g-3" method="POST" id="formRiesgo">
             {% csrf_token %}
             <input type="hidden" name="tipo" value="riesgo">
             <input type="hidden" name="id_riesgo_laboral" id="idRiesgo">
             <div class="col-md-6">
                 <label class="form-label">Riesgo|Nivel</label>
-                <input type="text" class="form-control" id="NivelRiesgo" name="nivel_riesgo" style="text-transform: uppercase;">
+                <input type="text" class="form-control" id="NivelRiesgo" name="nivel_riesgo" style="text-transform: uppercase;" required>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Porcentaje</label>
@@ -52,17 +52,17 @@
                 <th>Editar</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tabla_riesgo">
             {% for riesgo in riesgos %}
-            <tr>
+            <tr data-id="{{ riesgo.id_riesgo_laboral }}">
                 <td>{{ riesgo.nivel_riesgo }}</td>
                 <td>{{ riesgo.porcentaje }}</td>
                 <td>
-                    <button class="btn btn-soft-info btn-sm btnRiesgo"
+                    <button class="btn btnRiesgo btn-sm btn-soft-info"
                         data-id="{{ riesgo.id_riesgo_laboral }}"
-                        data-nombre="{{ riesgo.nivel_riesgo }}"
-                        data-porcentaje="{{ riesgo.porcentaje }}">
-                        <i class="bi bi-pencil-square"></i> 
+                        data-nivel="{{ riesgo.nivel_riesgo }}"
+                        data-porcentaje="{{ riesgo.porcentaje|floatformat:3|default_if_none:'0.000' }}">
+                        <i class="bi bi-pencil-square"></i>
                     </button>
                 </td>
             </tr>
@@ -70,43 +70,105 @@
         </tbody>        
     </table>
 </div>
-{% if messages %}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        {% for message in messages %}
-        Swal.fire({
-            icon: "success",
-            title: "{{ message }}",
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('formRiesgo');
+        const tablaBody = document.getElementById('tabla_riesgo');
+
+        const Toast = Swal.mixin({
             toast: true,
-            position: "top-end",
+            position: 'top-end',
             showConfirmButton: false,
-            timer: 2000,
+            timer: 2500,
             timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
         });
-        {% endfor %}
-    });
-</script>
-{% endif %}
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.btnRiesgo').forEach(button => {
-        button.addEventListener('click', function () {
-            let idRiesgo = this.getAttribute('data-id');
-            let nivelRiesgo = this.getAttribute('data-nombre');
-            let porcentaje = this.getAttribute('data-porcentaje');
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-            porcentaje = porcentaje.replace(',', '.');
+            const formData = new FormData(form);
+            const id = formData.get('id_riesgo_laboral');
 
-            console.log("Porcentaje Modificado:", porcentaje);
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
 
-            document.getElementById('idRiesgo').value = idRiesgo;
-            document.getElementById('NivelRiesgo').value = nivelRiesgo;
-            document.getElementById('Rporcentaje').value = porcentaje;
+                const res = await response.json();
+                console.log(res);
 
-            document.getElementById('riesgo').style.display = 'block';
+                if (res.status === 'success') {
+                    Toast.fire({
+                        icon: 'success',
+                        title: res.mensaje
+                    });
+
+                    if (res.nuevo) {
+                        if (id) {
+                            const fila = tablaBody.querySelector(`tr[data-id="${res.nuevo.id}"]`);
+                            if (fila) {
+                                const celdas = fila.querySelectorAll('td');
+                                celdas[0].textContent = res.nuevo.nivel;
+                                celdas[1].textContent = res.nuevo.porcentaje;
+
+                                const btn = fila.querySelector('button');
+                                btn.setAttribute('data-nivel', res.nuevo.nivel);
+                                btn.setAttribute('data-porcentaje', res.nuevo.porcentaje);
+                            }
+                        } else {
+                            const nuevaFila = `
+                                <tr data-id="${res.nuevo.id}">
+                                    <td>${res.nuevo.nivel}</td>
+                                    <td>${res.nuevo.porcentaje}</td>
+                                    <td>
+                                        <button class="btn btn-soft-info btn-sm btnRiesgo"
+                                            data-id="${res.nuevo.id}"
+                                            data-nivel="${res.nuevo.nivel}"
+                                            data-porcentaje="${res.nuevo.porcentaje}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            tablaBody.insertAdjacentHTML('beforeend', nuevaFila);
+                        }
+                    }
+
+                    form.reset();
+                    document.getElementById('idRiesgo').value = '';
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: res.mensaje || 'Algo salió mal 🫥'
+                    });
+                }
+
+            } catch (error) {
+                console.error(error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se pudo procesar la solicitud.'
+                });
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btnRiesgo')) {
+                const btn = e.target.closest('.btnRiesgo');
+                document.getElementById('idRiesgo').value = btn.dataset.id;
+                document.getElementById('NivelRiesgo').value = btn.dataset.nivel;
+                document.getElementById('Rporcentaje').value = (btn.dataset.porcentaje || '').replace(',', '.');
+                document.getElementById('riesgo').style.display = 'block';
+            }
         });
     });
-});
-
 </script>

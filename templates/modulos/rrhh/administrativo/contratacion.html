@@ -36,10 +36,12 @@
         {% csrf_token %}
         <div class="row">
             <div class="col-md-6">
-                <label class="form-label">Usuarios</label>
+                <label class="form-label">Identificación del Empleado</label>
                 <div class="input-group">
                     <input type="text" name="numero_documento" id="numero_documento" class="form-control" placeholder="Ingresar número de documento" required>
-                    <button type="button" class="btn btn-soft-success" onclick="buscarUsuario()">Buscar</button>
+                    <button type="button" class="btn btn-soft-success" onclick="buscarUsuario()">
+						<i class="bi bi-search"></i>
+                    </button>
                 </div>
             </div>
             <div class="col-md-6">

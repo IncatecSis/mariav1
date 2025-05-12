@@ -5,7 +5,7 @@
 <html lang="es">
 
 <head>
-	<title>| {{ titulo_pagina }}</title>
+	<title>| {{ titulo }}</title>
 
 	{% include 'partials/title_meta.html' %}
 
@@ -303,250 +303,251 @@
 	<!-- Po-put -->
 	<script src="{% static 'js/pop-pup.js' %}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
-</html>
-{% if messages %}
-<script>
-	{% for message in messages %}
-	Swal.fire({
-		icon: '{% if message.tags == "success" %}success{% else %}error{% endif %}',
-		title: '{{ message }}',
-		toast: true,
-		position: 'top-end',
-		showConfirmButton: false,
-		timer: 3000,
-		timerProgressBar: true,
-	});
-	{% endfor %}
-</script>
-{% endif %}
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".toggle-estado").forEach(function (checkbox) {
-        checkbox.addEventListener("change", function () {
-            let contratoId = this.getAttribute("data-contrato-id");
-            let nuevoEstado = this.checked;
-            let checkbox = this;
-
-            if (!nuevoEstado) {
-                fetch("{% url 'Incatec:estado' %}") 
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            let opciones = "<option value='' selected disabled>SELECCIONE EL TIPO DE DESPIDO</option>";
-                            data.tipos.forEach(tipo => {
-                                opciones += `<option value="${tipo.id_tipo_despido}">${tipo.nombre_despido}</option>`;
-                            });
-
-                            Swal.fire({
-                                title: "Finalización de Contrato.",
-                                html: `
-                                    <div style="text-align: left; margin-bottom: 10px;">
-                                        <label for="tipo_despido"><b>Motivo de despido:</b></label>
-                                        <select id="tipo_despido" class="form-select mt-2" style="width: 100%; padding: 10px; border-radius: 6px; font-size: 15px;">
-                                            ${opciones}
-                                        </select>
-                                    </div>
-                                    <div style="text-align: left;">
-                                        <label for="fecha_fin"><b>Fecha de finalización:</b></label>
-                                        <input type="date" id="fecha_fin" class="form-select mt-2" value="${new Date().toISOString().split('T')[0]}" style="width: 100%; padding: 10px; border-radius: 6px; font-size: 15px;">
-                                    </div>
-                                `,
-                                
-                                
-                                showCancelButton: true,
-                                confirmButtonText: "Confirmar",
-                                cancelButtonText: "Cancelar",
-                                customClass: {
-                                    confirmButton: 'btn btn-soft-primary',
-                                    cancelButton: 'btn btn-soft-danger'
-                                },
-                                preConfirm: () => {
-                                    let tipoDespido = document.getElementById("tipo_despido").value;
-                                    let fechaFin = document.getElementById("fecha_fin").value;
-
-                                    if (!tipoDespido || !fechaFin) {
-                                        return Swal.showValidationMessage("Debe seleccionar un motivo de despido y una fecha de finalización.");
+    
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+        Swal.fire({
+            icon: '{% if message.tags == "success" %}success{% else %}error{% endif %}',
+            title: '{{ message }}',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+        {% endfor %}
+    </script>
+    {% endif %}
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".toggle-estado").forEach(function (checkbox) {
+            checkbox.addEventListener("change", function () {
+                let contratoId = this.getAttribute("data-contrato-id");
+                let nuevoEstado = this.checked;
+                let checkbox = this;
+    
+                if (!nuevoEstado) {
+                    fetch("{% url 'Incatec:estado' %}") 
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                let opciones = "<option value='' selected disabled>SELECCIONE EL TIPO DE DESPIDO</option>";
+                                data.tipos.forEach(tipo => {
+                                    opciones += `<option value="${tipo.id_tipo_despido}">${tipo.nombre_despido}</option>`;
+                                });
+    
+                                Swal.fire({
+                                    title: "Finalización de Contrato.",
+                                    html: `
+                                        <div style="text-align: left; margin-bottom: 10px;">
+                                            <label for="tipo_despido"><b>Motivo de despido:</b></label>
+                                            <select id="tipo_despido" class="form-select mt-2" style="width: 100%; padding: 10px; border-radius: 6px; font-size: 15px;">
+                                                ${opciones}
+                                            </select>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <label for="fecha_fin"><b>Fecha de finalización:</b></label>
+                                            <input type="date" id="fecha_fin" class="form-select mt-2" value="${new Date().toISOString().split('T')[0]}" style="width: 100%; padding: 10px; border-radius: 6px; font-size: 15px;">
+                                        </div>
+                                    `,
+                                    
+                                    
+                                    showCancelButton: true,
+                                    confirmButtonText: "Confirmar",
+                                    cancelButtonText: "Cancelar",
+                                    customClass: {
+                                        confirmButton: 'btn btn-soft-primary',
+                                        cancelButton: 'btn btn-soft-danger'
+                                    },
+                                    preConfirm: () => {
+                                        let tipoDespido = document.getElementById("tipo_despido").value;
+                                        let fechaFin = document.getElementById("fecha_fin").value;
+    
+                                        if (!tipoDespido || !fechaFin) {
+                                            return Swal.showValidationMessage("Debe seleccionar un motivo de despido y una fecha de finalización.");
+                                        }
+    
+                                        return { tipoDespido, fechaFin };
                                     }
-
-                                    return { tipoDespido, fechaFin };
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    cambiarEstadoContrato(contratoId, nuevoEstado, result.value.tipoDespido, result.value.fechaFin);
-                                } else {
-                                    checkbox.checked = true;
-                                }
-                            });
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        cambiarEstadoContrato(contratoId, nuevoEstado, result.value.tipoDespido, result.value.fechaFin);
+                                    } else {
+                                        checkbox.checked = true;
+                                    }
+                                });
+                            }
+                        });
+                } else {
+                    cambiarEstadoContrato(contratoId, nuevoEstado, null, null);
+                }
+            });
+        });
+    });
+    
+    function cambiarEstadoContrato(contratoId, nuevoEstado, idTipoDespido, fechaFin) {
+        fetch("{% url 'Incatec:estado' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+            body: JSON.stringify({ 
+                "contrato_id": contratoId, 
+                "estado": nuevoEstado, 
+                "id_tipo_despido": idTipoDespido, 
+                "fecha_fin": fechaFin
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    timer: 2000,
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
+            } else {
+                Swal.fire("Error", data.error, "error");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            Swal.fire("Error", "No se pudo conectar al servidor.", "error");
+        });
+    }
+    </script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".generar-pdf").forEach(function (button) {
+            button.addEventListener("click", function () {
+                let contratoId = this.getAttribute("data-contrato-id");
+    
+                window.location.href = `/incatec/generar_contrato/${contratoId}/`;
+            });
+        });
+    });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tablasPaginables = [
+                { tablaId: 'colaborador', paginacionId: 'paginacionColaborador' },
+                { tablaId: 'docente', paginacionId: 'paginacionDocente' }
+            ];
+    
+            const filasPorPagina = 5;
+    
+            tablasPaginables.forEach(config => {
+                const tabla = document.getElementById(config.tablaId);
+                const paginacion = document.getElementById(config.paginacionId);
+                if (!tabla || !paginacion) return;
+    
+                const tbody = tabla.querySelector('tbody');
+                const filas = Array.from(tbody.querySelectorAll('tr'));
+                const totalPaginas = Math.ceil(filas.length / filasPorPagina);
+                let paginaActual = 1;
+    
+                function mostrarPagina(pagina) {
+                    tbody.innerHTML = '';
+                    const inicio = (pagina - 1) * filasPorPagina;
+                    const final = inicio + filasPorPagina;
+                    const visibles = filas.slice(inicio, final);
+                    visibles.forEach(row => tbody.appendChild(row));
+                    renderizarPaginacion();
+                }
+    
+                function renderizarPaginacion() {
+                    paginacion.innerHTML = '';
+                    const ul = document.createElement('ul');
+                    ul.className = 'pagination justify-content-center';
+    
+                    ul.appendChild(crearItem('Anterior', paginaActual > 1 ? paginaActual - 1 : null));
+    
+                    for (let i = 1; i <= totalPaginas; i++) {
+                        ul.appendChild(crearItem(i, i));
+                    }
+    
+                    ul.appendChild(crearItem('Siguiente', paginaActual < totalPaginas ? paginaActual + 1 : null));
+    
+                    paginacion.appendChild(ul);
+                }
+    
+                function crearItem(label, pagina) {
+                    const li = document.createElement('li');
+                    li.className = `page-item ${pagina === null ? 'disabled' : ''} ${pagina === paginaActual ? 'active' : ''}`;
+                    const a = document.createElement('a');
+                    a.className = 'page-link';
+                    a.href = '#';
+    
+                    if (label === 'Anterior') {
+                        a.innerHTML = '<i class="bi bi-chevron-left"></i>';
+                    } else if (label === 'Siguiente') {
+                        a.innerHTML = '<i class="bi bi-chevron-right"></i>';
+                    } else {
+                        a.innerText = label;
+                    }
+    
+                    if (pagina !== null) {
+                        a.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            paginaActual = pagina;
+                            mostrarPagina(paginaActual);
+                        });
+                    }
+    
+                    li.appendChild(a);
+                    return li;
+                }
+    
+                mostrarPagina(paginaActual);
+            });
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function (){
+            const inputBuscar = document.getElementById('buscar_documento');
+            const mensaje = document.getElementById('no_encontrado');
+            const tablas = ['colaborador', 'docente'];
+    
+            inputBuscar.addEventListener('input', function() {
+                const termino = inputBuscar.value.toLowerCase();
+                let coincidencias = false;
+    
+                tablas.forEach(idTabla => {
+                    const tabla = document.getElementById(idTabla);
+                    if(!idTabla) return;
+    
+                    const filas = tabla.querySelectorAll('tbody tr');
+    
+                    filas.forEach(fila=> {
+                        const colDocumento = fila.cells[1].textContent.toLowerCase();
+    
+                        if(colDocumento.includes(termino)) {
+                            fila.style.display = '';
+                            coincidencias = true;
+                        }else {
+                            fila.style.display = 'none';
                         }
                     });
-            } else {
-                cambiarEstadoContrato(contratoId, nuevoEstado, null, null);
-            }
-        });
-    });
-});
-
-function cambiarEstadoContrato(contratoId, nuevoEstado, idTipoDespido, fechaFin) {
-    fetch("{% url 'Incatec:estado' %}", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": "{{ csrf_token }}",
-        },
-        body: JSON.stringify({ 
-            "contrato_id": contratoId, 
-            "estado": nuevoEstado, 
-            "id_tipo_despido": idTipoDespido, 
-            "fecha_fin": fechaFin
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: data.message,
-                timer: 2000,
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false
-            }).then(() => {
-                location.reload();
+                });
+    
+                if(termino && !coincidencias) {
+                    mensaje.style.display = 'block';
+                } else {
+                    mensaje.style.display = 'none';
+                }
             });
-        } else {
-            Swal.fire("Error", data.error, "error");
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        Swal.fire("Error", "No se pudo conectar al servidor.", "error");
-    });
-}
-</script>
-
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".generar-pdf").forEach(function (button) {
-        button.addEventListener("click", function () {
-            let contratoId = this.getAttribute("data-contrato-id");
-
-            window.location.href = `/incatec/generar_contrato/${contratoId}/`;
         });
-    });
-});
-</script>
-
-<script>
-	document.addEventListener('DOMContentLoaded', function () {
-		const tablasPaginables = [
-			{ tablaId: 'colaborador', paginacionId: 'paginacionColaborador' },
-			{ tablaId: 'docente', paginacionId: 'paginacionDocente' }
-		];
-
-		const filasPorPagina = 5;
-
-		tablasPaginables.forEach(config => {
-			const tabla = document.getElementById(config.tablaId);
-			const paginacion = document.getElementById(config.paginacionId);
-			if (!tabla || !paginacion) return;
-
-			const tbody = tabla.querySelector('tbody');
-			const filas = Array.from(tbody.querySelectorAll('tr'));
-			const totalPaginas = Math.ceil(filas.length / filasPorPagina);
-			let paginaActual = 1;
-
-			function mostrarPagina(pagina) {
-				tbody.innerHTML = '';
-				const inicio = (pagina - 1) * filasPorPagina;
-				const final = inicio + filasPorPagina;
-				const visibles = filas.slice(inicio, final);
-				visibles.forEach(row => tbody.appendChild(row));
-				renderizarPaginacion();
-			}
-
-			function renderizarPaginacion() {
-				paginacion.innerHTML = '';
-				const ul = document.createElement('ul');
-				ul.className = 'pagination justify-content-center';
-
-				ul.appendChild(crearItem('Anterior', paginaActual > 1 ? paginaActual - 1 : null));
-
-				for (let i = 1; i <= totalPaginas; i++) {
-					ul.appendChild(crearItem(i, i));
-				}
-
-				ul.appendChild(crearItem('Siguiente', paginaActual < totalPaginas ? paginaActual + 1 : null));
-
-				paginacion.appendChild(ul);
-			}
-
-			function crearItem(label, pagina) {
-				const li = document.createElement('li');
-				li.className = `page-item ${pagina === null ? 'disabled' : ''} ${pagina === paginaActual ? 'active' : ''}`;
-				const a = document.createElement('a');
-				a.className = 'page-link';
-				a.href = '#';
-
-				if (label === 'Anterior') {
-					a.innerHTML = '<i class="bi bi-chevron-left"></i>';
-				} else if (label === 'Siguiente') {
-					a.innerHTML = '<i class="bi bi-chevron-right"></i>';
-				} else {
-					a.innerText = label;
-				}
-
-				if (pagina !== null) {
-					a.addEventListener('click', function (e) {
-						e.preventDefault();
-						paginaActual = pagina;
-						mostrarPagina(paginaActual);
-					});
-				}
-
-				li.appendChild(a);
-				return li;
-			}
-
-			mostrarPagina(paginaActual);
-		});
-	});
-</script>
-
-<script>
-	document.addEventListener('DOMContentLoaded', function (){
-		const inputBuscar = document.getElementById('buscar_documento');
-		const mensaje = document.getElementById('no_encontrado');
-		const tablas = ['colaborador', 'docente'];
-
-		inputBuscar.addEventListener('input', function() {
-			const termino = inputBuscar.value.toLowerCase();
-			let coincidencias = false;
-
-			tablas.forEach(idTabla => {
-				const tabla = document.getElementById(idTabla);
-				if(!idTabla) return;
-
-				const filas = tabla.querySelectorAll('tbody tr');
-
-				filas.forEach(fila=> {
-					const colDocumento = fila.cells[1].textContent.toLowerCase();
-
-					if(colDocumento.includes(termino)) {
-						fila.style.display = '';
-						coincidencias = true;
-					}else {
-						fila.style.display = 'none';
-					}
-				});
-			});
-
-			if(termino && !coincidencias) {
-				mensaje.style.display = 'block';
-			} else {
-				mensaje.style.display = 'none';
-			}
-		});
-	});
-</script>
+    </script>
+</body>
+</html>
